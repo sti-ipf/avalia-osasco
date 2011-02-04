@@ -1,0 +1,31 @@
+<h1>Grupo</h1>
+<h2><%= "#{@service_level.name} - #{@dimension.name}" %></h2>
+<% form_for(@party) do |f| %>  
+
+  <p>
+   Adicionar Questoes:<br />
+  </p>
+  <table>
+    <tr>
+      <% @members_crowd.each do |group| %>
+  <td valign=top>
+    <b><%= group.keys.first %></b><br />
+    <% f.fields_for :memberships do |mf| %>
+    <% group.values.first.each do |member| %>
+    <%= mf.check_box_tag ":member_id", member.id %> <%= member.number %><br />
+    <%= mf.hidden_field ":member_type", @type %>
+    <% end %>
+    <% end %>
+    
+  </td>
+   <% end %>
+   </tr>
+   </table>
+  <p>
+    <%= f.submit 'Salvar grupo' %>
+  </p>
+
+<% end %>
+<center><%= link_to 'Voltar p/ grupos de questoes', parties_path %></center>
+
+

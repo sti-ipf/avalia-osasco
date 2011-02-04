@@ -1,0 +1,22 @@
+<h1>Editing group</h1>
+
+<% form_for(@group) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+  <% @users.each do |user| %>
+     <%= check_box_tag "group[user_ids][]", user.id, @group.users.include?(user) %>  
+     <%= user.institution.name %> - <%= user.service_level.name %> <br />
+  <% end %>  
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @group %> |
+<%= link_to 'Back', groups_path %>

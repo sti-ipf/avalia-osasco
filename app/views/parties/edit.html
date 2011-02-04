@@ -1,0 +1,20 @@
+<% form_for(@party) do |f| %>
+
+   <% @party.questions do |question| %>
+     <%= check_box_tag "party[question_ids][]", question.id, @party.questions.include?(question) %>  
+     <%= question.number %><br />
+   <% end %>
+  
+
+  <p>
+   Adicionar Questoes:<br />
+  </p>
+   <% @questions.each do |question| %>
+   <% unless(@party.questions.include?(question)) %>  
+     <%= check_box_tag "party[question_ids][]", question.id, @party.questions.include?(question) %>  
+     <%= question.number %><br />
+   <% end %>
+  <% end %>  
+  <p>
+ <%= f.submit 'Salvar grupo' %>
+<% end %>

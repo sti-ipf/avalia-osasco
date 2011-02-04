@@ -1,0 +1,21 @@
+<p>
+  <b>Indicador:</b>
+  <%=h "#{@indicator.number} - #{@indicator.name}" %>
+</p>
+
+<p>
+  <b>Dimensao:</b>
+  <%=h "#{@indicator.dimension.number} - #{@indicator.dimension.name}" %>
+</p>
+<p>
+  <b>Nivel de Atendimento:</b>
+  <%=h "#{@indicator.service_level.name}" %>
+</p>
+
+<p>
+  <b>Segmento:</b>
+  <%=h "#{@indicator.segment.name}" %>
+</p>
+
+<%= link_to 'Edit', edit_indicator_path(@indicator) %> |
+<%= link_to 'Back', indicators_path %>

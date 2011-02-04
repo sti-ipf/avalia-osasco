@@ -1,0 +1,9 @@
+<h1>Grupo de Questoes</h1>
+
+<% @party.memberships do |memebership| %>
+     <%= membership.member.name %><br />
+<% end %>
+
+
+<%= link_to 'Editar', edit_party_path(@party) %> ||
+<%= link_to 'Voltar para gurpos de questoes', parties_path %>

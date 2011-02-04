@@ -1,0 +1,13 @@
+<% content_for :institution do %>
+ <%= "#{@institution_name} - #{@subtitle}" %>
+ <% if @user %>
+ <%= link_to "Sair", '/session/destroy', :method => 'delete' %>
+ <% end %> 
+<% end %>
+
+<center>
+<h2>Os instrumentais de avaliação do nível de atendimento ensino fundamental, segmento família, serão digitados no sisitema posteriormente. Por favor, entregue o instrumental respondido no Centro de Referência até 17/12, mieo-dia.</h2>
+<br />
+<h1>Obrigado!</h1>
+
+</center>

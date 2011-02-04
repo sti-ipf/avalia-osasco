@@ -1,0 +1,47 @@
+<h1>Grupos de Equivalencia</h1>
+
+<table>
+  <tr>
+    <th></th>
+  </tr>
+
+<% @parties.each do |party| %>
+  <tr>
+    <td>
+      <%=h party.id %></td>
+    <td><%= link_to 'Show', party %></td>
+    <td><%= link_to 'Edit', edit_party_path(party) %></td>
+    <td><%= link_to 'Destroy', party, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+Novo grupo de questoes:
+<p>
+  <%= form_tag new_party_path, :method => :get %>
+  Dimensao:
+  <%= select_tag "dimension_id", options_from_collection_for_select(@dimensions, "id", "name")  %>
+  <br />
+  Nivel de Atendimento:
+  <%= select_tag "service_level_id", options_from_collection_for_select(@service_levels , "id", "name")  %>
+  <%= hidden_field_tag "type", "question" %>
+  <%= submit_tag "Novo Grupo de QUESTOES" %>
+</form>
+</p>
+
+<br /><br />
+Novo grupo de indicadores:
+<p>
+
+  <%= form_tag new_party_path, :method => :get %>
+  Dimensao:
+  <%= select_tag "dimension_id", options_from_collection_for_select(@dimensions, "id", "name")  %>
+  <br />
+  Nivel de Atendimento:
+  <%= select_tag "service_level_id", options_from_collection_for_select(@service_levels , "id", "name")  %>
+  <%= hidden_field_tag "type", "indicator" %>
+  <%= submit_tag "Novo Grupo de INDICADORES" %>
+</form>
+</p>

@@ -1,0 +1,48 @@
+<p>
+  <b>User:</b>
+  <%=h @answer.user_id %>
+</p>
+
+<p>
+  <b>Survey:</b>
+  <%=h @answer.survey_id %>
+</p>
+
+<p>
+  <b>Question:</b>
+  <%=h @answer.question_id %>
+</p>
+
+<p>
+  <b>Zero:</b>
+  <%=h @answer.zero %>
+</p>
+
+<p>
+  <b>One:</b>
+  <%=h @answer.one %>
+</p>
+
+<p>
+  <b>Two:</b>
+  <%=h @answer.two %>
+</p>
+
+<p>
+  <b>Three:</b>
+  <%=h @answer.three %>
+</p>
+
+<p>
+  <b>Four:</b>
+  <%=h @answer.four %>
+</p>
+
+<p>
+  <b>Five:</b>
+  <%=h @answer.five %>
+</p>
+
+
+<%= link_to 'Edit', edit_answer_path(@answer) %> |
+<%= link_to 'Back', answers_path %>
