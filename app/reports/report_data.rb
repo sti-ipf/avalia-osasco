@@ -97,28 +97,27 @@ class ReportData
   def indicators_graph(dnumber)
     d = Dimension.find_by_number(dnumber)
     indicators = d.indicators.all(:conditions => {:service_level_id => @service_level.id})
-
     filenames = indicators.inject([]) do |list, i|
       list << indicator_graph(i)
     end
     return filenames
   end
 
-  def indicator_graph(indicator)
-    i = indicator.is_a?(Numeric) ? Indicator.find(indicator) : indicator
+  def indicator_graph(indicator_param)
+    indicator = indicator_param.is_a?(Numeric) ? Indicator.find(indicator_param) : indicator_param
     now = graph_start_time = Time.now
-    data_sl = Institution.mean_indicator_by_sl(i, @service_level)
+    data_sl = Institution.mean_indicator_by_sl(indicator, @service_level)
     sl_time = Time.now - now
     now = Time.now
 
-    data_group = Institution.mean_indicator_by_group(i,@service_level, @group)
+    data_group = Institution.mean_indicator_by_group(indicator,@service_level, @group)
     group_time = Time.now - now
     now = Time.now
 
-    data = @institution.mean_indicator(i,@service_level)
+    data = @institution.mean_indicator(indicator,@service_level)
 
-    unless i.name.blank?
-      graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{i.id}", :title => "#{i.number} - #{i.name}")
+    unless indicator.name.blank?
+      graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicator.indicators_party.id}", :title => "#{indicator.number} - #{indicator.name}")
       now2 = Time.now
       p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
       return graph

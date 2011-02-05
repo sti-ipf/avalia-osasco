@@ -88,8 +88,19 @@ class ReportIndividual
     end
   end
 
- def get_graph_path(institution,service_level, dimension_number)
+ def get_graph_path(institution, service_level, dimension_number)
    "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/#{dimension_number}-graph.jpg"
+ end
+ 
+ def indicators_graphs_by_dimension(institution, service_level, dimension_number)
+     # text "\n 2.1.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
+   #    (1..ue.count_indicators(1,service_level)).each do |indicator|
+   #    	image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d1i#{indicator}.png" 
+   #  end
+   indicators_parties = Dimension.find_by_number(dimension_number).indicators_parties.find(:all, :conditions => {:service_level_id => service_level.id})
+   indicators_parties.each do |indicators_party|
+     image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
+   end
  end
 # inicio do texto
 # inicio do texto
@@ -324,10 +335,7 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
 
 
   text "\n 2.1.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(1,service_level)).each do |indicator|
-#    	image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d1i#{indicator}.png" 
-#  end	
-  
+    indicators_graphs_by_dimension(ue, service_level, 1)
   start_new_page
 
   text "\n 2.1.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
