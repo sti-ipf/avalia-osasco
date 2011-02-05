@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'ostruct'
 
 class ReportData
@@ -22,6 +23,8 @@ class ReportData
       puts "#{@institution.name} does not have a user in service level #{@service_level.name}"
     end
   end
+  
+  
 
   def indicator_table(indicator)
     require 'ruport'
@@ -29,15 +32,15 @@ class ReportData
     data = []
     # header = ["Segmento", "Questao", "Media por Segmento", "Media da Questao", "Media do Grupo", "Media da Rede*"] # Header
     segments = Rails.cache.fetch("all-valid-segments") { %W(Professores Gestores Educandos Funcionarios Familiares).map { |sname| Segment.first(:conditions => {:name => sname}) }.compact }
-    indicator_party = QuestionsParty.first(:include => {:questions => :indicator}, :conditions => ["indicators.id = ?", indicator.id])
+    questions_party = QuestionsParty.first(:include => {:questions => :indicator}, :conditions => ["indicators.id = ?", indicator.id])
     # group = @institution.groups.first(:include => [:service_levels], :conditions => {:service_levels => {:id => @service_level.id}})
     psegment = segments.select { |s| s.name == "Professores" }
 
-    display_question = indicator_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", psegment.id])
-    display_question ||= indicator_party.questions.first(:conditions => "description is not null")
+    display_question = questions_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", psegment.first.id])
+    display_question ||= questions_party.questions.first(:conditions => "description is not null")
 
     segments.each_with_index do |segment, i|
-      question = indicator_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", segment.id])
+      question = questions_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", segment.id])
       row = [segment.name]
       row << (question.nil? ? "-" : question.number)
 
@@ -50,7 +53,7 @@ class ReportData
 #      row << Institution.mean_questions_parties_by_sl(indicator, @service_level)[:mean] # Media da questao
 
       if i == 2
-        answers = Answer.all(:conditions => ["question_id in (?)", indicator_party.questions.map(&:id)])
+        answers = Answer.all(:conditions => ["question_id in (?)", questions_party.questions.map(&:id)])
         mean = answers.map(&:mean)
         row << mean.avg
         if @group.present?
@@ -100,7 +103,7 @@ class ReportData
     dimension_time = Time.now - now
     now = Time.now
 
-    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => d.id )
+    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => d.number )
     p_times(graph, :sl => sl_time, :group => group_time, :dimension => dimension_time, :graph => Time.now - now, :total => Time.now - graph_start_time)
     graph
   end

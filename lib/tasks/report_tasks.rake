@@ -5,17 +5,28 @@ namespace :reports do
     start_letter = ENV["START"] || "A"
     end_letter = ENV["END"] || ENV["START"] || "Z"
 
-    (start_letter.upcase..end_letter.upcase).each do |letter|
-      Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
-        puts inst.name
-        inst.service_levels.each do |sl|
-          puts "- #{sl.name}"
-          rdata = ReportData.new(inst, sl)
-          dimensions.each do |dimension|
-            puts rdata.dimension_graph(dimension.number)
-            puts rdata.indicators_graph(dimension.number)
-          end
-        end
+    # (start_letter.upcase..end_letter.upcase).each do |letter|
+    #   Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
+    #     puts inst.name
+    #     inst.service_levels.each do |sl|
+    #       puts "- #{sl.name}"
+    #       rdata = ReportData.new(inst, sl)
+    #       dimensions.each do |dimension|
+    #         puts rdata.dimension_graph(dimension.number)
+    #         puts rdata.indicators_graph(dimension.number)
+    #       end
+    #     end
+    #   end
+    # end
+    
+    inst = Institution.find(87)
+    puts inst.name
+    inst.service_levels.each do |sl|
+      puts "- #{sl.name}"
+      rdata = ReportData.new(inst, sl)
+      dimensions.each do |dimension|
+        puts rdata.dimension_graph(dimension.number)
+        puts rdata.indicators_graph(dimension.number)
       end
     end
   end
@@ -25,15 +36,22 @@ namespace :reports do
     start_letter = ENV["START"] || "A"
     end_letter = ENV["END"] || "Z"
     
-    (start_letter.upcase..end_letter.upcase).each do |letter|
-      Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
-        puts inst.name
-        inst.service_levels.each do |sl|
-          puts "- #{sl.name}"
-          ri = ReportIndividual.new
-          ri.to_pdf(inst, sl)
-        end
-      end
+    # (start_letter.upcase..end_letter.upcase).each do |letter|
+    #   Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
+    #     puts inst.name
+    #     inst.service_levels.each do |sl|
+    #       puts "- #{sl.name}"
+    #       ri = ReportIndividual.new
+    #       ri.to_pdf(inst, sl)
+    #     end
+    #   end
+    # end
+    
+    inst = Institution.find(87) #Maria José Ferreira Ferraz, Profª
+    inst.service_levels.each do |sl|
+      puts "- #{sl.name}"
+      ri = ReportIndividual.new
+      ri.to_pdf(inst, sl)
     end
   end
 

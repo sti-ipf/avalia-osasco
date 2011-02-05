@@ -2,11 +2,11 @@
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
   adapter: mysql
-  host: localhost 
+  host: localhost
   encoding: utf8
-  database: osasco
+  database: paulo1_osasco
   username: root
-  password: ipfs9550
+  password:
 
 
 # Warning: The database defined as "test" will be erased and

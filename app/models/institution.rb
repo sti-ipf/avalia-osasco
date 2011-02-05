@@ -404,7 +404,7 @@ class Institution < ActiveRecord::Base
       graph.data(name, data)
     end
     graph.data(" ", Array.new(segments.length, 0))
-    graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}", "#{options[:id]}-")
+    graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "#{options[:id]}-")
   end
 
   def grade_to_table(mean_sl,mean_group,mean,sl)
