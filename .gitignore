@@ -16,3 +16,4 @@ capybara-*.html
 config/*.yml
 rerun.txt
 config/database.yml
+.rvmrc
