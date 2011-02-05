@@ -1,7 +1,7 @@
-# require "ruport"
+# encoding: UTF-8
 
 class Array
-  def sum_values # TODO: rever
+  def sum_values
     map(&:to_f).reject(&:nan?).inject(:+)
   end
 

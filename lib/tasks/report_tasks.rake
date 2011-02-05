@@ -20,37 +20,18 @@ namespace :reports do
     end
   end
 
-  # desc "Generates graphs for each institution"
-  #   task :reports => :environment do
-  #     dimensions = Dimension.all
-  #     start_letter = ENV["START"] || "A"
-  #     end_letter = ENV["END"] || "Z"
-  #
-  #     (start_letter.upcase..end_letter.upcase).each do |letter|
-  #       Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
-  #         puts inst.name
-  #         inst.service_levels.each do |sl|
-  #           puts "- #{sl.name}"
-  #           ri = ReportIndividual.new
-  #           ri.to_pdf(inst, sl)
-  #         end
-  #       end
-  #     end
-  #   end
-
   desc "Generates graphs for each institution"
   task :reports => :environment do
-    dimensions = Dimension.all
     start_letter = ENV["START"] || "A"
-    end_letter = ENV["END"] || ENV["START"] || "Z"
-
+    end_letter = ENV["END"] || "Z"
+    
     (start_letter.upcase..end_letter.upcase).each do |letter|
-      Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name", :limit => 1).each do |inst|
+      Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
         puts inst.name
         inst.service_levels.each do |sl|
           puts "- #{sl.name}"
-          ri = UniFreire::Reports::RelatorioIndividualOsasco.new(inst, sl)
-          ri.report
+          ri = ReportIndividual.new
+          ri.to_pdf(inst, sl)
         end
       end
     end

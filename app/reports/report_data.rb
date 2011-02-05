@@ -100,7 +100,7 @@ class ReportData
     dimension_time = Time.now - now
     now = Time.now
 
-    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "d#{dnumber}" )
+    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => d.id )
     p_times(graph, :sl => sl_time, :group => group_time, :dimension => dimension_time, :graph => Time.now - now, :total => Time.now - graph_start_time)
     graph
   end
