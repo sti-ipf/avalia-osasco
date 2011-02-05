@@ -1,5 +1,6 @@
 class QuestionsParty < ActiveRecord::Base
   has_many :questions
+  belongs_to :indicators_party
 
   def mean_by_sl
     questions = self.questions
