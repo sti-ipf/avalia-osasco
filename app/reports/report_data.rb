@@ -26,17 +26,14 @@ class ReportData
   
   
 
-  def indicator_table(indicator)
-    require 'ruport'
-
+  def questions_party_table(questions_party)
     data = []
-    # header = ["Segmento", "Questao", "Media por Segmento", "Media da Questao", "Media do Grupo", "Media da Rede*"] # Header
-    segments = Rails.cache.fetch("all-valid-segments") { %W(Professores Gestores Educandos Funcionarios Familiares).map { |sname| Segment.first(:conditions => {:name => sname}) }.compact }
-    questions_party = QuestionsParty.first(:include => {:questions => :indicator}, :conditions => ["indicators.id = ?", indicator.id])
-    # group = @institution.groups.first(:include => [:service_levels], :conditions => {:service_levels => {:id => @service_level.id}})
-    psegment = segments.select { |s| s.name == "Professores" }
 
-    display_question = questions_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", psegment.first.id])
+    segments =  %W(Professores Gestores Educandos Funcionários Familiares).map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
+   
+    psegment = segments.select { |s| s.name == "Professores" }.first
+    questions_party = QuestionsParty.find(questions_party, :include => {:questions => :indicator})
+    display_question = questions_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", psegment.id])
     display_question ||= questions_party.questions.first(:conditions => "description is not null")
 
     segments.each_with_index do |segment, i|
@@ -46,40 +43,29 @@ class ReportData
 
       if question.present?
         answers = Answer.all(:conditions => ["question_id in (?) and surveys.segment_id = ?", question.id, segment.id], :include => :survey)
-        row << answers.map(&:mean).avg
+        row << answers.map(&:mean).avg.to_f.round(2)
       else
         row << "-"
       end
-#      row << Institution.mean_questions_parties_by_sl(indicator, @service_level)[:mean] # Media da questao
 
       if i == 2
         answers = Answer.all(:conditions => ["question_id in (?)", questions_party.questions.map(&:id)])
         mean = answers.map(&:mean)
-        row << mean.avg
+        row << mean.avg.to_f.round(2)
         if @group.present?
-          row << Institution.mean_indicator_by_group(indicator, @service_level, @group)[:mean] #Media do Grupo
+          row << questions_party.mean_by_group(@group).to_f.round(2) #Media do Grupo
         else
           row << "-"
         end
-        row << Institution.mean_indicator_by_sl(indicator, @service_level)[:mean].inspect # media da rede
+        row << questions_party.mean_by_sl.to_f.round(2) # media da rede
       else
-        3.times { row << "-" }
+        3.times { row << "" }
       end
-
       data << row
     end
-    data
-
-    OpenStruct.new(
-      :question_numbers => data.map{ |i| i[1] }, # numero da questao
-      :mean_by_segment => data.map{ |i| "%0.2f" % i[2] rescue "-" }, # media por segmento
-      :question_mean => ("%0.2f" % data[2][3] rescue "-"),          # media da questao
-      :group_mean => ("%0.2f" % data[2][4] rescue "-"),          # media do grupo
-      :sl_mean => ("%0.2f" % data[2][5] rescue "-"),          # media da rede
-      :question => display_question
-    )
-    # puts Ruport::Data::Table.new(:column_names => header, :data => data).to_text
+    {:description => display_question.description, :table => data}
   end
+
 
   def dimension_graph(dnumber)
     graph_start_time = now = Time.now
