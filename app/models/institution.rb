@@ -415,7 +415,7 @@ class Institution < ActiveRecord::Base
     names = sl.segments.collect { |seg| seg.name }.sort!
 
     col0.each_index do |index|
-      dimension               = Dimension.find_by_number(col0_index + 1)
+      dimension               = Dimension.find_by_number(index + 1)
       
       segments_dimension      = mean[dimension.id][:segments]
       grade_segments          = names.inject([]) {|array, name| array << (segments_dimension[name].to_f/5).round(2); array}
