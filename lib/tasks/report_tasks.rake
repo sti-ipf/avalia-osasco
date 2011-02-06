@@ -28,6 +28,7 @@ namespace :reports do
         rdata.dimension_graph(dimension)
         rdata.indicators_graph(dimension)
       end
+      
     end
   end
 
@@ -47,11 +48,11 @@ namespace :reports do
     #   end
     # end
     
-    inst = Institution.find(87) #Maria José Ferreira Ferraz, Profª
-    inst.service_levels.each do |sl|
-      puts "- #{sl.name}"
+    institution = Institution.find(87) #Maria José Ferreira Ferraz, Profª
+    institution.service_levels.each do |service_level|
+      puts "- #{service_level.name}"
       ri = ReportIndividual.new
-      ri.to_pdf(inst, sl)
+      ri.to_pdf(institution, service_level, ReportData.new(institution, service_level))
     end
   end
 

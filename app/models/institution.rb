@@ -408,23 +408,30 @@ class Institution < ActiveRecord::Base
   end
 
   def grade_to_table(mean_sl,mean_group,mean,sl)
-    sum = 0
-    table = ["Dimensão","Professores","Gestores","Educandos","Func. de Apoio","Familiares","Índice da UE","Índice do Grupo","Índice da Rede*"]
-    col0 = ["1. Ambiente Educativo","2. Ambiente Físico Escolar e Materiais","3. Avaliação","4. Planejamento Institucional e Prática Pedagógica","5. Acesso e Permanência dos Educandos na Escola","6. Promoção da Saúde","7. Educação Socioambiental e Práticas Ecopedagógicas","8. Envolvimento com as Famílias e Participação na Rede de Proteção Social","9. Gestão Escolar Democrática","10. Formação e Condições de Trabalho dos Profissionais da Escola","11. Processos de Alfabetização e Letramento (Somente para as EMEFs)"]
+    table = [["Dimensão","Professores","Gestores","Educandos","Func. de Apoio","Familiares","Índice da UE","Índice do Grupo","Índice da Rede*"]]
+    col0  = ["1. Ambiente Educativo","2. Ambiente Físico Escolar e Materiais","3. Avaliação","4. Planejamento Institucional e Prática Pedagógica","5. Acesso e Permanência dos Educandos na Escola","6. Promoção da Saúde","7. Educação Socioambiental e Práticas Ecopedagógicas","8. Envolvimento com as Famílias e Participação na Rede de Proteção Social","9. Gestão Escolar Democrática","10. Formação e Condições de Trabalho dos Profissionais da Escola","11. Processos de Alfabetização e Letramento (Somente para as EMEFs)"]
 
-    names = sl.segments.collect { |seg| seg.name }
-    names.sort!
-    (1..11).each do |d|
-      dim = Dimension.find_by_number(d)
-      grade_segments = []
-      names.each do |name|
-        grade_segments << (mean[dim.id][:segments][name].to_f).to_s
-      end
-      sum = sum + mean[dim.id][:mean].to_f/5
-    table << [col0[d]].concat(grade_segments).concat([ (mean[dim.id][:mean].to_f/5).to_s, (mean_group[dim.id][:mean].to_f/5).to_s, (mean_sl[dim.id][:mean].to_f/5).to_s])
+    sum   = 0
+    names = sl.segments.collect { |seg| seg.name }.sort!
+
+    col0.each_index do |index|
+      dimension               = Dimension.find_by_number(col0_index + 1)
+      
+      segments_dimension      = mean[dimension.id][:segments]
+      grade_segments          = names.inject([]) {|array, name| array << (segments_dimension[name].to_f/5).round(2); array}
+      
+      average_dimension       = (mean[dimension.id][:mean].to_f/5).round(2)
+      average_group_dimension = (mean_group[dimension.id][:mean].to_f/5).round(2)
+      average_dimension       = (mean_sl[dimension.id][:mean].to_f/5).round(2)
+      
+      value_row               = [average_dimension, average_group_dimension, average_dimension]
+      
+      sum                     = sum + mean[dimension.id][:mean].to_f/5
+
+      table << [col0[index]].concat(grade_segments).concat(value_row)
     end
 
-    [table,(sum.to_f/11).round(2)]
+    {:table => table, :institution_main_index => (sum.to_f/11).round(2)}
   end
 
   def self.mean_by_segments(users_data)

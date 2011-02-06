@@ -135,19 +135,18 @@ class ReportData
       data_sl = Institution.mean_dimension_by_sl(d,@service_level)
       means_sl[d.id] = data_sl
 
-      p data_sl
-
-      p "============================================================================================"
-
+      # p "============================================================================================"
+      #       p data_sl
       g = (@institution.users.select { |u| u.service_level == @service_level }).first.group
       data_group = Institution.mean_dimension_by_group(d,@service_level,g)
       means_group[d.id] = data_group
-
-      p data_group
+      # p data_group
+      # p "============================================================================================"
 
       data = @institution.mean_dimension(d,@service_level)
       means[d.id] = data_group
     end
+    
     @institution.grade_to_table(means_sl,means_group,means,@service_level)
   end
 

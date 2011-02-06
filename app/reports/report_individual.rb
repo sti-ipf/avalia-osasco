@@ -3,7 +3,7 @@ require "open-uri"
 
 class ReportIndividual
 
-  def to_pdf(ue,service_level)
+  def to_pdf(ue, service_level, report_data)
     # Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/#{ue.name}_#{service_level.name}.pdf", :margin => [30, 30, 30, 30]) do
     Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/final/#{ue.id}_#{service_level.id}.pdf", :margin => [30, 30, 30, 30]) do
       #    Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/report.pdf", :margin => [30, 30, 30, 30]) do
@@ -1196,9 +1196,8 @@ start_new_page
   text "\n 3 Quadro dos índices da unidade, por dimensões e por segmentos", :style => :bold, :align => :center
   fill_color "0000000"
   
-  text "O índice geral da sua Unidade em 2010, obtido com base na média dos índices de cada dimensão é: "
-
-  table [["Dimensão","Professores","Gestores","Educandos","Func. de Apoio","Familiares","Índice da UE","Índice do Grupo","Índice da Rede*"],["1. Ambiente Educativo","","","","","","","",""],["2. Ambiente Físico Escolar e Materiais","","","","","","","",""],["3. Avaliação","","","","","","","",""],["4. Planejamento Institucional e Prática Pedagógica","","","","","","","",""],["5. Acesso e Permanência dos Educandos na Escola","","","","","","","",""],["6. Promoção da Saúde","","","","","","","",""],["7. Educação Socioambiental e Práticas Ecopedagógicas","","","","","","","",""],["8. Envolvimento com as Famílias e Participação na Rede de Proteção Social","","","","","","","",""],["9. Gestão Escolar Democrática","","","","","","","",""],["10. Formação e Condições de Trabalho dos Profissionais da Escola","","","","","","","",""],["11. Processos de Alfabetização e Letramento (Somente para as EMEFs)","","","","","","","",""]] do
+  text "O índice geral da sua Unidade em 2010, obtido com base na média dos índices de cada dimensão é: #{report_data.index_table[:institution_main_index]}"
+  table report_data.index_table[:table] do
     
     row(0).style(:background_color => 'dddddd', :size => 8, :font_style => :bold)
     row(1).style(:size => 8, :font_style => :bold)
