@@ -25,8 +25,8 @@ namespace :reports do
       puts "- #{sl.name}"
       rdata = ReportData.new(inst, sl)
       dimensions.each do |dimension|
-        puts rdata.dimension_graph(dimension.number)
-        puts rdata.indicators_graph(dimension.number)
+        rdata.dimension_graph(dimension)
+        rdata.indicators_graph(dimension)
       end
     end
   end

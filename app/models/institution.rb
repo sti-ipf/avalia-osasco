@@ -60,8 +60,8 @@ class Institution < ActiveRecord::Base
     dimension_mean
   end
 
-  def self.mean_indicator_by_sl(indicator,service_level)
-    indicators = (indicator.colleagues << indicator)
+  def self.mean_indicator_by_sl(indicators_party,service_level)
+    indicators = indicators_party.indicators
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
@@ -122,8 +122,8 @@ class Institution < ActiveRecord::Base
     questions_parties_mean
   end
 
-  def self.mean_indicator_by_group(indicator,service_level,group)
-    indicators = (indicator.colleagues << indicator)
+  def self.mean_indicator_by_group(indicators_party,service_level,group)
+    indicators = indicators_party.indicators
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
@@ -322,8 +322,8 @@ class Institution < ActiveRecord::Base
   end
 
 
-  def mean_indicator(indicator,service_level)
-    indicators = (indicator.colleagues << indicator)
+  def mean_indicator(indicators_party,service_level)
+    indicators = indicators_party.indicators
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
