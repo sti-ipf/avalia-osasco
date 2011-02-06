@@ -27,7 +27,7 @@ class ReportData
   
 
   def questions_party_table(questions_party)
-    data = []
+    data = [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média Geral da Questão", "Média do Grupo", "Média da Rede*"]]
 
     segments =  %W(Professores Gestores Educandos Funcionários Familiares).map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
    

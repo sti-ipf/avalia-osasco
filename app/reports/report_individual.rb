@@ -17,6 +17,8 @@ class ReportIndividual
       )
       font "pt sans"
 
+      
+      @report_data = report_data
 
       def number_pages(string, position)
         page_count.times do |i|
@@ -98,10 +100,66 @@ class ReportIndividual
    #    	image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d1i#{indicator}.png" 
    #  end
    indicators_parties = Dimension.find_by_number(dimension_number).indicators_parties.find(:all, :conditions => {:service_level_id => service_level.id})
+   
+   first_time = true
    indicators_parties.each do |indicators_party|
      image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
+     
+     if first_time
+       text "\n Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
+       text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
+     end
+     first_time = false
+     
+     question = indicators_party.indicators.first.questions.find(:first, :conditions => ["questions_party_id is not null"])
+     question_table(question.questions_party) unless question.nil?
    end
  end
+ 
+ def question_table(question_party)
+   data = @report_data.questions_party_table(question_party)
+   questions_party_table = data[:table]
+   text "\n #{data[:description]}"
+   table questions_party_table, :column_widths => { 0 => 8 } do
+     column(0).width = 90
+
+     cells[1,0].borders = [:left, :bottom, :right, :top]
+     cells[1,1].borders = [:left, :bottom, :right, :top]
+     cells[1,2].borders = [:left, :bottom, :right, :top]
+     cells[1,3].borders = [:left]
+     cells[1,4].borders = [:left]
+     cells[1,5].borders = [:left, :right]
+
+     cells[2,0].borders = [:left, :bottom, :right, :top]
+     cells[2,1].borders = [:left, :bottom, :right, :top]
+     cells[2,2].borders = [:left, :bottom, :right, :top]
+     cells[2,3].borders = [:left]
+     cells[2,4].borders = [:left]
+     cells[2,5].borders = [:left, :right]
+
+     cells[3,0].borders = [:left, :bottom, :right, :top]
+     cells[3,1].borders = [:left, :bottom, :right, :top]
+     cells[3,2].borders = [:left, :bottom, :right, :top]
+     cells[3,3].borders = [:left]
+     cells[3,4].borders = [:left]
+     cells[3,5].borders = [:left, :right]
+
+     cells[4,0].borders = [:left, :bottom, :right, :top]
+     cells[4,1].borders = [:left, :bottom, :right, :top]
+     cells[4,2].borders = [:left, :bottom, :right, :top]
+     cells[4,3].borders = [:left]
+     cells[4,4].borders = [:left]
+     cells[4,5].borders = [:left, :right]
+
+     cells[5,0].borders = [:left, :bottom, :right, :top]
+     cells[5,1].borders = [:left, :bottom, :right, :top]
+     cells[5,2].borders = [:left, :bottom, :right, :top]
+     cells[5,3].borders = [:bottom, :right]
+     cells[5,4].borders = [:bottom, :right]
+     cells[5,5].borders = [:bottom, :right]
+   end
+ end
+ 
 # inicio do texto
 # inicio do texto
   text "\n RESULTADOS DA AVALIAÇÃO EDUCACIONAL 2010", :align => :center, :size => 16, :style => :bold
@@ -311,56 +369,16 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
   text "O Ambiente Educativo visa fornecer indicadores do ambiente que predomina na escola, das relações entre os diversos segmentos, do grau de conhecimento e participação deles na elaboração dos princípios de convivência e no conhecimento que se tem dos direitos das crianças, tendo em vista sua importância como referência às ações educativas para a escola. A escola é um dos espaços de ensino, aprendizagem e vivência de valores. Nela, os indivíduos se socializam, brincam e experimentam a convivência com a diversidade humana. No ambiente educativo, o respeito, a alegria, a amizade e a solidariedade, a disciplina, a negociação, o combate à discriminação e o exercício dos direitos e deveres são práticas que garantem a socialização e a convivência, desenvolvem e fortalecem a noção de cidadania e de igualdade entre todos.", :indent_paragraphs => 40
 
   text "\n 2.1.1 Percepção da UE sobre a Dimensão 1", :style => :bold
-      image get_graph_path(ue, service_level, 1)
+  
+  image get_graph_path(ue, service_level, 1)
+  
   start_new_page
-
 
   text "\n 2.1.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-    indicators_graphs_by_dimension(ue, service_level, 1)
-  start_new_page
+  
+  indicators_graphs_by_dimension(ue, service_level, 1)
+  
 
-  text "\n 2.1.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média Geral da Questão", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #     column(0).width = 90
-  #     
-  #     cells[1,0].borders = [:left, :bottom, :right, :top]
-  #     cells[1,1].borders = [:left, :bottom, :right, :top]
-  #     cells[1,2].borders = [:left, :bottom, :right, :top]
-  #     cells[1,3].borders = [:left]
-  #     cells[1,4].borders = [:left]
-  #     cells[1,5].borders = [:left, :right]
-  # 
-  #     cells[2,0].borders = [:left, :bottom, :right, :top]
-  #     cells[2,1].borders = [:left, :bottom, :right, :top]
-  #     cells[2,2].borders = [:left, :bottom, :right, :top]
-  #     cells[2,3].borders = [:left]
-  #     cells[2,4].borders = [:left]
-  #     cells[2,5].borders = [:left, :right]
-  # 
-  #     cells[3,0].borders = [:left, :bottom, :right, :top]
-  #     cells[3,1].borders = [:left, :bottom, :right, :top]
-  #     cells[3,2].borders = [:left, :bottom, :right, :top]
-  #     cells[3,3].borders = [:left]
-  #     cells[3,4].borders = [:left]
-  #     cells[3,5].borders = [:left, :right]
-  # 
-  #     cells[4,0].borders = [:left, :bottom, :right, :top]
-  #     cells[4,1].borders = [:left, :bottom, :right, :top]
-  #     cells[4,2].borders = [:left, :bottom, :right, :top]
-  #     cells[4,3].borders = [:left]
-  #     cells[4,4].borders = [:left]
-  #     cells[4,5].borders = [:left, :right]
-  # 
-  #     cells[5,0].borders = [:left, :bottom, :right, :top]
-  #     cells[5,1].borders = [:left, :bottom, :right, :top]
-  #     cells[5,2].borders = [:left, :bottom, :right, :top]
-  #     cells[5,3].borders = [:bottom, :right]
-  #     cells[5,4].borders = [:bottom, :right]
-  #     cells[5,5].borders = [:bottom, :right]
-  # 
-  #   end
 
 #  table ue.dimension_answers_to_table(1,service_level), :header => true do
 #    row(0).style :size => 9
