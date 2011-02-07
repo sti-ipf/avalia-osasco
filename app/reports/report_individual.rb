@@ -111,14 +111,19 @@ class ReportIndividual
      end
      first_time = false
      
-     question = indicators_party.indicators.first.questions.find(:first, :conditions => ["questions_party_id is not null"])
-     question_table(question.questions_party) unless question.nil?
+     indicators_party.questions_parties.each do |qp|
+       question_table(qp)
+     end
    end
  end
  
  def question_table(question_party)
+   p "qp => #{question_party.inspect}"
    data = @report_data.questions_party_table(question_party)
    questions_party_table = data[:table]
+   
+   start_new_page if y < 200
+   
    text "\n #{data[:description]}"
    table questions_party_table, :column_widths => { 0 => 8 } do
      column(0).width = 90
@@ -163,9 +168,8 @@ class ReportIndividual
 # inicio do texto
 # inicio do texto
   text "\n RESULTADOS DA AVALIAÇÃO EDUCACIONAL 2010", :align => :center, :size => 16, :style => :bold
-      text "\n Unidade Educacional da Rede Municipal de Osasco: 
-UNIDADE EDUCACIONAL", :align => :center, :size => 15, :style => :bold
-# text "#{service_level.name}", :align => :center, :size => 15, :style => :bold
+  text "\n Unidade Educacional da Rede Municipal de Osasco: #{ue.name}", :align => :center, :size => 15, :style => :bold
+text "#{service_level.name}", :align => :center, :size => 15, :style => :bold
   text "\n Sumário", :align => :center, :size => 13
   fill_color "4e0d0d"
   text "\n 1 ORIENTAÇÕES GERAIS", :style => :bold
@@ -377,12 +381,6 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
   text "\n 2.1.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
   
   indicators_graphs_by_dimension(ue, service_level, 1)
-  
-
-
-#  table ue.dimension_answers_to_table(1,service_level), :header => true do
-#    row(0).style :size => 9
-#   end   
 
   start_new_page
 
@@ -405,58 +403,8 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
 
 
   text "\n 2.2.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(2,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d2i#{indicator}.png"
-#    end
 
-  start_new_page
-
-  text "\n 2.2.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end 
-
-#  table ue.dimension_answers_to_table(2,service_level), :header => true do
-#      row(0).style :size => 9
-#  end   
+  indicators_graphs_by_dimension(ue, service_level, 2)
 
   start_new_page
 
@@ -483,59 +431,8 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
   start_new_page
 
   text "\n 2.3.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(3,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d3i#{indicator}.png"
-#    end
+  indicators_graphs_by_dimension(ue, service_level, 3)
 
-  start_new_page
-
-  text "\n 2.3.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-
-#  table ue.dimension_answers_to_table(3,service_level), :header => true do
-#      row(0).style :size => 9
-#   end   
-   
   start_new_page
 
   text "\n 2.3.4 Questões problematizadoras da dimensão 3:", :style => :bold
@@ -560,64 +457,12 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
 
 
   text "\n 2.4.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(4,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d4i#{indicator}.png"
-#    end
- 
+  
+  indicators_graphs_by_dimension(ue, service_level, 4)
+
   start_new_page
 
-  text "\n 2.4.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-#  table9 = [["Resposta","Professores","Gestores","Educandos","Func. de Apoio","Familiares"],["4.1.1","#{answers411['Professores']}","#{answers411['Gestores']}","#{answers411['Educandos']}","#{answers411['Funcionarios']}","#{answers411['Familiares']}"],["4.1.2","#{answers412['Professores']}","#{answers412['Gestores']}","#{answers412['Educandos']}","#{answers412['Funcionarios']}","#{answers412['Familiares']}"],["4.1.3","#{answers413['Professores']}","#{answers413['Gestores']}","#{answers413['Educandos']}","#{answers413['Funcionarios']}","#{answers413['Familiares']}"],["4.1.4","#{answers414['Professores']}","#{answers414['Gestores']}","#{answers414['Educandos']}","#{answers414['Funcionarios']}","#{answers414['Familiares']}"]]
-#  table table9
-
- # table ue.dimension_answers_to_table(4,service_level), :header => true do
- #     row(0).style :size => 9
- #  end   
-   
-  start_new_page
-  text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
+text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   text "● Como estamos avaliando a aprendizagem dos educandos? Estamos contribuindo para que o processo de avaliação seja também um processo de aprendizagem? "
   text "● Quais são as práticas de avaliação que existem na unidade? O que é avaliado? Quem avalia?  Os educandos participam dos processos de avaliação? "
   text "● Como a escola lida com os resultados das avaliações, sejam elas externas ou internas? "
@@ -640,61 +485,11 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
   start_new_page
 
   text "\n 2.5.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(5,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d5i#{indicator}.png"
-#    end
- 
-  start_new_page
+  
+  indicators_graphs_by_dimension(ue, service_level, 5)
 
-  text "\n 2.4.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-#  table11 = [["Resposta","Professores","Gestores","Educandos","Func. de Apoio","Familiares"],["5.1.2","#{answers512['Professores']}","#{answers512['Gestores']}","#{answers512['Educandos']}","#{answers512['Funcionarios']}","#{answers512['Familiares']}"],["5.2.2","#{answers522['Professores']}","#{answers522['Gestores']}","#{answers522['Educandos']}","#{answers522['Funcionarios']}","#{answers522['Familiares']}"],["5.2.3","#{answers523['Professores']}","#{answers523['Gestores']}","#{answers523['Educandos']}","#{answers523['Funcionarios']}","#{answers523['Familiares']}"],["5.3.1","#{answers531['Professores']}","#{answers531['Gestores']}","#{answers531['Educandos']}","#{answers531['Funcionarios']}","#{answers531['Familiares']}"]]
-#  table table11
-#  table ue.dimension_answers_to_table(5,service_level), :header => true do
-#    row(0).style :size => 9
-#   end   
   start_new_page
+  
   text "\n 2.5.4 Questões problematizadoras da dimensão 5", :style => :bold
   text "● Há evasão e abandono dos alunos?"
   text "● Estamos conseguindo garantir a permanência dos alunos na escola? "
@@ -719,59 +514,9 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
 
 
   text "\n 2.6.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(6,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d6i#{indicator}.png"
-#    end
- 
-  start_new_page
+  
+  indicators_graphs_by_dimension(ue, service_level, 6)
 
-  text "\n 2.6.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-#  table ue.dimension_answers_to_table(6,service_level), :header => true do
-#    row(0).style :size => 9
-#   end
-      
   start_new_page
   
   text "\n 2.6.4 Questões problematizadoras da dimensão 6", :style => :bold
@@ -796,62 +541,11 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
   start_new_page
 
   text "\n 2.7.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(7,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d7i#{indicator}.png"
-#    end
+  
+  indicators_graphs_by_dimension(ue, service_level, 7)
 
   start_new_page
-
-  text "\n 2.7.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-#  table15 = [["Resposta","Professores","Gestores","Educandos","Func. de Apoio","Familiares"],["7.1.1","#{answers711['Professores']}","#{answers711['Gestores']}","#{answers711['Educandos']}","#{answers711['Funcionarios']}","#{answers711['Familiares']}"],["7.1.2","#{answers712['Professores']}","#{answers712['Gestores']}","#{answers712['Educandos']}","#{answers712['Funcionarios']}","#{answers712['Familiares']}"],["7.1.3","#{answers713['Professores']}","#{answers713['Gestores']}","#{answers713['Educandos']}","#{answers713['Funcionarios']}","#{answers713['Familiares']}"],["7.1.4","#{answers714['Professores']}","#{answers714['Gestores']}","#{answers714['Educandos']}","#{answers714['Funcionarios']}","#{answers714['Familiares']}"],["7.1.5","#{answers715['Professores']}","#{answers715['Gestores']}","#{answers715['Educandos']}","#{answers715['Funcionarios']}","#{answers715['Familiares']}"],["7.2.1","#{answers721['Professores']}","#{answers721['Gestores']}","#{answers721['Educandos']}","#{answers721['Funcionarios']}","#{answers721['Familiares']}"],["7.2.2","#{answers722['Professores']}","#{answers722['Gestores']}","#{answers722['Educandos']}","#{answers722['Funcionarios']}","#{answers722['Familiares']}"],["7.2.3","#{answers723['Professores']}","#{answers723['Gestores']}","#{answers723['Educandos']}","#{answers723['Funcionarios']}","#{answers723['Familiares']}"],["7.2.4","#{answers711['Professores']}","#{answers724['Gestores']}","#{answers724['Educandos']}","#{answers724['Funcionarios']}","#{answers724['Familiares']}"],["7.2.5","#{answers725['Professores']}","#{answers725['Gestores']}","#{answers725['Educandos']}","#{answers725['Funcionarios']}","#{answers725['Familiares']}"]]
-#  table table15
-#  table ue.dimension_answers_to_table(7,service_level), :header => true do
-#    row(0).style :size => 9
-#   end   
-   
-  start_new_page
+  
   text "\n 2.7.4 Questões problematizadoras da dimensão 7", :style => :bold
   text "● Como a Unidade Educacional lida com a questão socioambiental? Temos conseguido enraizar uma educação socioambiental e práticas ecopedagógicas mais consistentes entre os segmentos da comunidade escolar? "
   text "● Como a dimensão “eco” do Projeto “ECO”-Político-Pedagógico vem se concretizando na unidade? O que deve ser priorizado para que tenhamos uma conscientização socioambiental ainda maior? E o que deve ser feito para que a consciência seja concretizada em práticas no cotidiano da escola?"
@@ -870,64 +564,11 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
   start_new_page
 
   text "\n 2.8.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(8,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d8i#{indicator}.png"
-#    end
- 
+  
+  indicators_graphs_by_dimension(ue, service_level, 8)
+
   start_new_page
-
-  text "\n 2.8.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-
-#  table17 = [["Resposta","Professores","Gestores","Educandos","Func. de Apoio","Familiares"],["8.1.1","#{answers811['Professores']}","#{answers811['Gestores']}","#{answers811['Educandos']}","#{answers811['Funcionarios']}","#{answers811['Familiares']}"],["8.1.2","#{answers812['Professores']}","#{answers812['Gestores']}","#{answers812['Educandos']}","#{answers812['Funcionarios']}","#{answers812['Familiares']}"],["8.1.3","#{answers813['Professores']}","#{answers813['Gestores']}","#{answers813['Educandos']}","#{answers813['Funcionarios']}","#{answers813['Familiares']}"],["8.1.4","#{answers814['Professores']}","#{answers814['Gestores']}","#{answers814['Educandos']}","#{answers814['Funcionarios']}","#{answers814['Familiares']}"],["8.1.5","#{answers815['Professores']}","#{answers815['Gestores']}","#{answers815['Educandos']}","#{answers815['Funcionarios']}","#{answers815['Familiares']}"]]
-#  table table17
-#  table ue.dimension_answers_to_table(8,service_level), :header => true do
-#    row(0).style :size => 9
-#  end
-
-start_new_page
-
+  
   text "\n 2.8.4 Questões problematizadoras da dimensão 8", :style => :bold
   text "● Quanto maior e mais positiva for a interação entre a escola e os familiares e a comunidade a que ela atende, maior é a probabilidade da escola oferecer aos seus educandos um ensino de qualidade. Diante dessa afirmação, como estamos promovendo a cooperação e o envolvimento com as famílias de nossa comunidade? A nossa escola procura conhecer e trocar experiências com as famílias e com a comunidade?"
   text "● A escola interage com e valoriza o conhecimento das famílias dos alunos? A escola conhece a profissão dos pais e das mães? A escola conhece as habilidades artístico-culturais dos pais e dos alunos? De que forma o conhecimento, os saberes dos pais e dos familiares dialogam com os saberes da escola? Essas habilidades, conhecimentos e saberes são mobilizados para promover uma integração maior entre a escola e as famílias?"
@@ -951,62 +592,11 @@ start_new_page
   start_new_page
 
   text "\n 2.9.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(9,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d9i#{indicator}.png"
-#    end
-  start_new_page
-
-  text "\n 2.9.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-# table19 = [["Resposta","Professores","Gestores","Educandos","Func. de Apoio","Familiares"],["9.1.1","#{answers911['Professores']}","#{answers911['Gestores']}","#{answers911['Educandos']}","#{answers911['Funcionarios']}","#{answers911['Familiares']}"],["9.1.2","#{answers912['Professores']}","#{answers912['Gestores']}","#{answers912['Educandos']}","#{answers912['Funcionarios']}","#{answers912['Familiares']}"],["9.2.1","#{answers921['Professores']}","#{answers921['Gestores']}","#{answers921['Educandos']}","#{answers921['Funcionarios']}","#{answers921['Familiares']}"],["9.2.2","#{answers922['Professores']}","#{answers922['Gestores']}","#{answers922['Educandos']}","#{answers922['Funcionarios']}","#{answers922['Familiares']}"],["9.2.3","#{answers923['Professores']}","#{answers923['Gestores']}","#{answers923['Educandos']}","#{answers923['Funcionarios']}","#{answers923['Familiares']}"],["9.3.1","#{answers931['Professores']}","#{answers931['Gestores']}","#{answers931['Educandos']}","#{answers931['Funcionarios']}","#{answers931['Familiares']}"],["9.3.2","#{answers932['Professores']}","#{answers932['Gestores']}","#{answers932['Educandos']}","#{answers932['Funcionarios']}","#{answers932['Familiares']}"]]
-# table table19
-#  table ue.dimension_answers_to_table(9,service_level), :header => true do
-#      row(0).style :size => 9
-#  end
+  
+  indicators_graphs_by_dimension(ue, service_level, 9)
 
   start_new_page
-
+  
   text "\n 2.9.4 Questões problematizadoras da dimensão 9", :style => :bold
   text "● O que podemos prever, no PTA 2011, para ampliar a participação da comunidade escolar nos órgãos colegiados (Conselho de Gestão Compartilhada, Associação de Pais e Mestres)? "
   text "● Quais as iniciativas que a escola vem tomando para aproximar os pais/familiares e comunidade da unidade educacional?"
@@ -1029,63 +619,11 @@ start_new_page
   start_new_page
 
   text "\n 2.10.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
- #   (1..ue.count_indicators(10,service_level)).each do |indicator|
- #       image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d10i#{indicator}.png"
- #   end
- 
-  start_new_page
+  
+  indicators_graphs_by_dimension(ue, service_level, 10)
 
-  text "\n 2.10.3 Médias das respostas atribuídas a cada questão que compõe o indicador da dimensão", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Seguimento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-#  table21 = [["Resposta","Professores","Gestores","Educandos","Func. de Apoio","Familiares"],["10.1.1","#{answers1011['Professores']}","#{answers1011['Gestores']}","#{answers1011['Educandos']}","#{answers1011['Funcionarios']}","#{answers1011['Familiares']}"],["10.1.2","#{answers1012['Professores']}","#{answers1012['Gestores']}","#{answers1012['Educandos']}","#{answers1012['Funcionarios']}","#{answers1012['Familiares']}"],["10.2.1","#{answers1021['Professores']}","#{answers1021['Gestores']}","#{answers1021['Educandos']}","#{answers1021['Funcionarios']}","#{answers1021['Familiares']}"],["10.2.2","#{answers1022['Professores']}","#{answers1022['Gestores']}","#{answers1022['Educandos']}","#{answers1022['Funcionarios']}","#{answers1022['Familiares']}"],["10.2.3","#{answers1023['Professores']}","#{answers1023['Gestores']}","#{answers1023['Educandos']}","#{answers1023['Funcionarios']}","#{answers1023['Familiares']}"],["10.3.1","#{answers1031['Professores']}","#{answers1031['Gestores']}","#{answers1031['Educandos']}","#{answers1031['Funcionarios']}","#{answers1031['Familiares']}"],["10.3.2","#{answers1032['Professores']}","#{answers1032['Gestores']}","#{answers1032['Educandos']}","#{answers1032['Funcionarios']}","#{answers1032['Familiares']}"],["10.4.1","#{answers1041['Professores']}","#{answers1041['Gestores']}","#{answers1041['Educandos']}","#{answers1041['Funcionarios']}","#{answers1041['Familiares']}"],["10.4.2","#{answers1042['Professores']}","#{answers1042['Gestores']}","#{answers1042['Educandos']}","#{answers1042['Funcionarios']}","#{answers1042['Familiares']}"],["10.5.1","#{answers1051['Professores']}","#{answers1051['Gestores']}","#{answers1051['Educandos']}","#{answers1051['Funcionarios']}","#{answers1051['Familiares']}"]]
-
-#  table table21
- # table ue.dimension_answers_to_table(10,service_level), :header => true do
- #     row(0).style :size => 9
-  # end   
-   
   start_new_page
+  
   text "\n 2.10.4 Questões problematizadoras da dimensão 10", :style => :bold
   text "● Que ações a unidade pode prever no PTA 2011 para contemplar as demandas de formação continuada de cada segmento de profissionais da escola? Quais assuntos serão abordados com cada segmento? Quais momentos de formação continuada a unidade pode organizar para cada segmento de profissionais da escola?"
   text "● A escola busca identificar as dificuldades, os desafios, as propostas dos funcionários para melhorar a formação e as condições de trabalho? "
@@ -1110,62 +648,11 @@ start_new_page
   start_new_page
 
   text "\n 2.11.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-#    (1..ue.count_indicators(11,service_level)).each do |indicator|
-#        image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d11i#{indicator}.png"
-#    end
+  
+  indicators_graphs_by_dimension(ue, service_level, 11)
 
   start_new_page
-
-  text "\n 2.11.3 Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-  text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-  # table [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE", "Média do Grupo", "Média da Rede*"], ["Professores", "", "", "", "", ""], ["Gestores", "", "", "", "", ""], ["Educandos", "", "", "", "", ""], ["Profissionais", "", "", "", "", "",], ["Familiares", "", "", "", "", ""]], :column_widths => { 0 => 8 } do
-  # 
-  #   column(0).width = 90
-  #   
-  #   cells[1,0].borders = [:left, :bottom, :right, :top]
-  #   cells[1,1].borders = [:left, :bottom, :right, :top]
-  #   cells[1,2].borders = [:left, :bottom, :right, :top]
-  #   cells[1,3].borders = [:left]
-  #   cells[1,4].borders = [:left]
-  #   cells[1,5].borders = [:left, :right]
-  # 
-  #   cells[2,0].borders = [:left, :bottom, :right, :top]
-  #   cells[2,1].borders = [:left, :bottom, :right, :top]
-  #   cells[2,2].borders = [:left, :bottom, :right, :top]
-  #   cells[2,3].borders = [:left]
-  #   cells[2,4].borders = [:left]
-  #   cells[2,5].borders = [:left, :right]
-  # 
-  #   cells[3,0].borders = [:left, :bottom, :right, :top]
-  #   cells[3,1].borders = [:left, :bottom, :right, :top]
-  #   cells[3,2].borders = [:left, :bottom, :right, :top]
-  #   cells[3,3].borders = [:left]
-  #   cells[3,4].borders = [:left]
-  #   cells[3,5].borders = [:left, :right]
-  # 
-  #   cells[4,0].borders = [:left, :bottom, :right, :top]
-  #   cells[4,1].borders = [:left, :bottom, :right, :top]
-  #   cells[4,2].borders = [:left, :bottom, :right, :top]
-  #   cells[4,3].borders = [:left]
-  #   cells[4,4].borders = [:left]
-  #   cells[4,5].borders = [:left, :right]
-  # 
-  #   cells[5,0].borders = [:left, :bottom, :right, :top]
-  #   cells[5,1].borders = [:left, :bottom, :right, :top]
-  #   cells[5,2].borders = [:left, :bottom, :right, :top]
-  #   cells[5,3].borders = [:bottom, :right]
-  #   cells[5,4].borders = [:bottom, :right]
-  #   cells[5,5].borders = [:bottom, :right]
-  # 
-  # end
-  # 
-# table23 = [["Resposta","Professores","Gestores","Educandos","Func. de Apoio","Familiares"],["11.1.1","#{answers1111['Professores']}","#{answers1111['Gestores']}","#{answers1111['Educandos']}","#{answers1111['Funcionarios']}","#{answers1111['Familiares']}"],["11.1.2","#{answers1112['Professores']}","#{answers1112['Gestores']}","#{answers1112['Educandos']}","#{answers1112['Funcionarios']}","#{answers1112['Familiares']}"],["11.2.1","#{answers1121['Professores']}","#{answers1121['Gestores']}","#{answers1121['Educandos']}","#{answers1121['Funcionarios']}","#{answers1121['Familiares']}"],["11.2.2","#{answers1122['Professores']}","#{answers1122['Gestores']}","#{answers1122['Educandos']}","#{answers1122['Funcionarios']}","#{answers1122['Familiares']}"],["11.2.3","#{answers1123['Professores']}","#{answers1123['Gestores']}","#{answers1123['Educandos']}","#{answers1123['Funcionarios']}","#{answers1123['Familiares']}"]]
-#  table table23
- # table ue.dimension_answers_to_table(11,service_level), :header => true do
- #     row(0).style :size => 9
- #  end   
-   
-  start_new_page
+  
   text "\n 2.11.4 Questões problematizadoras da dimensão 11", :style => :bold
   text "● Que ações podem ser previstas para que em 2011 outros segmentos da escola se envolvam no exercício da função social da escrita pela criança? "
   text "● Que propostas podemos planejar para que em 2011 haja atividades lúdicas nas quais a criança exercite a expressão de suas produções e registros (abordando diversas esferas de circulação, práticas de linguagem, contextos e gêneros)? Que propostas podem ser previstas para que a criança socialize com diferentes segmentos as suas produções e registros?"

@@ -51,8 +51,11 @@ namespace :reports do
     institution = Institution.find(87) #Maria José Ferreira Ferraz, Profª
     institution.service_levels.each do |service_level|
       puts "- #{service_level.name}"
+      before = Time.now
       ri = ReportIndividual.new
       ri.to_pdf(institution, service_level, ReportData.new(institution, service_level))
+      after = Time.now
+      p "pdf generated in #{after - before}"
     end
   end
 
