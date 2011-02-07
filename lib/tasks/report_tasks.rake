@@ -28,7 +28,7 @@ namespace :reports do
         rdata.dimension_graph(dimension)
         rdata.indicators_graph(dimension)
       end
-      
+      system "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{RAILS_ROOT}/public/relatorios/final/#{inst.id}_#{sl.id}-final.pdf #{RAILS_ROOT}/public/relatorios/artifacts/capa_avalia.pdf #{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf #{RAILS_ROOT}/public/relatorios/final/#{inst.id}_#{sl.id}.pdf"
     end
   end
 

@@ -122,7 +122,7 @@ class ReportIndividual
    data = @report_data.questions_party_table(question_party)
    questions_party_table = data[:table]
    
-   start_new_page if y < 200
+   start_new_page if y < 400
    
    text "\n #{data[:description]}"
    table questions_party_table, :column_widths => { 0 => 8 } do
@@ -207,7 +207,7 @@ text "1.1 Qual a importância da avaliação educacional na rede?
 	2.3.4 Questões problematizadoras"
 
   fill_color "043ccb"
-  text "\n 2.4 DIMENSÂO 4 - AVALIAÇÃO", :style => :bold
+  text "\n 2.4 DIMENSÃO 4 - AVALIAÇÃO", :style => :bold
   fill_color "0000000"
   text "2.4.1 Percepção da UE sobre a dimensão
 	2.4.2 Percepção da UE sobre cada indicador de qualidade
@@ -250,7 +250,7 @@ text "1.1 Qual a importância da avaliação educacional na rede?
 	2.8.4 Questões problematizadoras"
 
   fill_color "043ccb"
-  text "\n 2.9 DIMENSÂO 9 - GESTÂO ESCOLAR DEMOCRÁTICA", :style => :bold
+  text "\n 2.9 DIMENSÃO 9 - GESTÃO ESCOLAR DEMOCRÁTICA", :style => :bold
   fill_color "0000000"
   text "2.9.1 Percepção da UE sobre a dimensão
 	2.9.2 Percepção da UE sobre cada indicador de qualidade
@@ -290,8 +290,8 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   text "A prática da avaliação educacional que se consolida  na rede municipal de Osasco vem contribuindo para que as unidades educacionais alcancem compreensão coletiva dos acertos e dificuldades vividos no ano que passou e possam planejar as ações transformadoras que todos desejam concretizar.", :indent_paragraphs => 40
   text "Ao considerarmos o ato de educar como uma prática social que se dá dentro de um campo de intencionalidades, a experiência da avaliação do ano letivo de 2010 ofereceu a todos ricas oportunidades para, agora, no início de mais um ano letivo, estabelecer objetivos claros para as ações cotidianas da unidade educacional. Diante do que a avaliação revelar acerca das práticas educativas nela desenvolvidas, as pessoas que integram a comunidade escolar poderão priorizar determinadas ações, elaborar projetos específicos e assumir intenções educativas próprias que alcancem novos resultados pedagógicos.", :indent_paragraphs => 40
   text "No processo de avaliação educacional vivido em 2010, o empenho das UEs em assegurar a todos uma experiência significativa, democrática e emancipadora foi notável. E o resultados de todo esse empenho é apresentado nesse documento.", :indent_paragraphs => 40
-  text "Na semana de planejamento prevista para o início de fevereiro, as equipes escolares devem se reunir para analisar este relatório, refletir sobre os dados que ele apresenta, podendo para isso, valer-se das questões problematizadoras sugeridas para cada uma das dimensões avaliadas. É preciso ainda garantir que os familiares e alunos vivenciem um momento de análise dos resultados da avaliação, propondo ações para a melhoria da qualidade do atendimento educacional prestado à população.", :indent_paragraphs => 40
-  text "Ao identificar os desafios que a unidade buscará superar em 2011, o próximo passo será planejar, no âmbito do Plano de Trabalho anual (PTA), as ações, os prazos e os responsáveis pela sua execução, valendo-se ainda da proposta preliminar da RECEI e RECEF e das contribuições das crianças para uma melhor gestão educacional, presentes no relatório da III Conferência Lúdica.", :indent_paragraphs => 40
+  text "No planejamento, as equipes escolares devem se reunir para analisar este relatório, refletir sobre os dados que ele apresenta, podendo para isso, valer-se das questões problematizadoras sugeridas para cada uma das dimensões avaliadas. É preciso ainda garantir que os familiares e alunos vivenciem um momento de análise dos resultados da avaliação, propondo ações para a melhoria da qualidade do atendimento educacional prestado à população.", :indent_paragraphs => 40
+  text "Ao identificar os desafios que a unidade buscará superar em 2011, o próximo passo será planejar, no âmbito do Plano de Trabalho anual (PTA), as ações, os prazos e os responsáveis pela sua execução, valendo-se ainda da proposta preliminar da RECEI e RECEF e das contribuições das crianças para o currículo, presentes no relatório da III Conferência Lúdica.", :indent_paragraphs => 40
   text "É certo que, com todo este movimento, cada unidade se aproxime mais da escola desejada por sua comunidade e a rede municipal de Osasco avance cada vez mais rumo a uma Escola Cidadã e Inclusiva.", :indent_paragraphs => 40
 
   start_new_page
@@ -312,7 +312,7 @@ text "1.1 Qual a importância da avaliação educacional na rede?
 
   text "\n Percepção da UE sobre cada indicador de qualidade", :style => :bold
   text "Gráficos que apresentam as médias de cada indicador de qualidade por segmento, tendo como referência os resultados do nível de ensino e do grupo de unidades educacionais a que faz parte. A organização dos gráficos em colunas de cada segmento é a mesma dos gráficos das dimensões. Cabe destacar que em virtude de alguns indicadores de qualidade terem sido suprimidos para alguns segmentos, a numeração dos mesmos não segue a mesma seqüência para todos.
-Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmento, mas também a numeração correspondente ao indicador analisado, tendo como referência o instrumental respondido pelos professores por ser o mais abrangente.", :indent_paragraphs => 40
+Assim sendo, a título de comparação, nas colunas aparecerão não só o segmento, mas também a numeração correspondente ao indicador analisado, tendo como referência o instrumental respondido pelos professores por ser o mais abrangente.", :indent_paragraphs => 40
 
   text "\n Médias das respostas atribuídas a cada questão que compõe os indicadodres da dimensão, por segmento escolar", :style => :bold
   text "Quadro que apresenta a média das opiniões numéricas atribuídas a cada questão pelos segmentos escolares participantes da avaliação. É importante ressaltar que a quantidade de questões formuladas a cada segmento foi diferente. Por essa razão, os quadros das questões serão apresentados tomando como referência o instrumental respondido pelos professores, por ser o mais abrangente.", :indent_paragraphs => 40
@@ -326,7 +326,7 @@ Assim sendo, a titulo de comparação, nas colunas aparecerão não só o segmen
   text "A avaliação feita pela sua unidade educacional foi bastante ampla e envolveu assuntos diversos. Para uma adequada análise e apropriação dos dados aqui revelados, é fundamental que a equipe escolar organize pequenos grupos de estudo deste documento, distribuindo entre eles um conjunto de dimensões, de modo que possam, detidamente, analisar a avaliação como um todo.", :indent_paragraphs => 40
   text "Para contribuir com esse momento de análise, seguem abaixo problematizações iniciais que os grupos de estudo podem utilizar. Ao final dos dados de cada dimensão, o documento também sugere problematizações específicas.", :indent_paragraphs => 40
   text "\n ● Analisando os indicadores de qualidade e a dimensão em questão, quais tiveram resultado abaixo do esperado pelo grupo? Estes indicadores e esta dimensão merecem uma atenção especial da unidade em seu PTA? Quais fatores podem ter contribuído para o resultado apresentado? É possível identificarmos o que está influenciando estes resultados? O que pode ser planejado para  melhorar estes indicadores?"
-  text "\n ● Os resultados das médias são muito diferentes entre cada segmento?  As médias resultantes da avaliação entre os segmentos,estão próximas ou muito diferentes? O que isto pode nos indicar? No PTA, sem descuidar das ações que estão apresentando bons resultados, será necessário criar ações para que cada segmento atue prioritariamente nos indicadores que tiveram uma avaliação muito baixa? (Lembrando que se trata de um esforço coletivo para superar problemas e não para punir)"
+  text "\n ● Os resultados das médias são muito diferentes entre cada segmento?  As médias resultantes da avaliação entre os segmentos,estão próximas ou muito diferentes? O que isto pode nos indicar? No PTA, sem descuidar das ações que estão apresentando bons resultados, será necessário criar ações para que cada segmento atue prioritariamente nos indicadores que tiveram uma avaliação muito baixa. (Lembrando que se trata de um esforço coletivo para superar problemas e não para punir)"
   text "\n ● Quais questões exerceram maior influência no resultado da média dos indicadores?"
   text "\n ● Que ações podem ser previstas em 2011 para melhorar a dimensão em questão?"
 
@@ -627,7 +627,7 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   text "\n 2.10.4 Questões problematizadoras da dimensão 10", :style => :bold
   text "● Que ações a unidade pode prever no PTA 2011 para contemplar as demandas de formação continuada de cada segmento de profissionais da escola? Quais assuntos serão abordados com cada segmento? Quais momentos de formação continuada a unidade pode organizar para cada segmento de profissionais da escola?"
   text "● A escola busca identificar as dificuldades, os desafios, as propostas dos funcionários para melhorar a formação e as condições de trabalho? "
-  text "● A escola busca construir uma atmosfera e uma ambiente favorável à integração, ao trabalho coletivo e solidário? De que forma?"
+  text "● A escola busca construir uma atmosfera e um ambiente favorável à integração, ao trabalho coletivo e solidário? De que forma?"
   text "● O que pode ser previsto por e para cada segmento no PTA 2011 da sua unidade para melhorar as condições de trabalho de todos profissionais da escola?"
   text "● Como a nossa escola promove a responsabilidade e o comprometimento dos professores e demais funcionários com o trabalho que realizam na Escola?"
   text "● A escola promove uma autoavaliação dos professores? De que forma? E como a autoavaliação interfere no aperfeiçoamento do trabalho?"
