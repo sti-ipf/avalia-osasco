@@ -17,28 +17,24 @@ namespace :fix_db do
   task :create_indicators_party => :environment do
     SEGMENTS=['Professores','Gestores','Funcionarios','Familiares','Educandos']
 
-    f = File.new('lib/csv/indicators_parties_emef.csv','r')
+    f = File.new('lib/csv/indicators_parties_emei.csv','r')
     parties = []
 
     while line = f.gets
       parties << line.split(',')
     end
 
-    sl = ServiceLevel.find(2) #emef
-    
-    IndicatorsParty.delete_all
-    
-    Indicator.all.each {|i| i.update_attribute(:indicators_party_id, nil)}
+    sl = ServiceLevel.find(4) #creche
 
     parties.each do |party|
       p = IndicatorsParty.create!
       inds = Indicator.all
 
       p party.inspect
-      
+
       (0..(party.size - 1)).each do |i|
         selected_inds = (inds.select { |ind| ind.segment.name == SEGMENTS[i] && ind.service_level == sl })
-        ind = (selected_inds.select { |ind| ind.number == party[i].gsub(/\n/,'') }).first
+        ind = (selected_inds.select { |ind| ind.number == party[i].gsub(/\n/,'').gsub(/\.$/,'') }).first
         p ind
         unless ind.nil?
           ind.indicators_party_id = p.id
@@ -47,5 +43,46 @@ namespace :fix_db do
       end
     end
   end
-  
+
+  task :create_questions_party => :environment do
+    SEGMENTS=['Professores','Gestores','Funcionarios','Familiares','Educandos']
+
+    f = File.new('lib/csv/questions_parties_emef.csv','r')
+    parties = []
+
+    while line = f.gets
+      parties << line.split(',')
+    end
+
+    parties.each do |party|
+      p = QuestionsParty.create!
+
+      p party.inspect
+
+      (0..(party.size - 1)).each do |i|
+        question_number = party[i].gsub(/\n/,'').gsub(/\.$/,'')
+        sql = "SELECT q.id, q.survey_id, q.questions_party_id, q.indicator_id FROM questions q JOIN surveys s ON s.id = q.survey_id JOIN segments seg ON seg.id = s.segment_id JOIN service_levels sl ON sl.id = s.service_level_id  WHERE seg.name = '#{SEGMENTS[i]}' AND sl.id = 2 AND q.number LIKE '#{question_number}'"
+        ind = Question.find_by_sql(sql).first
+        p ind.inspect
+        unless ind.nil?
+          p.indicators_party = ind.indicator.indicators_party
+          p.save!
+          ind.questions_party_id = p.id
+          ind.save!
+        end
+        p "QUestion=>#{ind.inspect}"
+        p "QUestionParty=>#{p.inspect}"
+      end
+    end
+  end
+
+  task :update_indicators_party => :environment do
+    IndicatorsParty.all.each do |ip|
+      unless ip.indicators.empty?
+        ip.dimension_id = ip.indicators.first.dimension.id
+        ip.service_level_id = ip.indicators.first.service_level.id
+        ip.save!
+      end
+    end
+  end
 end
