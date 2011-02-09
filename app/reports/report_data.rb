@@ -63,7 +63,10 @@ class ReportData
       end
       data << row
     end
-    {:description => display_question.description, :table => data}
+    {
+      :description => display_question.description.nil? ? display_question.description : display_question.description.gsub(/^[0-9]+\.[0-9]+\.[0-9]+/,''), 
+      :table => data
+    }
   end
 
 
@@ -109,7 +112,11 @@ class ReportData
     
     now = Time.now
     data = @institution.mean_indicator(indicators_party,@service_level)
-    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}")
+    indicators = {}
+    indicators_party.indicators.each do |i|
+      indicators[i.segment.name] = i.number
+    end
+    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
     now2 = Time.now
     
     p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
@@ -129,7 +136,9 @@ class ReportData
     means_sl = {}
     means_group = {}
     means = {}
-    (1..11).each do |dim|
+    dimensions = @service_level.id == 2 ? (1..11) : (1..10)
+    
+    dimensions.each do |dim|
       d = Dimension.find_by_number(dim)
 
       data_sl = Institution.mean_dimension_by_sl(d,@service_level)

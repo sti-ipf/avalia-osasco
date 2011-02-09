@@ -78,8 +78,9 @@ class ReportIndividual
 
   def draw_indicator_tables(indicator, questions_party, service_level)
     invalid_segments = ["Alcir", "Alessandra", "Juliana Fonseca"]
-    segments = Rails.cache.fetch("report-segments") { Segment.all(:conditions => ["name not in (?)", invalid_segments]) }
-
+    segments = Rails.cache.fetch("report-segments") { Segment.all(:conditions => ["name not in (?)", invalid_segments]) }.sort
+    segments = segments.reject { |s| s.name == "Educandos" } if service_level != 2
+    
     segments.each_with_index do |segment, i|
       row = [segment.name, "numero-questao", "media-questao"]
       if i == 2
@@ -101,18 +102,21 @@ class ReportIndividual
    #  end
    indicators_parties = Dimension.find_by_number(dimension_number).indicators_parties.find(:all, :conditions => {:service_level_id => service_level.id})
    
-   first_time = true
    indicators_parties.each do |indicators_party|
      image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
-     
-     if first_time
-       text "\n Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-       text "(Observação: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
-     end
-     first_time = false
-     
+     text "Os números entre parenteses corrspondem a numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
+
+     first_time = true  
      indicators_party.questions_parties.each do |qp|
+       if first_time
+         text "\n Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
+         text "Observação1: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
+         text "Observação2: o cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros."
+       end
+       first_time = false
        question_table(qp)
+       move_down(2)
+       text "* Corresponde à média da rede a qual a sua escola pertence(creche, ou EMEI, ou EMEF)"
      end
    end
  end
@@ -165,10 +169,15 @@ class ReportIndividual
    end
  end
  
+ def u_text(excerpt, style = :body )
+   options = STYLES[style].merge({ :inline_format => true }) 
+   text("<u>#{excerpt}</u>", options)
+ end
+
 # inicio do texto
 # inicio do texto
   text "\n RESULTADOS DA AVALIAÇÃO EDUCACIONAL 2010", :align => :center, :size => 16, :style => :bold
-  text "\n Unidade Educacional da Rede Municipal de Osasco: #{ue.name}", :align => :center, :size => 15, :style => :bold
+  text "\n Unidade Educacional da Rede Municipal de Osasco:\n#{ue.name}", :align => :center, :size => 15, :style => :bold
 text "#{service_level.name}", :align => :center, :size => 15, :style => :bold
   text "\n Sumário", :align => :center, :size => 13
   fill_color "4e0d0d"
@@ -187,50 +196,44 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   fill_color "0000000"
   text "2.1.1 Percepção da UE sobre a dimensão
 	2.1.2 Percepção da UE sobre cada indicador de qualidade
-	2.1.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.1.4 Questões problematizadoras"
+	2.1.3 Questões problematizadoras"
   
   fill_color "043ccb"
   text "\n 2.2 DIMENSÃO 2 - AMBIENTE FÍSICO ESCOLAR E MATERIAIS", :style => :bold
   fill_color "0000000"
   text "2.2.1 Percepção da UE sobre a dimensão
 	2.2.2 Percepção da UE sobre cada indicador de qualidade
-	2.2.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.2.4 Questões problematizadoras"
+	2.2.3 Questões problematizadoras"
 
   fill_color "043ccb"
   text "\n 2.3 DIMENSÃO 3 - PLANEJAMENTO INSTITUCIONAL E PRÁTICA PEDAGÓGICA", :style => :bold
   fill_color "0000000"
   text "2.3.1 Percepção da UE sobre a dimensão
 	2.3.2 Percepção da UE sobre cada indicador de qualidade
-	2.3.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.3.4 Questões problematizadoras"
+	2.3.3 Questões problematizadoras"
 
   fill_color "043ccb"
   text "\n 2.4 DIMENSÃO 4 - AVALIAÇÃO", :style => :bold
   fill_color "0000000"
   text "2.4.1 Percepção da UE sobre a dimensão
 	2.4.2 Percepção da UE sobre cada indicador de qualidade
-	2.4.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.4.4 Questões problematizadoras"
+	2.4.3 Questões problematizadoras"
   start_new_page
-#
+
   move_down(5)
   fill_color "043ccb"
   text "\n 2.5 DIMENSÃO 5 - ACESSO E PERMANÊNCIA DOS EDUCANDOS NA ESCOLA", :style => :bold
   fill_color "0000000"
   text "2.5.1 Percepção da UE sobre a dimensão
 	2.5.2 Percepção da UE sobre cada indicador de qualidade
-	2.5.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.5.4 Questões problematizadoras"
+	2.5.3 Questões problematizadoras"
 
   fill_color "043ccb"
   text "\n 2.6 DIMENSÃO 6 - PROMOÇÃO DA SAÚDE ", :style => :bold
   fill_color "0000000"
   text "2.6.1 Percepção da UE sobre a dimensão
 	2.6.2 Percepção da UE sobre cada indicador de qualidade
-	2.6.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.6.4 Questões problematizadoras"
+	2.6.3 Questões problematizadoras"
 	
 
   fill_color "043ccb"
@@ -238,42 +241,39 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   fill_color "0000000"
   text "2.7.1 Percepção da UE sobre a dimensão
 	2.7.2 Percepção da UE sobre cada indicador de qualidade
-	2.7.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
- 	2.7.4 Questões problematizadoras"
+ 	2.7.3 Questões problematizadoras"
 
   fill_color "043ccb"
   text "\n 2.8 DIMENSÃO 8 - ENVOLVIMENTO COM AS FAMÍLIAS E PARTICIPAÇÃO NA REDE DE PROTEÇÃO SOCIAL", :style => :bold
   fill_color "0000000"
   text "2.8.1 Percepção da UE sobre a dimensão
 	2.8.2 Percepção da UE sobre cada indicador de qualidade
-	2.8.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.8.4 Questões problematizadoras"
+	2.8.3 Questões problematizadoras"
 
   fill_color "043ccb"
   text "\n 2.9 DIMENSÃO 9 - GESTÃO ESCOLAR DEMOCRÁTICA", :style => :bold
   fill_color "0000000"
   text "2.9.1 Percepção da UE sobre a dimensão
 	2.9.2 Percepção da UE sobre cada indicador de qualidade
-	2.9.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.9.4 Questões problematizadoras"
+	2.9.3 Questões problematizadoras"
 
   fill_color "043ccb"
   text "\n 2.10 DIMENSÃO 10 - FORMAÇÃO E CONDIÇÕES DE TRABALHO DOS PROFISSIONAIS DA ESCOLA", :style => :bold
   fill_color "0000000"
   text "2.10.1 Percepção da UE sobre a dimensão
 	2.10.2 Percepção da UE sobre cada indicador de qualidade
-	2.10.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
- 	2.10.4 Questões problematizadoras"
+ 	2.10.3 Questões problematizadoras"
 
   start_new_page
 
-  fill_color "043ccb"
-  text "\n 2.11 DIMENSÃO 11 - PROCESSOS DE ALFABETIZAÇÃO E LETRAMENTO", :style => :bold
-  fill_color "0000000"
-  text "2.11.1 Percepção da UE sobre a dimensão
+ if service_level.id == 2
+   fill_color "043ccb"
+   text "\n 2.11 DIMENSÃO 11 - PROCESSOS DE ALFABETIZAÇÃO E LETRAMENTO", :style => :bold
+   fill_color "0000000"
+   text "2.11.1 Percepção da UE sobre a dimensão
 	2.11.2 Percepção da UE sobre cada indicador de qualidade
-	2.11.3 Médias das respostas atribuídas a cada questão que compõe o indicador 
-	2.11.4 Questões problematizadoras"
+	2.11.3 Questões problematizadoras"
+ end
 
   fill_color "4e0d0d"
   text "\n 3 QUADRO DOS ÍNDICES DA UNIDADE, POR DIMENSÕES E POR SEGMENTOS
@@ -305,17 +305,20 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   text "Nome e breve contextualização da dimensão avaliada"
 
   text "\n Percepção da UE sobre a Dimensão", :style => :bold
-  text "Neste gráfico podemos analisar os resultados das médias da dimensão por segmento pesquisado. As colunas referentes a cada segmento apresentarão três informações,como seguem:", :indent_paragraphs => 40
-  text "● Cor azul: corresponde à média das respostas atribuídas pela unidade escolar à dimensão analisada(exemplo: média das respostas dos familiares apenas da sua unidade);"
-  text "● Cor vermelha: corresponde à média atribuída pelo grupo de unidades educacionais ao qual cada UE faz parte. No caso do ensino fundamental, a média das respostas de todas as escolas que integram o grupo em relação ao IDEB. No caso da educação infantil (creche e EMEI) corresponde a média das respostas de todas as escolas que integram o grupo por região."
-  text "● Cor amarela: corresponde à média das respostas de todas as unidades pertencentes ao mesmo nível de ensino ( todas as creches;ou todas EMEIs; ou todas as EMEFs)"
+  text "Neste gráfico podemos analisar os resultados das médias da dimensão por segmento pesquisado. As colunas referentes a cada segmento apresentarão três informações, como seguem:", :indent_paragraphs => 40
+  text "● Cor azul: corresponde à média das respostas atribuídas pela unidade escolar à dimensão analisada (exemplo: média das respostas dos familiares apenas da sua unidade);"
+  text "● Cor vermelha: corresponde à média atribuída pelo grupo de unidades educacionais ao qual cada UE faz parte. No caso do ensino fundamental, a média das respostas de todas as escolas que integram o grupo em relação ao IDEB. No caso da educação infantil (creche e EMEI) corresponde à média das respostas de todas as escolas que integram o grupo por região;"
+  text "● Cor amarela: corresponde à média das respostas de todas as unidades pertencentes ao mesmo nível de ensino (todas as creches; ou todas EMEIs; ou todas as EMEFs)."
 
   text "\n Percepção da UE sobre cada indicador de qualidade", :style => :bold
   text "Gráficos que apresentam as médias de cada indicador de qualidade por segmento, tendo como referência os resultados do nível de ensino e do grupo de unidades educacionais a que faz parte. A organização dos gráficos em colunas de cada segmento é a mesma dos gráficos das dimensões. Cabe destacar que em virtude de alguns indicadores de qualidade terem sido suprimidos para alguns segmentos, a numeração dos mesmos não segue a mesma seqüência para todos.
 Assim sendo, a título de comparação, nas colunas aparecerão não só o segmento, mas também a numeração correspondente ao indicador analisado, tendo como referência o instrumental respondido pelos professores por ser o mais abrangente.", :indent_paragraphs => 40
 
-  text "\n Médias das respostas atribuídas a cada questão que compõe os indicadodres da dimensão, por segmento escolar", :style => :bold
-  text "Quadro que apresenta a média das opiniões numéricas atribuídas a cada questão pelos segmentos escolares participantes da avaliação. É importante ressaltar que a quantidade de questões formuladas a cada segmento foi diferente. Por essa razão, os quadros das questões serão apresentados tomando como referência o instrumental respondido pelos professores, por ser o mais abrangente.", :indent_paragraphs => 40
+  u_text "\n Médias das respostas atribuídas a cada questão que compõe o indicador"
+ text "As médias são apresentadas em quadros nos quais a questão referência baseia-se no instrumental da avaliação do segmento professor.", :indent_paragraphs => 40
+ text "Os números correspondem a média das opiniões numéricas atribuídas a cada questão pelos segmentos escolares participantes da avaliação.", :indent_paragraphs => 40
+ text "O cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros.", :indent_paragraphs => 40
+ text "Destaca-se quea as principais categorias de análise deste relatório devem ser os gráficos das dimensões e dos indicadores. Esclarecemos que estes quadros estão sendo apresentados como subsídio para identificação minuciosa da influência de cada tópico(questão) teve nas médias finais apresentadas no gráfico do indicador.", :indent_paragraphs => 40
 
   text "\n Questões problematizadoras", :style => :bold
   text "Ao final de cada dimensão, algumas questões são sugeridas para uma reflexão acerca da dimensão.", :indent_paragraphs => 40
@@ -372,7 +375,7 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
 
   text "O Ambiente Educativo visa fornecer indicadores do ambiente que predomina na escola, das relações entre os diversos segmentos, do grau de conhecimento e participação deles na elaboração dos princípios de convivência e no conhecimento que se tem dos direitos das crianças, tendo em vista sua importância como referência às ações educativas para a escola. A escola é um dos espaços de ensino, aprendizagem e vivência de valores. Nela, os indivíduos se socializam, brincam e experimentam a convivência com a diversidade humana. No ambiente educativo, o respeito, a alegria, a amizade e a solidariedade, a disciplina, a negociação, o combate à discriminação e o exercício dos direitos e deveres são práticas que garantem a socialização e a convivência, desenvolvem e fortalecem a noção de cidadania e de igualdade entre todos.", :indent_paragraphs => 40
 
-  text "\n 2.1.1 Percepção da UE sobre a Dimensão 1", :style => :bold
+  text "\n 2.1.1 Percepção da UE sobre a dimensão 1", :style => :bold
   
   image get_graph_path(ue, service_level, 1)
   
@@ -384,7 +387,7 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
 
   start_new_page
 
-  text "\n 2.1.4 Questões problematizadoras da Dimensão 1", :style => :bold
+  text "\n 2.1.4 Questões problematizadoras da dimensão 1", :style => :bold
   text " ● O que faz com que o ambiente educativo na nossa escola propicie  vínculos fortes, solidários, afetivos e alegres entre os diversos segmentos? O que precisa ser melhorado?"
   text " ● Como estamos construindo o nosso ambiente para que este seja compreendido como um lugar de encontros de culturas diversas, de inclusão de pessoas diferentes e que trazem consigo conhecimentos e aprendizagens diferentes?"
   text " ● Que ações podem ser previstas em 2011 para melhorar as relações na acolhida das crianças? E no recreio? E na sala de aula? E no momento da alimentação? E no fim do dia? Quais segmentos estarão envolvidos em cada ação de melhorias do ambiente educativo?"
@@ -636,33 +639,34 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   text "● Como a escola pode se preparar para melhor aproveitar cada um desses importantes espaços de formação?"
 
   start_new_page
+  if (service_level.id == 2)
+    fill_color "043ccb"
+    text "\n 2.11 DIMENSÃO 11 - PROCESSOS DE ALFABETIZAÇÃO E LETRAMENTO (Apenas para o Ensino Fundamental)", :align => :center, :style => :bold
+    fill_color "000000"
 
-  fill_color "043ccb"
-  text "\n 2.11 DIMENSÃO 11 - PROCESSOS DE ALFABETIZAÇÃO E LETRAMENTO (Apenas para o Ensino Fundamental)", :align => :center, :style => :bold
-  fill_color "000000"
+    text "Essa dimensão diz respeito aos indicadores referentes a todos os aspectos que, no conjunto, favorecem a alfabetização inicial e a ampliação da capacidade da leitura e escrita de todas as crianças e adolescentes ao longo do ensino fundamental.  O domínio da leitura e da escrita é condição para o bom desenvolvimento de outros conteúdos escolares e, também, para que, depois de concluída a educação básica, o cidadão e cidadã possam continuar aprendendo e se desenvolvendo com autonomia.", :indent_paragraphs => 40
 
-  text "Essa dimensão diz respeito aos indicadores referentes a todos os aspectos que, no conjunto, favorecem a alfabetização inicial e a ampliação da capacidade da leitura e escrita de todas as crianças e adolescentes ao longo do ensino fundamental.  O domínio da leitura e da escrita é condição para o bom desenvolvimento de outros conteúdos escolares e, também, para que, depois de concluída a educação básica, o cidadão e cidadã possam continuar aprendendo e se desenvolvendo com autonomia.", :indent_paragraphs => 40
-
-  text "\n 2.11.1 Percepção da UE sobre a Dimensão 11", :style => :bold
+    text "\n 2.11.1 Percepção da UE sobre a Dimensão 11", :style => :bold
     image get_graph_path(ue, service_level, 11)
-  start_new_page
+    start_new_page
 
-  text "\n 2.11.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
+    text "\n 2.11.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
   
-  indicators_graphs_by_dimension(ue, service_level, 11)
+    indicators_graphs_by_dimension(ue, service_level, 11)
 
-  start_new_page
+    start_new_page
   
-  text "\n 2.11.4 Questões problematizadoras da dimensão 11", :style => :bold
-  text "● Que ações podem ser previstas para que em 2011 outros segmentos da escola se envolvam no exercício da função social da escrita pela criança? "
-  text "● Que propostas podemos planejar para que em 2011 haja atividades lúdicas nas quais a criança exercite a expressão de suas produções e registros (abordando diversas esferas de circulação, práticas de linguagem, contextos e gêneros)? Que propostas podem ser previstas para que a criança socialize com diferentes segmentos as suas produções e registros?"
-  text "● Que outras ações podem ser previstas no PTA 2011 para que nossos educandos, familiares e demais membros da comunidade  desenvolvam o  prazer pela leitura e pela escrita?"
-  text "● Que ações os diferentes segmentos podem prever para que haja maior circulação dos livros da escola entre alunos, familiares e membros da comunidade?"
-  text "● Que ações podem ser previstas no PTA 2011 para que diversos tipos de linguagens artísticas sejam abordados pela unidade em sua biblioteca/sala de leitura com diferentes segmentos?"
-  text "● Que ações podem ser previstas no PTA 2011 para que os educandos e membros da comunidade tenham acesso e possam emprestar os livros e demais textos disponíveis na escola?"
+    text "\n 2.11.4 Questões problematizadoras da dimensão 11", :style => :bold
+    text "● Que ações podem ser previstas para que em 2011 outros segmentos da escola se envolvam no exercício da função social da escrita pela criança? "
+    text "● Que propostas podemos planejar para que em 2011 haja atividades lúdicas nas quais a criança exercite a expressão de suas produções e registros (abordando diversas esferas de circulação, práticas de linguagem, contextos e gêneros)? Que propostas podem ser previstas para que a criança socialize com diferentes segmentos as suas produções e registros?"
+    text "● Que outras ações podem ser previstas no PTA 2011 para que nossos educandos, familiares e demais membros da comunidade  desenvolvam o  prazer pela leitura e pela escrita?"
+    text "● Que ações os diferentes segmentos podem prever para que haja maior circulação dos livros da escola entre alunos, familiares e membros da comunidade?"
+    text "● Que ações podem ser previstas no PTA 2011 para que diversos tipos de linguagens artísticas sejam abordados pela unidade em sua biblioteca/sala de leitura com diferentes segmentos?"
+    text "● Que ações podem ser previstas no PTA 2011 para que os educandos e membros da comunidade tenham acesso e possam emprestar os livros e demais textos disponíveis na escola?"
 
-  fill_color "4e0d0d"
-  start_new_page  
+    fill_color "4e0d0d"
+    start_new_page  
+  end
 
   text "\n\n 3 QUADRO DE ÍNDICES DA SUA UNIDADE EDUCACIONAL EM COMPARAÇÃO COM A REDE", :style => :bold
   fill_color "000000"
@@ -711,7 +715,7 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
 
   end
   
-  text "\n * Corresponde ao índice por nível de ensino das UEs da Rede, ou seja, das EMEFs, ou das EMEIS, ou das Creches", :size => 10
+  text "\n * Corresponde ao índice da rede a qual a sua escola pertence(creche, ou EMEI, ou EMEF)", :size => 10
   move_down(10)
 
 

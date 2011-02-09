@@ -28,7 +28,6 @@ namespace :reports do
         rdata.dimension_graph(dimension)
         rdata.indicators_graph(dimension)
       end
-      system "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{RAILS_ROOT}/public/relatorios/final/#{inst.id}_#{sl.id}-final.pdf #{RAILS_ROOT}/public/relatorios/artifacts/capa_avalia.pdf #{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf #{RAILS_ROOT}/public/relatorios/final/#{inst.id}_#{sl.id}.pdf"
     end
   end
 
@@ -54,7 +53,11 @@ namespace :reports do
       before = Time.now
       ri = ReportIndividual.new
       ri.to_pdf(institution, service_level, ReportData.new(institution, service_level))
+
+      system "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/printer -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -sOutputFile=#{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}-final.pdf #{RAILS_ROOT}/public/relatorios/artifacts/capa_avalia.pdf #{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf #{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}.pdf"
+      
       after = Time.now
+
       p "pdf generated in #{after - before}"
     end
   end

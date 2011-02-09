@@ -8,7 +8,7 @@ module UniFreire
         super(size)
 
         default_options = {
-          :title_font_size => 20,
+          :title_font_size => 16,
           :minimum_value => 0,
           :maximum_value => 5,
           :marker_count => 10,

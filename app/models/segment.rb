@@ -7,4 +7,8 @@ class Segment < ActiveRecord::Base
   def self.find_by_name(name)
     Segment.by_name(name).first
   end
+  
+  def <=>(other)
+    name <=> other.name
+  end
 end

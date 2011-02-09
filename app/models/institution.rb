@@ -371,7 +371,7 @@ class Institution < ActiveRecord::Base
 
   def graph(mean, mean_group, mean_sl, service_level, options = {})
     indicators = options[:indicators]
-    segments = service_level.segments
+    segments = service_level.segments.sort
 
     # Graph labels
     graph_labels =  {}
@@ -382,7 +382,7 @@ class Institution < ActiveRecord::Base
       hash["Media do Grupo"] << mean_group[:segments][seg.name].to_f
       hash["Media das #{service_level.name}s"] << mean_sl[:segments][seg.name].to_f
 
-      graph_labels[graph_labels.length] = indicators.present? ? "#{seg.name}# (#{indicators[seg.name]})" : seg.name
+      graph_labels[graph_labels.length] = indicators.present? ? "#{seg.name}\n(#{indicators[seg.name]})" : seg.name
       hash
     end
 
@@ -400,7 +400,8 @@ class Institution < ActiveRecord::Base
       :title => options[:title]
     )
 
-    graph_data.sort { |a,b| b[0].gsub(/.*[ ](\w+)$/, '\1') <=> a[0].gsub(/.*[ ](\w+)$/, '\1') }.each do |name, data|
+    # graph_data.sort { |a,b| b[0].gsub(/.*[ ](\w+)$/, '\1') <=> a[0].gsub(/.*[ ](\w+)$/, '\1') }.each do |name, data|
+    graph_data.each do |name, data|
       graph.data(name, data)
     end
     graph.data(" ", Array.new(segments.length, 0))
@@ -408,8 +409,13 @@ class Institution < ActiveRecord::Base
   end
 
   def grade_to_table(mean_sl,mean_group,mean,sl)
-    table = [["Dimensão","Professores","Gestores","Educandos","Func. de Apoio","Familiares","Índice da UE","Índice do Grupo","Índice da Rede*"]]
+    table = []
+    header = ["Dimensão","Educandos","Familiares","Func. de Apoio","Gestores","Professores","Índice da UE","Índice do Grupo","Índice da Rede*"]
+    header = header.reject { |i| i == "Educandos" } if sl.id != 2
+    table << header
+
     col0  = ["1. Ambiente Educativo","2. Ambiente Físico Escolar e Materiais","3. Avaliação","4. Planejamento Institucional e Prática Pedagógica","5. Acesso e Permanência dos Educandos na Escola","6. Promoção da Saúde","7. Educação Socioambiental e Práticas Ecopedagógicas","8. Envolvimento com as Famílias e Participação na Rede de Proteção Social","9. Gestão Escolar Democrática","10. Formação e Condições de Trabalho dos Profissionais da Escola","11. Processos de Alfabetização e Letramento (Somente para as EMEFs)"]
+    col0 = col0.reject { |i| i == "11. Processos de Alfabetização e Letramento (Somente para as EMEFs)" } if sl.id != 2
 
     sum   = 0
     names = sl.segments.collect { |seg| seg.name }.sort!
