@@ -91,5 +91,19 @@ namespace :reports do
     end
 
   end
+
+  desc "Add indicators id in question rows"
+  task :fix_indicators_id_from_questions => :environment do
+    p "Corrigindo indicator_id para todas as questions..."
+    Indicator.all.each do |ind|
+      sl        = ind.service_level.id
+      seg       = ind.segment.id
+      number    = ind.number
+      survey    = Survey.find(:first, :conditions => {:service_level_id => sl, :segment_id => seg})
+      questions = survey.questions.find(:all, :conditions => ["number like ?", "#{number}.%"])
+      questions.each {|question| question.update_attribute(:indicator_id, ind.id)}
+    end
+    p "Correção concluída!"
+  end
 end
 
