@@ -61,9 +61,16 @@ class ReportData
       end
 
       if i == 2
-        answers = Answer.all(:conditions => ["question_id in (?)", questions_party.questions.map(&:id)])
-        mean = answers.map(&:mean)
-        row << mean.avg.to_f.round(2)
+        # answers = Answer.all(:conditions => ["question_id in (?)", questions_party.questions.map(&:id)])
+        # answers = question.answers.by_service_level(service_level).min_participants(0).newer
+        answers = questions_party.questions.map {|q| q.answers.by_service_level(service_level).min_participants(0).newer}
+        # mean = answers.map(&:mean).avg.to_f.round(2)
+        # row << mean.avg.to_f.round(2)
+        mean = []
+        answers.each do |a|
+          mean << a.map(&:mean)
+        end
+        row << mean[0].avg.to_f.round(2)
         if @group.present?
           row << questions_party.mean_by_group(@group).to_f.round(2) #Media do Grupo
         else
