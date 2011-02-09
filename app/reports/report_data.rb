@@ -42,8 +42,20 @@ class ReportData
       row << (question.nil? ? "-" : question.number)
 
       if question.present?
-        answers = Answer.all(:conditions => ["question_id in (?) and surveys.segment_id = ?", question.id, segment.id], :include => :survey)
+        # answers = Answer.all(:conditions => ["question_id in (?) and surveys.segment_id = ?", question.id, segment.id], :include => :survey)
+        answers = question.answers.by_service_level(service_level).min_participants(0).newer
         row << answers.map(&:mean).avg.to_f.round(2)
+        # unless answers.nil?
+        #   answers.each do |a|
+        #     @curr_answers[a.user_id] ||= a.mean
+        #     @users_data[a.user_id][a.question_id] ||= a
+        #   end
+        #   if @curr_answers.keys.size > 0
+        #     questions_means << @curr_answers.avg
+        #   end
+        # end
+        # 
+        # row << answers
       else
         row << "-"
       end

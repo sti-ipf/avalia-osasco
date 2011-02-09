@@ -49,9 +49,9 @@ class Institution < ActiveRecord::Base
           questions_means << @curr_answers.avg
         end
       end
-        if questions_means.size > 0
-          indicators_means << questions_means.avg
-        end
+      if questions_means.size > 0
+        indicators_means << questions_means.avg
+      end
     end
     if indicators_means.size > 0
       dimension_mean[:mean] = indicators_means.avg
@@ -66,25 +66,28 @@ class Institution < ActiveRecord::Base
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
-      questions = indicator.questions
+      questions_parties = indicator.questions_parties
       indicator_means = []
       questions_means = []
-      questions.each do |q|
-        @curr_answers = {}
-        answers = q.answers.min_participants(0).newer
-        # answers.reject! { |a| a.participants_number == 0 }
-        # answers.reverse! { |u,v| u.created_at <=> v.created_at }
-        answers.each do |a|
-          @curr_answers[a.user_id] ||= a.mean
-          @users_data[a.user_id][a.question_id] ||= a
-        end
-        if @curr_answers.keys.size > 0
-          questions_means << @curr_answers.avg
+      questions_parties.each do |qp|
+        qp.questions.each do |q|
+          @curr_answers = {}
+          answers       = q.answers.min_participants(0).newer
+          # answers.reject! { |a| a.participants_number == 0 }
+          # answers.reverse! { |u,v| u.created_at <=> v.created_at }
+          answers.each do |a|
+            @curr_answers[a.user_id] ||= a.mean
+            @users_data[a.user_id][a.question_id] ||= a
+          end
+          if @curr_answers.keys.size > 0
+            questions_means << @curr_answers.avg
+          end
+
         end
       end
-        if questions_means.size > 0
-          indicators_party_means << questions_means.avg
-        end
+      if questions_means.size > 0
+        indicators_party_means << questions_means.avg
+      end
     end
     if indicators_party_means.size > 0
       # indicator_mean[:mean] = (indicators_party_means.inject(nil) { |sum,v| sum ? sum + v :  v }.to_f/indicators_party_means.size).round(2)
@@ -128,35 +131,26 @@ class Institution < ActiveRecord::Base
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
-      questions = indicator.questions
+      questions_parties = indicator.questions_parties
       indicator_means = []
       questions_means = []
-      questions.each do |q|
-        @curr_answers = {}
-        answers = q.answers
-        # users_ids = group.user_ids
-        answers = q.answers.by_group(group).min_participants(0).newer # .select { |a| users_ids.include?(a.user_id) &&  a.participants_number > 0 }
-        # answers.reverse! { |u,v| u.created_at <=> v.created_at }
-        answers.each do |a|
-          @curr_answers[a.user_id] ||= a.mean
-          @users_data[a.user_id][a.question_id] ||= a
-          # if  @users_data.keys.include?(a.user_id)
-          #   if @users_data[a.user_id][a.question_id] && (@users_data[a.user_id][a.question_id].created_at < a.created_at)
-          #     @users_data[a.user_id][a.question_id] = a
-          #   else
-          #     @users_data[a.user_id][a.question_id] = a
-          #   end
-          # else
-          #   @users_data[a.user_id] = {a.question_id => a}
-          # end
-        end
-        if @curr_answers.keys.size > 0
-          questions_means << @curr_answers.avg
+      questions_parties.each do |qp|
+        qp.questions.each do |q|
+          @curr_answers = {}
+          answers = q.answers
+          answers = q.answers.by_group(group).min_participants(0).newer
+          answers.each do |a|
+            @curr_answers[a.user_id] ||= a.mean
+            @users_data[a.user_id][a.question_id] ||= a
+          end
+          if @curr_answers.keys.size > 0
+            questions_means << @curr_answers.avg
+          end
         end
       end
-        if questions_means.size > 0
-          indicators_party_means << questions_means.avg
-        end
+      if questions_means.size > 0
+        indicators_party_means << questions_means.avg
+      end
     end
     if indicators_party_means.size > 0
       indicator_mean[:mean] = indicators_party_means.avg
@@ -230,9 +224,9 @@ class Institution < ActiveRecord::Base
           questions_means << @curr_answers.avg
         end
       end
-        if questions_means.size > 0
-          indicators_means << questions_means.avg
-        end
+      if questions_means.size > 0
+        indicators_means << questions_means.avg
+      end
     end
     if indicators_means.size > 0
       dimension_mean[:mean] = indicators_means.avg
@@ -265,7 +259,7 @@ class Institution < ActiveRecord::Base
       # answers.reverse! { |u,v| u.created_at <=> v.created_at }
       curr_answer = {}
       answers.each do |a|
-          @curr_answers[a.user_id] ||= a.mean
+        @curr_answers[a.user_id] ||= a.mean
       end
       if @curr_answers.keys.size > 0
         answer = @curr_answers.avg.round(2)
@@ -290,24 +284,24 @@ class Institution < ActiveRecord::Base
         # my_users = users.select { |u| u.service_level == service_level }
         answers = q.answers.by_service_level(service_level).min_participants(0).newer
         # unless answers.nil?
-          # answers = answers.select { |a| my_users.include?(a.user) &&  a.participants_number > 0 }
-          # answers.reverse! { |u,v| u.created_at <=> v.created_at }
-          answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean
-            @users_data[a.user_id][a.question_id] ||= a
-            # if  @users_data.keys.include?(a.user_id)
-            #   if @users_data[a.user_id][a.question_id] && (@users_data[a.user_id][a.question_id].created_at < a.created_at)
-            #     @users_data[a.user_id][a.question_id] = a
-            #   else
-            #     @users_data[a.user_id][a.question_id] = a
-            #   end
-            # else
-            #   @users_data[a.user_id] = {a.question_id => a}
-            # end
-          end
-          if @curr_answers.keys.size > 0
-            questions_means << @curr_answers.avg
-          end
+        # answers = answers.select { |a| my_users.include?(a.user) &&  a.participants_number > 0 }
+        # answers.reverse! { |u,v| u.created_at <=> v.created_at }
+        answers.each do |a|
+          @curr_answers[a.user_id] ||= a.mean
+          @users_data[a.user_id][a.question_id] ||= a
+          # if  @users_data.keys.include?(a.user_id)
+          #   if @users_data[a.user_id][a.question_id] && (@users_data[a.user_id][a.question_id].created_at < a.created_at)
+          #     @users_data[a.user_id][a.question_id] = a
+          #   else
+          #     @users_data[a.user_id][a.question_id] = a
+          #   end
+          # else
+          #   @users_data[a.user_id] = {a.question_id => a}
+          # end
+        end
+        if @curr_answers.keys.size > 0
+          questions_means << @curr_answers.avg
+        end
         # end
         if questions_means.size > 0
           indicators_means << questions_means.avg
@@ -328,29 +322,17 @@ class Institution < ActiveRecord::Base
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
-      questions = indicator.questions
+      questions_parties = indicator.questions_parties
       indicator_means = []
       questions_means = []
-      questions.each do |q|
+      questions_parties.each do |qp|
+      qp.questions.each do |q|
         @curr_answers = {}
-        # my_users = users.select { |u| u.service_level == service_level }
         answers = q.answers.by_service_level(service_level).min_participants(0).newer
         unless answers.nil?
-          # answers = answers.select { |a| my_users.include?(a.user) &&  a.participants_number > 0 }
-          # answers.reverse! { |u,v| u.created_at <=> v.created_at }
           answers.each do |a|
             @curr_answers[a.user_id] ||= a.mean
             @users_data[a.user_id][a.question_id] ||= a
-            # @curr_answers.merge!( { a.user_id => a.mean } ) unless @curr_answers.keys.include?(a.user_id)
-            # if  @users_data.keys.include?(a.user_id)
-            #   if @users_data[a.user_id][a.question_id] && (@users_data[a.user_id][a.question_id].created_at < a.created_at)
-            #     @users_data[a.user_id][a.question_id] = a
-            #   else
-            #     @users_data[a.user_id][a.question_id] = a
-            #   end
-            # else
-            #   @users_data[a.user_id] = {a.question_id => a}
-            # end
           end
           if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
@@ -363,6 +345,7 @@ class Institution < ActiveRecord::Base
       if indicators_party_means.size > 0
         indicator_mean[:mean] = indicators_party_means.avg
       end
+    end
     end
     indicator_mean[:segments] = Institution.mean_by_segments(@users_data)
     indicator_mean
@@ -396,8 +379,8 @@ class Institution < ActiveRecord::Base
     # puts table.to_text
 
     graph = UniFreire::Graphs::Base.new("450x300",
-      :labels => graph_labels,
-      :title => options[:title]
+    :labels => graph_labels,
+    :title => options[:title]
     )
 
     # graph_data.sort { |a,b| b[0].gsub(/.*[ ](\w+)$/, '\1') <=> a[0].gsub(/.*[ ](\w+)$/, '\1') }.each do |name, data|
@@ -422,16 +405,16 @@ class Institution < ActiveRecord::Base
 
     col0.each_index do |index|
       dimension               = Dimension.find_by_number(index + 1)
-      
+
       segments_dimension      = mean[dimension.id][:segments]
       grade_segments          = names.inject([]) {|array, name| array << (segments_dimension[name].to_f/5).round(2); array}
-      
+
       average_dimension       = (mean[dimension.id][:mean].to_f/5).round(2)
       average_group_dimension = (mean_group[dimension.id][:mean].to_f/5).round(2)
       average_dimension       = (mean_sl[dimension.id][:mean].to_f/5).round(2)
-      
+
       value_row               = [average_dimension, average_group_dimension, average_dimension]
-      
+
       sum                     = sum + mean[dimension.id][:mean].to_f/5
 
       table << [col0[index]].concat(grade_segments).concat(value_row)
@@ -460,262 +443,5 @@ class Institution < ActiveRecord::Base
     mean
   end
 
-
-#    def graph_indicator(dimension,indicator,service_level,group)
-#      data = mean_indicator(dimension,indicator,service_level)
-#      mean_group =  Institution.general_mean_indicator(dimension,indicator,group)
-#      graph = Gruff::Bar.new("400x300")
-#      graph.theme = {
-#        :colors => ['orange', 'purple', 'green', 'yellow', 'red', 'blue', '#b56d3c' ],
-#        :marker_color => 'black',
-#        :background_colors => 'white'
-#      }
-
-#      graph.title = "Indicador #{dimension}.#{indicator}"
-#      graph.minimum_value = 0
-#      graph.maximum_value = 5
-#      graph.marker_count = 10
-#      graph.sort = false
-#      data[:users].each do |user|
-#        user.each do |seg,value|
-#          graph.data("#{seg} - #{value.to_f.round(2)}",[value.to_f.round(2)])
-#        end
-#      end
-#      graph.data("Media da UE - #{data[:mean].round(2)}",data[:mean].round(2))
-#      graph.data("Media do Agrupamento - #{mean_group[:mean].round(2)}",mean_group[:mean].round(2))
-#      graph.write("#{RAILS_ROOT}/public/graficos/#{name}_#{service_level.name}_d#{dimension}i#{indicator}.png")
-#    end
-
-
-#    def self.general_graph_dimension(dimension,group)
-#      data = self.general_mean_dimension(dimension,group)
-#      graph = Gruff::Bar.new("400x300")
-#      graph.theme = {
-#        :colors => %w(orange purple green yellow red blue brown),
-#     :marker_color => 'black',
-#        :background_colors => 'white'
-#      }
-
-#      graph.title = "#{group.users.first.service_level.name} G#{group.name.split(' ')[1]} D#{dimension}"
-#      graph.minimum_value = 0
-#      graph.maximum_value = 5
-#      graph.marker_count = 10
-#      graph.sort = false
-#      data.each do |seg,value|
-#      graph.data("#{seg} - #{value.round(2)}",[value.round(2)]) unless seg == :mean
-#      end
-#      graph.data("Media - #{data[:mean].round(2)}",data[:mean].round(2))
-#      graph.write("#{RAILS_ROOT}/public/graficos/graficos_geral/#{group.users.first.service_level.name}_#{group.name}_d#{dimension}.png")
-#    end
-
-#    def self.general_graph_indicator(dimension,indicator,group)
-#      data = self.general_mean_indicator(dimension,indicator,group)
-#      graph = Gruff::Bar.new("400x300")
-#      graph.theme = {
-#        :colors => %w(orange purple green yellow red blue),
-#        :marker_color => 'black',
-#        :background_colors => 'white'
-#      }
-
-#      graph.title = "#{group.users.first.service_level.name} G#{group.name.split(' ')[1]} D#{dimension} I#{indicator}"
-#      graph.minimum_value = 0
-#      graph.maximum_value = 5
-#      graph.marker_count = 10
-#      graph.sort = false
-#      data.each do |seg,value|
-#        graph.data("#{seg} - #{value.to_f.round(2)}",[value.to_f.round(2)]) unless seg == :mean
-#      end
-#      graph.data("Media - #{data[:mean].round(2)}",data[:mean].round(2))
-#      graph.write("#{RAILS_ROOT}/public/graficos/graficos_geral/#{group.users.first.service_level.name}_#{group.name}_d#{dimension}i#{indicator}.png")
-#    end
-
-#    def answers_by_dimension(dimension,service_level)
-#      surveys = Survey.by_service_level(service_level)
-#      @answers = {}
-#      surveys.each do |survey|
-#        questions = survey.questions_by_dimension(dimension)
-#        @answers = questions.collect { |q| { q.number => mean_question(q,service_level) } }
-#      end
-#      keys_dup = @answers.collect { |e| e.keys.first }
-#      keys = keys_dup.uniq
-
-#      @mean = {}
-
-#      keys.each { |k| @mean[k] = {} }
-#      keys.each do |k|
-#        current_answers =  @answers.select { |e| e.keys.first ==  k }
-#        current_answers.each do |e|
-#          e.values.first.keys.each { |kl| @mean[k][kl] = 0 }
-#          e.values.first.each { |kl,v| @mean[k][kl] = @mean[k][kl] + v }
-#        end
-#      end
-#      @total = {}
-#      keys.each do |k|
-#        @total[k] =  keys_dup.select { |e| e == k }.size
-#      end
-#      @mean.each do |k,v|
-#        v.each do |seg,value|
-#          value = value/@total[k]
-#        end
-#      end
-#      #sorting by question number
-#      @mean.to_a.sort_by do |s|
-#        a = s[0].split('.')
-#        [2,a[3].to_i]
-#        [2,a[2].to_i]
-#        [2,a[1].to_i]
-#      end
-#    end
-
-#    def mean_question(question,service_level, type=:users)
-#      users_mean = { :mean => 0, :users => {} }
-#      users_selected = users.select { |u| u.service_level == service_level }
-#      users_selected.each do |user|
-#        current_answers = user.answers.select { |a| a.question.number == question.number if a.question }
-#        current_answers.reject! { |a| a.participants_number == 0 }
-#        user_mean = {}
-#        current_answers.each do |a|
-#          if user_mean[a.question]
-#            if user_mean[a.question][:answer].created_at < a.created_at
-#              user_mean[a.question] = { :answer => a, :mean => a.mean }
-#            end
-#          else
-#            user_mean[a.question] = { :answer => a, :mean => a.mean }
-#          end
-#        end
-#        sum = 0
-#        user_mean.each { |x| sum = sum + x[1][:mean] }
-#        curr_mean = 0
-#        curr_mean = sum.to_f/user_mean.size if user_mean.size > 0
-#        users_mean[:mean] = users_mean[:mean] + curr_mean
-#        users_mean[:users][user.segment.name] = curr_mean
-#      end
-#      if users_mean[:mean] > 0
-#        users_mean[:mean] = users_mean[:mean].to_f/users_selected.size
-#      end
-#      users_mean[type]
-#    end
-
-
-#    def mean_question_by_group(question,group,type=:users)
-#      users_mean = { :mean => 0, :users => {} }
-#      users_selected = users.select { |u| u.group == group }
-#      users_selected.each do |user|
-#        current_answers = user.answers.select { |a| a.question.number == question.number if a.question }
-#        current_answers.reject! { |a| a.participants_number == 0 }
-#        user_mean = {}
-#        current_answers.each do |a|
-#          if user_mean[a.question]
-#            if user_mean[a.question][:answer].created_at < a.created_at
-#              user_mean[a.question] = { :answer => a, :mean => a.mean }
-#            end
-#          else
-#            user_mean[a.question] = { :answer => a, :mean => a.mean }
-#          end
-#        end
-#        sum = 0
-#        user_mean.each { |x| sum = sum + x[1][:mean] }
-#        curr_mean = 0
-#        curr_mean = sum.to_f/user_mean.size if user_mean.size > 0
-#        users_mean[:mean] = users_mean[:mean] + curr_mean
-#        users_mean[:users][user.segment.name] = curr_mean
-#      end
-#      if users_mean[:mean] > 0
-#        users_mean[:mean] = users_mean[:mean].to_f/users_selected.size
-#      end
-#      users_mean[type]
-#    end
-
-#    def mean_by_group(dimension,service_level)
-#      surveys = Survey.by_service_level(service_level)
-#      @answers = {}
-#      group = users.select { |u| u.service_level == service_level }.first.group
-#      surveys.each do |survey|
-#        questions = survey.questions_by_dimension(dimension)
-#        @answers = questions.collect { |q| { q.number => mean_question_by_group(q,group,:mean) } }
-#      end
-#      keys_dup = @answers.collect { |e| e.keys.first }
-#      keys = keys_dup.uniq
-
-#      @mean = {}
-
-#      keys.each { |k| @mean[k] = 0 }
-#      keys.each do |k|
-#        current_answers =  @answers.select { |e| e.keys.first ==  k }
-#        current_answers.each do |e|
-#          e.each { |kl,v| @mean[k] = @mean[k] + v }
-#        end
-#      end
-#      @total = {}
-#      keys.each do |k|
-#        @total[k] =  keys_dup.select { |e| e == k }.size
-#      end
-#      @mean.each do |k,v|
-#          v = v/@total[k]
-#      end
-#      @mean.to_a.sort_by do |s|
-#        a = s[0].split('.')
-#        [2,a[2].to_i]
-#        [2,a[1].to_i]
-#      end
-#    end
-
-#    def mean_by_dimension(dimension,service_level)
-#      surveys = Survey.by_service_level(service_level)
-#      @answers = {}
-#      surveys.each do |survey|
-#        questions = survey.questions_by_dimension(dimension)
-#        @answers = questions.collect { |q| { q.number => mean_question_by_group(q,service_level,:mean) } }
-#      end
-#      keys_dup = @answers.collect { |e| e.keys.first }
-#      keys = keys_dup.uniq
-
-#      @mean = {}
-
-#      keys.each { |k| @mean[k] = 0 }
-#      keys.each do |k|
-#        current_answers =  @answers.select { |e| e.keys.first ==  k }
-#        current_answers.each do |e|
-#          e.each { |kl,v| @mean[k] = @mean[k] + v }
-#        end
-#      end
-#      @total = {}
-#      keys.each do |k|
-#        @total[k] =  keys_dup.select { |e| e == k }.size
-#      end
-#      @mean.each do |k,v|
-#          v = v/@total[k]
-#      end
-#      @mean = @mean.to_a
-#      @mean = @mean.sort do |u,v|
-#        comp = (u[0].split('.')[0] <=> v[0].split('.')[0])
-#        if comp.zero?
-#          comp1 = (u[0].split('.')[1] <=> v[0].split('.')[1])
-#          if comp1.zero?
-#            (u[0].split('.')[2] <=> v[0].split('.')[2])
-#          else
-#            comp1
-#          end
-#        else
-#          comp
-#        end
-#      end
-#    end
-
-#    def dimension_answers_to_table(dimension,service_level)
-#      answers = answers_by_dimension(dimension,service_level)
-#      group_mean = mean_by_group(dimension,service_level)
-
-#      table =  [["Resposta","Professores","Gestores","Educandos","Func. de Apoio", "Familiares", "Media UE", "Media do Agrupamento" ]]
-
-#      answers.each do |cols|
-#        sum = 0
-#        cols[1].each { |e| sum = sum + e[1] }
-#        curr_mean = sum/cols[1].size
-#        curr_group_mean = group_mean.select { |e| e[0] == cols[0] }.first[1]
-#        table << [cols[0],cols[1]["Professores"].to_s,cols[1]["Gestores"].to_s,cols[1]["Educandos"].to_s,cols[1]["Funcionarios"].to_s,cols[1]["Familiares"].to_s,curr_mean.to_s,curr_group_mean.to_s]
-#      end
-#      table
-#    end
 end
 
