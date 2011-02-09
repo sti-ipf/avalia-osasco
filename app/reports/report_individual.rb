@@ -169,10 +169,6 @@ class ReportIndividual
    end
  end
  
- def u_text(excerpt, style = :body )
-   options = STYLES[style].merge({ :inline_format => true }) 
-   text("<u>#{excerpt}</u>", options)
- end
 
 # inicio do texto
 # inicio do texto
@@ -314,7 +310,7 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   text "Gráficos que apresentam as médias de cada indicador de qualidade por segmento, tendo como referência os resultados do nível de ensino e do grupo de unidades educacionais a que faz parte. A organização dos gráficos em colunas de cada segmento é a mesma dos gráficos das dimensões. Cabe destacar que em virtude de alguns indicadores de qualidade terem sido suprimidos para alguns segmentos, a numeração dos mesmos não segue a mesma seqüência para todos.
 Assim sendo, a título de comparação, nas colunas aparecerão não só o segmento, mas também a numeração correspondente ao indicador analisado, tendo como referência o instrumental respondido pelos professores por ser o mais abrangente.", :indent_paragraphs => 40
 
-  u_text "\n Médias das respostas atribuídas a cada questão que compõe o indicador"
+  text "\n <u>Médias das respostas atribuídas a cada questão que compõe o indicador</u>", :inline_format => true
  text "As médias são apresentadas em quadros nos quais a questão referência baseia-se no instrumental da avaliação do segmento professor.", :indent_paragraphs => 40
  text "Os números correspondem a média das opiniões numéricas atribuídas a cada questão pelos segmentos escolares participantes da avaliação.", :indent_paragraphs => 40
  text "O cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros.", :indent_paragraphs => 40
