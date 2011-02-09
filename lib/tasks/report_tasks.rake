@@ -73,8 +73,6 @@ namespace :reports do
       dir_name =  remove_extension.call File.basename(source_file)
       template_path = File.dirname(File.expand_path(source_file) )
 
-
-
       Dir.chdir template_path
       puts `pdftk #{source_file} burst`
       Dir.glob("pg_*.pdf").each do |pdf_file|
@@ -85,25 +83,7 @@ namespace :reports do
       end
       rm "doc_data.txt", :verbose => false #pdftk metadata
       puts "Get files at #{template_path}"
-
-
-
     end
-
-  end
-
-  desc "Add indicators id in question rows"
-  task :fix_indicators_id_from_questions => :environment do
-    p "Corrigindo indicator_id para todas as questions..."
-    Indicator.all.each do |ind|
-      sl        = ind.service_level.id
-      seg       = ind.segment.id
-      number    = ind.number
-      survey    = Survey.find(:first, :conditions => {:service_level_id => sl, :segment_id => seg})
-      questions = survey.questions.find(:all, :conditions => ["number like ?", "#{number}.%"])
-      questions.each {|question| question.update_attribute(:indicator_id, ind.id)}
-    end
-    p "Correção concluída!"
   end
 end
 
