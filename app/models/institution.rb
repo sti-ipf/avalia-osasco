@@ -6,7 +6,10 @@ class Array
   end
 
   def avg
-    sum_values / length.to_f
+    sum = sum_values
+    sum ||= 0
+    return 0 if length.to_f == 0
+    sum / length.to_f
   end
 end
 
@@ -77,7 +80,6 @@ class Institution < ActiveRecord::Base
           answers.each do |a|
             @curr_answers[a.user_id] ||= a.mean
             @users_data[a.user_id][a.question_id] ||= a
-            p "#{a.id}" if a.user.segment.name == "Familiares"
           end
           if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
@@ -165,7 +167,6 @@ class Institution < ActiveRecord::Base
         answers.each do |a|
           @curr_answersa[a.user_id] = a.mean
         end
-        p @curr_answers
         if @curr_answers.keys.size > 0
           questions_mean << @curr_answers.avg
         end

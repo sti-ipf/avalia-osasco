@@ -96,21 +96,17 @@ class ReportIndividual
  end
  
  def indicators_graphs_by_dimension(institution, service_level, dimension_number)
-     # text "\n 2.1.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-   #    (1..ue.count_indicators(1,service_level)).each do |indicator|
-   #    	image "#{RAILS_ROOT}/public/graficos/#{ue.name}_#{service_level.name}_d1i#{indicator}.png" 
-   #  end
    indicators_parties = Dimension.find_by_number(dimension_number).indicators_parties.find(:all, :conditions => {:service_level_id => service_level.id})
    
    indicators_parties.each do |indicators_party|
      image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
-     text "Os números entre parenteses corrspondem a numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
+     text "Os números entre parenteses correspondem a numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
 
      first_time = true  
      indicators_party.questions_parties.each do |qp|
        if first_time
          text "\n Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-         text "Observação1: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado)"
+         text "Observação1: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado"
          text "Observação2: o cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros."
        end
        first_time = false
