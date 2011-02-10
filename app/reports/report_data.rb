@@ -27,7 +27,10 @@ class ReportData
   def questions_party_table(questions_party)
     data = [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média Geral da Questão", "Média do Grupo", "Média da Rede*"]]
 
-    segments =  %W(Educandos Familiares Funcionários Gestores Professores).map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
+    segments_strings = %W(Educandos Familiares Funcionários Gestores Professores)
+    segments_strings.reject!{|i|i =="Educandos"} unless @service_level.name == "EMEF"
+    
+    segments =  segments_strings.map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
    
     psegment = segments.select { |s| s.name == "Professores" }.first
     questions_party = QuestionsParty.find(questions_party, :include => {:questions => :indicator})
