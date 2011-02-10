@@ -680,6 +680,7 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
  start_new_page 
   fill_color "043ccb"
   text "\n 3 Quadro dos índices da unidade, por dimensões e por segmentos", :style => :bold, :align => :center
+  text "\n Os dados são apresntados com duas casas decimais", :align => :center
   fill_color "0000000"
   
   text "O índice geral da sua Unidade em 2010, obtido com base na média dos índices de cada dimensão é: #{report_data.index_table[:institution_main_index]}"

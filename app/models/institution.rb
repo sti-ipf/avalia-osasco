@@ -77,6 +77,7 @@ class Institution < ActiveRecord::Base
           answers.each do |a|
             @curr_answers[a.user_id] ||= a.mean
             @users_data[a.user_id][a.question_id] ||= a
+            p "#{a.id}" if a.user.segment.name == "Familiares"
           end
           if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
@@ -383,7 +384,7 @@ class Institution < ActiveRecord::Base
     data = {}
     users_data.each do |u_id,answers|
       u_mean = answers.values.map(&:mean).avg.round(2)
-      u = Rails.cache.fetch("user-#{u_id}") { User.find(u_id, :include => :segment) }
+      u = User.find(u_id, :include => :segment)
       data[u.segment.name] ||= []
       data[u.segment.name] << u_mean
     end
