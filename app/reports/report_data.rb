@@ -23,13 +23,11 @@ class ReportData
       puts "#{@institution.name} does not have a user in service level #{@service_level.name}"
     end
   end
-  
-  
 
   def questions_party_table(questions_party)
     data = [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média Geral da Questão", "Média do Grupo", "Média da Rede*"]]
 
-    segments =  %W(Professores Gestores Educandos Funcionários Familiares).map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
+    segments =  %W(Educandos Familiares Funcionários Gestores Professores).map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
    
     psegment = segments.select { |s| s.name == "Professores" }.first
     questions_party = QuestionsParty.find(questions_party, :include => {:questions => :indicator})
@@ -42,35 +40,19 @@ class ReportData
       row << (question.nil? ? "-" : question.number)
 
       if question.present?
-        # answers = Answer.all(:conditions => ["question_id in (?) and surveys.segment_id = ?", question.id, segment.id], :include => :survey)
         answers = question.answers.by_service_level(service_level).min_participants(0).newer
         row << answers.map(&:mean).avg.to_f.round(2)
-        # unless answers.nil?
-        #   answers.each do |a|
-        #     @curr_answers[a.user_id] ||= a.mean
-        #     @users_data[a.user_id][a.question_id] ||= a
-        #   end
-        #   if @curr_answers.keys.size > 0
-        #     questions_means << @curr_answers.avg
-        #   end
-        # end
-        # 
-        # row << answers
       else
         row << "-"
       end
 
       if i == 2
-        # answers = Answer.all(:conditions => ["question_id in (?)", questions_party.questions.map(&:id)])
-        # answers = question.answers.by_service_level(service_level).min_participants(0).newer
         answers = questions_party.questions.map {|q| q.answers.by_service_level(service_level).min_participants(0).newer}
-        # mean = answers.map(&:mean).avg.to_f.round(2)
-        # row << mean.avg.to_f.round(2)
         mean = []
         answers.each do |a|
           mean << a.map(&:mean)
         end
-        row << mean[0].avg.to_f.round(2)
+        row << mean.collect{|i| i.avg}.avg.to_f.round(2)
         if @group.present?
           row << questions_party.mean_by_group(@group).to_f.round(2) #Media do Grupo
         else
@@ -87,7 +69,6 @@ class ReportData
       :table => data
     }
   end
-
 
   def dimension_graph(dimension)
     graph_start_time = now = Time.now
@@ -189,6 +170,6 @@ class ReportData
     name = service_level.name.upcase
     {:title => name == "CRECHE" ? name + "S" : name + "s", :table => members_groups[service_level.name] }
   end
-  
+
 end
 
