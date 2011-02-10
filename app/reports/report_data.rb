@@ -28,7 +28,7 @@ class ReportData
     data = [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média Geral da Questão", "Média do Grupo", "Média da Rede*"]]
 
     segments_strings = %W(Educandos Familiares Funcionários Gestores Professores)
-    segments_strings.reject!{|i|i =="Educandos"} unless @service_level.name == "EMEF"
+    # segments_strings.reject!{|i|i =="Educandos"} unless @service_level.name == "EMEF"
     
     segments =  segments_strings.map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
    
