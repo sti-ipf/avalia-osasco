@@ -730,7 +730,7 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   table table27
 
 
- # number_pages "<page>",[(bounds.left + bounds.right), 18, 2]
+ number_pages "<page>",[(bounds.left + bounds.right), 18, 2]
 
 end
 end
