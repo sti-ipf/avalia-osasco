@@ -100,7 +100,7 @@ class ReportIndividual
    
    indicators_parties.each do |indicators_party|
      image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
-     text "Os números entre parenteses correspondem a numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
+     text "Os números entre parênteses correspondem à numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
 
      first_time = true  
      indicators_party.questions_parties.each do |qp|
@@ -112,7 +112,9 @@ class ReportIndividual
        first_time = false
        question_table(qp)
        move_down(2)
-       text "* Corresponde à média da rede a qual a sua escola pertence(creche, ou EMEI, ou EMEF)"
+       text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF)"
+       text "Obs: O 'X' indica que a unidade não inseriu resposta no sistema para a questão"
+
      end
    end
  end
@@ -306,11 +308,11 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   text "Gráficos que apresentam as médias de cada indicador de qualidade por segmento, tendo como referência os resultados do nível de ensino e do grupo de unidades educacionais a que faz parte. A organização dos gráficos em colunas de cada segmento é a mesma dos gráficos das dimensões. Cabe destacar que em virtude de alguns indicadores de qualidade terem sido suprimidos para alguns segmentos, a numeração dos mesmos não segue a mesma seqüência para todos.
 Assim sendo, a título de comparação, nas colunas aparecerão não só o segmento, mas também a numeração correspondente ao indicador analisado, tendo como referência o instrumental respondido pelos professores por ser o mais abrangente.", :indent_paragraphs => 40
 
-  text "\n <u>Médias das respostas atribuídas a cada questão que compõe o indicador</u>", :inline_format => true
+  text "\nMédias das respostas atribuídas a cada questão que compõe o indicador", :style => :bold
  text "As médias são apresentadas em quadros nos quais a questão referência baseia-se no instrumental da avaliação do segmento professor.", :indent_paragraphs => 40
  text "Os números correspondem a média das opiniões numéricas atribuídas a cada questão pelos segmentos escolares participantes da avaliação.", :indent_paragraphs => 40
  text "O cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros.", :indent_paragraphs => 40
- text "Destaca-se quea as principais categorias de análise deste relatório devem ser os gráficos das dimensões e dos indicadores. Esclarecemos que estes quadros estão sendo apresentados como subsídio para identificação minuciosa da influência de cada tópico(questão) teve nas médias finais apresentadas no gráfico do indicador.", :indent_paragraphs => 40
+ text "Destaca-se que as principais categorias de análise deste relatório devem ser os gráficos das dimensões e dos indicadores. Esclarecemos que estes quadros estão sendo apresentados como subsídio para identificação minuciosa da influência de cada tópico (questão) teve nas médias finais apresentadas no gráfico do indicador.", :indent_paragraphs => 40
 
   text "\n Questões problematizadoras", :style => :bold
   text "Ao final de cada dimensão, algumas questões são sugeridas para uma reflexão acerca da dimensão.", :indent_paragraphs => 40
@@ -346,11 +348,11 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
   fill_color "000000"	
   text "O documento apresenta ainda um quadro que possibilita à unidade educacional  analisar quantitativamente os índices obtidos em 2010 em comparação ao grupo de análise do qual faz parte. No caso das unidades de Creche e Emei, o critério de agrupamento foi regional. No Ensino Fundamental, o critério de agrupamento foi com base no IDEB de 2007 da unidade.", :indent_paragraphs => 40
 
-  text "A sua Unidade Educacional está inserida no seguinte grupo, tendo por base os quadros abaixo:", :indent_paragraphs => 40
+  text "A sua Unidade Educacional está inserida no seguinte grupo, tendo por base o quadro abaixo:", :indent_paragraphs => 40
 
-  start_new_page
+ # start_new_page
 
-  text "\n"
+  text "\n\n"
   text "AGRUPAMENTO DE #{report_data.service_level_group_table(service_level)[:title]}", :align => :center, :size => 16, :style => :bold
   stroke_horizontal_rule
 
@@ -676,7 +678,6 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
  start_new_page 
   fill_color "043ccb"
   text "\n 3 Quadro dos índices da unidade, por dimensões e por segmentos", :style => :bold, :align => :center
-  text "\n Os dados são apresntados com duas casas decimais", :align => :center
   fill_color "0000000"
   
   text "O índice geral da sua Unidade em 2010, obtido com base na média dos índices de cada dimensão é: #{report_data.index_table[:institution_main_index]}"
@@ -709,6 +710,7 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   end
   
   text "\n * Corresponde ao índice da rede a qual a sua escola pertence(creche, ou EMEI, ou EMEF)", :size => 10
+  text "\n Os dados são apresntados com duas casas decimais", :size => 10
   move_down(10)
 
 

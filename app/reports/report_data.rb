@@ -44,13 +44,15 @@ class ReportData
 
       if question.present?
         answers = question.answers.by_service_level(service_level).min_participants(0).newer
-        row << answers.map(&:mean).avg.to_f.round(2)
+        current_answer = answers.map(&:mean).avg.to_f.round(2)
+        current_answer = current_answer > 0 ? current_answer : "X"
+        row << current_answer
       else
         row << "-"
       end
 
       if i == 2
-        answers = questions_party.questions.map {|q| q.answers.by_service_level(service_level).min_participants(0).newer}
+        answers = questions_party.questions.map {|q| q.answers.by_service_level(service_level).min_participants(0).newer}.compact
         mean = []
         answers.each do |a|
           mean << a.map(&:mean)
