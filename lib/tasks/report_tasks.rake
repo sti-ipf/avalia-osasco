@@ -25,8 +25,11 @@ namespace :reports do
       puts "- #{sl.name}"
       rdata = ReportData.new(inst, sl)
       dimensions.each do |dimension|
-        rdata.dimension_graph(dimension)
-        rdata.indicators_graph(dimension)
+        generated=false
+        rdata.service_level_graph(dimension) unless generated
+        generated=true
+        # rdata.dimension_graph(dimension)
+        # rdata.indicators_graph(dimension)
       end
     end
   end
