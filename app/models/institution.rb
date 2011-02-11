@@ -333,15 +333,16 @@ class Institution < ActiveRecord::Base
       hash
     end
 
+
     divisor = indicators.length if indicators.present?
     divisor ||=  graph_labels.length
 
-    graph_data["Media da UE"] << mean[:segments].sum_values.to_f/divisor
+    hash["Media da UE"] << mean[:segments].sum_values.to_f/divisor
     graph_data["Media do Grupo"] << mean_group[:segments].sum_values.to_f/divisor
     graph_data["Media das #{service_level.name}s"] << mean_sl[:segments].sum_values.to_f/divisor
 
-    # table = Table(graph_labels.values, :data => graph_data.values)
-    # puts table.to_text
+    graph_labels[graph_labels.length] = "Geral"
+
 
     graph = UniFreire::Graphs::Base.new("450x300",
     :labels => graph_labels,
