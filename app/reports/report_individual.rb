@@ -101,6 +101,7 @@ class ReportIndividual
    indicators_parties.each do |indicators_party|
      image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
      text "Os números entre parênteses correspondem à numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
+     text "O cálculo da média não considerou a questão quando a unidade inseriu \"0\" (zero) no sistema. Quando a UE não atribuiu resposta no sistema tal questão foi considerada na média."
 
      first_time = true  
      indicators_party.questions_parties.each do |qp|
@@ -110,18 +111,18 @@ class ReportIndividual
          text "Observação2: o cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros."
        end
        first_time = false
-       question_table(qp)
+       question_table(institution,qp)
        move_down(2)
-       text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF)"
-       text "Obs: O 'X' indica que a unidade não inseriu resposta no sistema para a questão"
+       text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
+       text "Obs: O 'NR' indica que a unidade não inseriu resposta no sistema. No entanto, a questão foi considerada no cálculo da média.", :size => 10
 
      end
    end
  end
  
- def question_table(question_party)
+ def question_table(ue,question_party)
    p "qp => #{question_party.inspect}"
-   data = @report_data.questions_party_table(question_party)
+   data = @report_data.questions_party_table(ue,question_party)
    questions_party_table = data[:table]
    
    start_new_page if y < 400
@@ -709,8 +710,8 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
 
   end
   
-  text "\n * Corresponde ao índice da rede a qual a sua escola pertence(creche, ou EMEI, ou EMEF)", :size => 10
-  text "\n Os dados são apresntados com duas casas decimais", :size => 10
+  text "\n * Corresponde ao índice da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
+  text "\nNota explicativa: Os valores foram arredondados até a segunda casa decimal.", :size => 10
   move_down(10)
 
 

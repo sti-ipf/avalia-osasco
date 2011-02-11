@@ -17,6 +17,10 @@ class Hash
   def avg
     values.avg
   end
+
+  def sum_values
+    values.sum_values
+  end
 end
 
 class Institution < ActiveRecord::Base
@@ -43,24 +47,21 @@ class Institution < ActiveRecord::Base
       questions_parties.each do |qp|
         qp.questions.each do |q|
           @curr_answers = {}
-          answers = q.answers.min_participants(0).newer
+          answers = q.answers.valid.by_service_level(service_level).min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean
+            @curr_answers[a.user_id] ||= a.mean 
             @users_data[a.user_id][a.question_id] ||= a
           end
-          if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
-          end
         end
       end
-      if questions_means.size > 0
         indicators_means << questions_means.avg
-      end
     end
-    if indicators_means.size > 0
+    #if indicators_means.size > 0
       dimension_mean[:mean] = indicators_means.avg
-    end
+    #end
     dimension_mean[:segments] = Institution.mean_by_segments(@users_data)
+    dimension_mean[:mean] = dimension_mean[:segments].avg
     dimension_mean
   end
 
@@ -76,24 +77,25 @@ class Institution < ActiveRecord::Base
       questions_parties.each do |qp|
         qp.questions.each do |q|
           @curr_answers = {}
-          answers       = q.answers.min_participants(0).newer
+          answers       = q.answers.valid.by_service_level(service_level).min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean
-            @users_data[a.user_id][a.question_id] ||= a
+            @curr_answers[a.user_id] ||= a.mean 
+            @users_data[a.user_id][a.question_id] ||= a 
           end
-          if @curr_answers.keys.size > 0
+          #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
-          end
+          #end
         end
       end
-      if questions_means.size > 0
+      #if questions_means.size > 0
         indicators_party_means << questions_means.avg
-      end
+      #end
     end
-    if indicators_party_means.size > 0
+    #if indicators_party_means.size > 0
       indicator_mean[:mean] = indicators_party_means.avg
-    end
+    #end
     indicator_mean[:segments] = Institution.mean_by_segments(@users_data)
+    indicator_mean[:mean] = indicator_mean[:segments].avg
     indicator_mean
   end
 
@@ -105,17 +107,17 @@ class Institution < ActiveRecord::Base
       questions_mean = []
       @curr_answers = {}
       qp.questions.each do |q|
-        answers = q.answers.min_participants(0).newer
+        answers = q.answers.valid.by_service_level(service_level).min_participants(0).newer
         answers.each do |a|
           @curr_answers[a.user_id] ||= a.mean
         end
-        if @curr_answers.keys.size > 0
+        #if @curr_answers.keys.size > 0
           questions_mean << @curr_answers.avg
-        end
+        #end
       end
-      if questions_mean.size > 0
+      #if questions_mean.size > 0
         questions_parties_mean[:sl][qp.id] = questions_mean.avg
-      end
+      #end
     end
     questions_parties_mean
   end
@@ -133,24 +135,25 @@ class Institution < ActiveRecord::Base
         qp.questions.each do |q|
           @curr_answers = {}
           answers = q.answers
-          answers = q.answers.by_group(group).min_participants(0).newer
+          answers = q.answers.by_group(group).valid.min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean
-            @users_data[a.user_id][a.question_id] ||= a
+            @curr_answers[a.user_id] ||= a.mean 
+            @users_data[a.user_id][a.question_id] ||= a 
           end
-          if @curr_answers.keys.size > 0
+          #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
-          end
+          #end
         end
       end
-      if questions_means.size > 0
+      #if questions_means.size > 0
         indicators_party_means << questions_means.avg
-      end
+      #end
     end
-    if indicators_party_means.size > 0
+    #if indicators_party_means.size > 0
       indicator_mean[:mean] = indicators_party_means.avg
-    end
+    #end
     indicator_mean[:segments] = Institution.mean_by_segments(@users_data)
+    indicator_mean[:mean] = indicator_mean[:segments].avg
     indicator_mean
   end
 
@@ -163,17 +166,17 @@ class Institution < ActiveRecord::Base
       questions_mean = []
       @curr_answers = {}
       qp.questions.each do |q|
-        answers = q.answers.by_group(group).min_participants(0).newer
+        answers = q.answers.by_group(group).valid.min_participants(0).newer
         answers.each do |a|
           @curr_answersa[a.user_id] = a.mean
         end
-        if @curr_answers.keys.size > 0
+        #if @curr_answers.keys.size > 0
           questions_mean << @curr_answers.avg
-        end
+        #end
       end
-      if questions_mean.size > 0
+      #if questions_mean.size > 0
         questions_parties_mean[:group][qp.id] = questions_mean.avg
-      end
+      #end
     end
     questions_parties_mean
   end
@@ -191,24 +194,25 @@ class Institution < ActiveRecord::Base
       questions_parties.each do |qp|
         qp.questions.each do |q|
           @curr_answers = {}
-          answers = q.answers.by_group(group).min_participants(0).newer
+          answers = q.answers.by_group(group).valid.min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean
-            @users_data[a.user_id][a.question_id] ||= a
+            @curr_answers[a.user_id] ||= a.mean 
+            @users_data[a.user_id][a.question_id] ||= a 
           end
-          if @curr_answers.keys.size > 0
+          #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
-          end
+          #end
         end
       end
-      if questions_means.size > 0
+      #if questions_means.size > 0
         indicators_means << questions_means.avg
-      end
+      #end
     end
-    if indicators_means.size > 0
+    #if indicators_means.size > 0
       dimension_mean[:mean] = indicators_means.avg
-    end
+    #end
     dimension_mean[:segments] = Institution.mean_by_segments(@users_data)
+    dimension_mean[:mean] = dimension_mean[:segments].avg
     dimension_mean
   end
 
@@ -228,15 +232,15 @@ class Institution < ActiveRecord::Base
     mean = {}
     questions.each do |q|
       answers = q.answers
-      answers = anwsers.by_service_level(service_level).min_participants(0).newer
+      answers = anwsers.by_service_level(service_level).valid.min_participants(0).newer
       curr_answer = {}
       answers.each do |a|
         @curr_answers[a.user_id] ||= a.mean
       end
-      if @curr_answers.keys.size > 0
+      #if @curr_answers.keys.size > 0
         answer = @curr_answers.avg.round(2)
         mean[q.survey.segment.name] =  [q.number,answer]
-      end
+      #end
     end
     mean
   end
@@ -253,24 +257,25 @@ class Institution < ActiveRecord::Base
       questions_parties.each do |qp|
         qp.questions.each do |q|
           @curr_answers = {}
-          answers = q.answers.by_service_level(service_level).min_participants(0).newer
+          answers = q.answers.with_institution(self).by_service_level(service_level).valid.min_participants(0).newer
           answers.each do |a|
             @curr_answers[a.user_id] ||= a.mean
             @users_data[a.user_id][a.question_id] ||= a
           end
-          if @curr_answers.keys.size > 0
+          #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
-          end
-          if questions_means.size > 0
+          #end
+          #if questions_means.size > 0
             indicators_means << questions_means.avg
-          end
+          #end
         end
       end
-      if indicators_means.size > 0
+      #if indicators_means.size > 0
         dimension_mean[:mean] = indicators_means.avg
-      end
+      #end
     end
     dimension_mean[:segments] = Institution.mean_by_segments(@users_data)
+    dimension_mean[:mean] = dimension_mean[:segments].avg
     dimension_mean
   end
 
@@ -286,26 +291,27 @@ class Institution < ActiveRecord::Base
       questions_parties.each do |qp|
         qp.questions.each do |q|
           @curr_answers = {}
-          answers = q.answers.by_service_level(service_level).min_participants(0).newer
+          answers = q.answers.with_institution(self).by_service_level(service_level).valid.min_participants(0).newer
           unless answers.nil?
             answers.each do |a|
               @curr_answers[a.user_id] ||= a.mean
               @users_data[a.user_id][a.question_id] ||= a
             end
-            if @curr_answers.keys.size > 0
+            #if @curr_answers.keys.size > 0
               questions_means << @curr_answers.avg
-            end
+            #end
           end
-          if questions_means.size > 0
+          #if questions_means.size > 0
             indicators_party_means << questions_means.avg
-          end
+          #end
         end
       end
-      if indicators_party_means.size > 0
+      #if indicators_party_means.size > 0
         indicator_mean[:mean] = indicators_party_means.avg
-      end
+      #end
     end
     indicator_mean[:segments] = Institution.mean_by_segments(@users_data)
+    indicator_mean[:mean] = indicator_mean[:segments].avg
     indicator_mean
   end
 
@@ -327,9 +333,12 @@ class Institution < ActiveRecord::Base
       hash
     end
 
-    graph_data["Media da UE"] << mean[:mean]
-    graph_data["Media do Grupo"] << mean_group[:mean]
-    graph_data["Media das #{service_level.name}s"] << mean_sl[:mean]
+    divisor = indicators.length if indicators.present?
+    divisor ||=  graph_labels.length
+
+    graph_data["Media da UE"] << mean[:segments].sum_values.to_f/divisor
+    graph_data["Media do Grupo"] << mean_group[:segments].sum_values.to_f/divisor
+    graph_data["Media das #{service_level.name}s"] << mean_sl[:segments].sum_values.to_f/divisor
 
     # table = Table(graph_labels.values, :data => graph_data.values)
     # puts table.to_text
@@ -338,7 +347,7 @@ class Institution < ActiveRecord::Base
     :labels => graph_labels,
     :title => options[:title]
     )
-    graph_data.each do |name, data|
+    graph_data.each { |i| i }.collect.sort {|u,v| v[0].split(' ')[2] <=> u[0].split(' ')[2] }.each do |name, data|
       graph.data(name, data)
     end
     graph.data(" ", Array.new(segments.length, 0))
@@ -393,13 +402,13 @@ class Institution < ActiveRecord::Base
       segments_dimension      = mean[dimension.id][:segments]
       grade_segments          = names.inject([]) {|array, name| array << (segments_dimension[name].to_f/5).round(2); array}
 
-      average_dimension       = (mean[dimension.id][:mean].to_f/5).round(2)
-      average_group_dimension = (mean_group[dimension.id][:mean].to_f/5).round(2)
-      average_dimension       = (mean_sl[dimension.id][:mean].to_f/5).round(2)
+      average_dimension       = (((segments_dimension.sum_values.to_f)/names.length)/5).round(2)
+      average_group_dimension = ((mean_group[dimension.id][:segments].sum_values.to_f/names.length)/5).round(2)
+      average_sl_dimension       = ((mean_sl[dimension.id][:segments].sum_values.to_f/names.length)/5).round(2)
 
-      value_row               = [average_dimension, average_group_dimension, average_dimension]
+      value_row               = [average_dimension, average_group_dimension, average_sl_dimension]
 
-      sum                     = sum + mean[dimension.id][:mean].to_f/5
+      sum                     = sum + (((segments_dimension.sum_values.to_f)/names.length)/5)
 
       table << [col0[index]].concat(grade_segments).concat(value_row)
     end

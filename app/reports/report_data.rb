@@ -24,7 +24,7 @@ class ReportData
     end
   end
 
-  def questions_party_table(questions_party)
+  def questions_party_table(ue,questions_party)
     data = [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média Geral da Questão", "Média do Grupo", "Média da Rede*"]]
 
     segments_strings = %W(Educandos Familiares Funcionários Gestores Professores)
@@ -43,16 +43,16 @@ class ReportData
       row << (question.nil? ? "-" : question.number)
 
       if question.present?
-        answers = question.answers.by_service_level(service_level).min_participants(0).newer
+        answers = question.answers.with_institution(ue).by_service_level(service_level).min_participants(0).newer
         current_answer = answers.map(&:mean).avg.to_f.round(2)
-        current_answer = current_answer > 0 ? current_answer : "X"
+        current_answer = current_answer > 0 ? current_answer : "NR"
         row << current_answer
       else
         row << "-"
       end
 
       if i == 2
-        answers = questions_party.questions.map {|q| q.answers.by_service_level(service_level).min_participants(0).newer}.compact
+        answers = questions_party.questions.map {|q| q.answers.with_institution(ue).by_service_level(service_level).min_participants(0).newer}.compact
         mean = []
         answers.each do |a|
           mean << a.map(&:mean)
@@ -79,6 +79,7 @@ class ReportData
     graph_start_time = now = Time.now
 
     data_sl = Institution.mean_dimension_by_sl(dimension, @service_level)
+    #p data_sl
     sl_time = Time.now - now
     now = Time.now
     # p data_sl
@@ -87,16 +88,17 @@ class ReportData
 
     group = @institution.users.first(:conditions => {:service_level_id => @service_level.id}, :include => :group).group
     data_group = Institution.mean_dimension_by_group(dimension, @service_level, group)
+    #p data_group
     group_time = Time.now - now
     now = Time.now
     
     data = @institution.mean_dimension(dimension, @service_level)
+    #p data
     dimension_time = Time.now - now
     now = Time.now
     graph = @institution.graph(data, data_group, data_sl, @service_level, :id => dimension.number)
     debugger
     p_times(graph, :sl => sl_time, :group => group_time, :dimension => dimension_time, :graph => Time.now - now, :total => Time.now - graph_start_time)
-
     graph
   end
 
@@ -130,14 +132,17 @@ class ReportData
   def indicator_graph(indicators_party)
     now = graph_start_time = Time.now
     data_sl = Institution.mean_indicator_by_sl(indicators_party, @service_level)
+    #p data_sl
     sl_time = Time.now - now
     now = Time.now
 
     data_group = Institution.mean_indicator_by_group(indicators_party,@service_level, @group)
+    #p data_group
     group_time = Time.now - now
     
     now = Time.now
     data = @institution.mean_indicator(indicators_party,@service_level)
+    #p data
     indicators = {}
     indicators_party.indicators.each do |i|
       indicators[i.segment.name] = i.number
@@ -146,7 +151,7 @@ class ReportData
     now2 = Time.now
     
     p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
-    
+    #p "=============================================================================================================="
     graph
   end
 
@@ -170,16 +175,15 @@ class ReportData
       data_sl = Institution.mean_dimension_by_sl(d,@service_level)
       means_sl[d.id] = data_sl
 
-      # p "============================================================================================"
-      #       p data_sl
+  
+
       g = (@institution.users.select { |u| u.service_level == @service_level }).first.group
       data_group = Institution.mean_dimension_by_group(d,@service_level,g)
       means_group[d.id] = data_group
-      # p data_group
-      # p "============================================================================================"
+   
 
       data = @institution.mean_dimension(d,@service_level)
-      means[d.id] = data_group
+      means[d.id] = data
     end
     
     @institution.grade_to_table(means_sl,means_group,means,@service_level)
