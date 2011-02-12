@@ -259,9 +259,9 @@ text "1.1 Qual a importância da avaliação educacional na rede?
 	2.10.2 Percepção da UE sobre cada indicador de qualidade
  	2.10.3 Questões problematizadoras"
 
+ if service_level.id == 2
   start_new_page
 
- if service_level.id == 2
    fill_color "043ccb"
    text "\n 2.11 DIMENSÃO 11 - PROCESSOS DE ALFABETIZAÇÃO E LETRAMENTO", :style => :bold
    fill_color "0000000"
