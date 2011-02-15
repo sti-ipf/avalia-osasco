@@ -24,12 +24,12 @@ namespace :reports do
     inst.service_levels.each do |sl|
       puts "- #{sl.name}"
       rdata = ReportData.new(inst, sl)
+      not_generated = true
       dimensions.each do |dimension|
-        generated=false
-        rdata.service_level_graph(dimension) unless generated
-        generated=true
-        # rdata.dimension_graph(dimension)
-        # rdata.indicators_graph(dimension)
+        rdata.service_level_graph(dimension) if not_generated
+        rdata.dimension_graph(dimension)
+        rdata.indicators_graph(dimension)
+        not_generated = false
       end
     end
   end

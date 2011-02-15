@@ -315,7 +315,6 @@ class Institution < ActiveRecord::Base
     indicator_mean
   end
 
-
   def graph(mean, mean_group, mean_sl, service_level, options = {})
     indicators = options[:indicators]
     segments = service_level.segments.sort
@@ -333,56 +332,24 @@ class Institution < ActiveRecord::Base
       hash
     end
 
-
-    divisor = indicators.length if indicators.present?
-    divisor ||=  graph_labels.length
-
-    hash["Media da UE"] << mean[:segments].sum_values.to_f/divisor
-    graph_data["Media do Grupo"] << mean_group[:segments].sum_values.to_f/divisor
-    graph_data["Media das #{service_level.name}s"] << mean_sl[:segments].sum_values.to_f/divisor
+    graph_data["Media da UE"] << mean[:mean]
+    graph_data["Media do Grupo"] << mean_group[:mean]
+    graph_data["Media das #{service_level.name}s"] << mean_sl[:mean]
 
     graph_labels[graph_labels.length] = "Geral"
 
+    # table = Table(graph_labels.values, :data => graph_data.values)
+    # puts table.to_text
 
     graph = UniFreire::Graphs::Base.new("450x300",
     :labels => graph_labels,
     :title => options[:title]
     )
-    graph_data.each { |i| i }.collect.sort {|u,v| v[0].split(' ')[2] <=> u[0].split(' ')[2] }.each do |name, data|
-      graph.data(name, data)
-    end
-    graph.data(" ", Array.new(segments.length, 0))
-    graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "#{options[:id]}-")
-  end
-  
-  def service_level_graph(sl_average_by_dimension, service_level, options = {})
-    segments = service_level.segments.sort
-
-    # Graph labels
-    debugger
-    # graph_labels =  {}
-    # sl_average_by_dimension.first[1][:segments].each{|k,v| graph_labels[graph_labels.length] = k}
-    
-    
-    # Graph data
-    # debugger
-    graph_data = sl_average_by_dimension.inject({}) do |hash,cell| 
-      hash[cell[0]] = cell[1][:segments].collect{|key,value| value}
-      hash
-    end
-    
-
-    graph = UniFreire::Graphs::Base.new("450x300",
-    :labels => graph_labels,
-    :title => options[:title]
-    )
-    
     graph_data.each do |name, data|
       graph.data(name, data)
     end
     graph.data(" ", Array.new(segments.length, 0))
-    graph_path = "#{Rails.root}/tmp/graphs/#{id}"
-    graph.save_temporary(graph_path, "general_average_dimension#{options[:id]}-")
+    graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "#{options[:id]}-")
   end
 
   def grade_to_table(mean_sl,mean_group,mean,sl)
@@ -431,5 +398,32 @@ class Institution < ActiveRecord::Base
     end
     mean
   end
-  
+
+  def service_level_graph(sl_average_by_dimension, service_level, options = {})
+    segments = service_level.segments.sort
+
+    # Graph labels
+    graph_labels =  {}
+    segments.collect(&:name).each {|k,v| graph_labels[graph_labels.length] = k}
+
+    a={}
+    sl_average_by_dimension.each do |i|
+      avgs = i[1][:segments]
+      graph_avgs = [avgs["Educandos"] ? avgs["Educandos"] : 0.0, avgs["Familiares"], avgs["Funcionarios"], avgs["Gestores"], avgs["Professores"]]
+      a[i[0]] = graph_avgs
+    end
+
+    graph = UniFreire::Graphs::Base.new("450x300",
+      :labels => graph_labels,
+      :title => options[:title]
+    )
+    
+    a.each {|name, data| graph.data(name, data)}
+
+    graph.data(" ", Array.new(segments.length, 0))
+    graph_path = "#{Rails.root}/tmp/graphs/#{id}"
+    graph.save_temporary(graph_path, "general_average_dimension#{options[:id]}-")
+  end
+
+
 end
