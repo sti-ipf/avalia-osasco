@@ -400,11 +400,11 @@ class Institution < ActiveRecord::Base
   end
 
   def service_level_graph(sl_average_by_dimension, service_level, options = {})
-    segments = service_level.segments.sort
+    segments = %w(Educandos Familiares Funcionarios Gestores Professores)
 
     # Graph labels
     graph_labels =  {}
-    segments.collect(&:name).each {|k,v| graph_labels[graph_labels.length] = k}
+    segments.each {|k,v| graph_labels[graph_labels.length] = k}
 
     a={}
     sl_average_by_dimension.each do |i|
