@@ -201,5 +201,31 @@ class ReportData
     {:title => name == "CRECHE" ? name + "S" : name + "s", :table => members_groups[service_level.name] }
   end
 
+  def single_institution_dimension_graph(dimension)
+    graph_start_time = now = Time.now
+
+    data_sl = Institution.mean_dimension_by_sl(dimension, @service_level)
+    #p data_sl
+    sl_time = Time.now - now
+    now = Time.now
+    # p data_sl
+    
+    p "Graph Dimension: #{dimension.number}. #{dimension.name}"
+
+    group = @institution.users.first(:conditions => {:service_level_id => @service_level.id}, :include => :group).group
+    data_group = Institution.mean_dimension_by_group(dimension, @service_level, group)
+    #p data_group
+    group_time = Time.now - now
+    now = Time.now
+    
+    data = @institution.mean_dimension(dimension, @service_level)
+    #p data
+    dimension_time = Time.now - now
+    now = Time.now
+    graph = @institution.single_institution_graph(data, data_group, data_sl, @service_level, :id => dimension.number)
+    p_times(graph, :sl => sl_time, :group => group_time, :dimension => dimension_time, :graph => Time.now - now, :total => Time.now - graph_start_time)
+
+    graph
+  end
 end
 

@@ -425,5 +425,38 @@ class Institution < ActiveRecord::Base
     graph.save_temporary(graph_path, "general_average_dimension#{options[:id]}-")
   end
 
+  def single_institution_graph(mean, mean_group, mean_sl, service_level, options = {})
+    indicators = options[:indicators]
+    segments = service_level.segments.sort
 
+    # Graph labels
+    graph_labels =  {}
+
+    # Graph data
+    graph_data = segments.inject(Hash.new { |h, k| h[k] = [] }) do |hash, seg|
+      hash["Media da UE"] << mean[:segments][seg.name].to_f
+      # hash["Media do Grupo"] << mean_group[:segments][seg.name].to_f
+      # hash["Media das #{service_level.name}s"] << mean_sl[:segments][seg.name].to_f
+
+      graph_labels[graph_labels.length] = indicators.present? ? "#{seg.name}\n(#{indicators[seg.name]})" : seg.name
+      hash
+    end
+
+    graph_data["Media da UE"] << mean[:mean]
+    # graph_data["Media do Grupo"] << mean_group[:mean]
+    # graph_data["Media das #{service_level.name}s"] << mean_sl[:mean]
+
+    graph_labels[graph_labels.length] = "Geral"
+
+
+    graph = UniFreire::Graphs::Base.new("450x300",
+    :labels => graph_labels,
+    :title => options[:title]
+    )
+    graph_data.each do |name, data|
+      graph.data(name, data)
+    end
+    # graph.data(" ", Array.new(segments.length, 0))
+    graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "single_institution_dimension_#{options[:id]}-")
+  end
 end
