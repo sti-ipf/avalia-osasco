@@ -457,6 +457,6 @@ class Institution < ActiveRecord::Base
       graph.data(name, data)
     end
     # graph.data(" ", Array.new(segments.length, 0))
-    graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "single_institution_dimension_#{options[:id]}-")
+    graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "single_institution_#{options[:id]}-")
   end
 end

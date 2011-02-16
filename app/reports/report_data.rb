@@ -210,7 +210,7 @@ class ReportData
     now = Time.now
     # p data_sl
     
-    p "Graph Dimension: #{dimension.number}. #{dimension.name}"
+    p "Single Institution Dimension Graph : #{dimension.number}. #{dimension.name}"
 
     group = @institution.users.first(:conditions => {:service_level_id => @service_level.id}, :include => :group).group
     data_group = Institution.mean_dimension_by_group(dimension, @service_level, group)
@@ -222,9 +222,41 @@ class ReportData
     #p data
     dimension_time = Time.now - now
     now = Time.now
-    graph = @institution.single_institution_graph(data, data_group, data_sl, @service_level, :id => dimension.number)
+    graph = @institution.single_institution_graph(data, data_group, data_sl, @service_level, :id => "dimension#{dimension.number}")
     p_times(graph, :sl => sl_time, :group => group_time, :dimension => dimension_time, :graph => Time.now - now, :total => Time.now - graph_start_time)
 
+    graph
+  end
+
+  def single_institution_indicators_graph(dimension)
+    indicators_parties = dimension.indicators_parties.all(:conditions => {:service_level_id => @service_level.id})
+    filenames = indicators_parties.inject([]) do |list, indicators_party|
+      list << single_institution_indicator_graph(indicators_party)
+    end
+  end
+
+  def single_institution_indicator_graph(indicators_party)
+    now = graph_start_time = Time.now
+    data_sl = Institution.mean_indicator_by_sl(indicators_party, @service_level)
+    #p data_sl
+    sl_time = Time.now - now
+    now = Time.now
+
+    data_group = Institution.mean_indicator_by_group(indicators_party,@service_level, @group)
+    #p data_group
+    group_time = Time.now - now
+    
+    now = Time.now
+    data = @institution.mean_indicator(indicators_party,@service_level)
+    #p data
+    indicators = {}
+    indicators_party.indicators.each do |i|
+      indicators[i.segment.name] = i.number
+    end
+    graph = @institution.single_institution_graph(data, data_group, data_sl, @service_level, :id => "single_institution_i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
+    now2 = Time.now
+    
+    p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
     graph
   end
 end
