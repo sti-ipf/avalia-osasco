@@ -26,14 +26,15 @@ namespace :reports do
       rdata = ReportData.new(inst, sl)
       not_generated = true
       dimensions.each do |dimension|
-        rdata.service_level_graph(dimension) if not_generated
-        rdata.dimension_graph(dimension)
-        rdata.indicators_graph(dimension)
+        sls = ServiceLevel.find(:all, :conditions => {:name => ['Creche','EMEI']})
+        rdata.service_level_graph(dimension, sls) if not_generated
+        # rdata.dimension_graph(dimension)
+        # rdata.indicators_graph(dimension)
         not_generated = false
       end
     end
   end
-
+  
   desc "Generates graphs for each institution"
   task :reports => :environment do
     start_letter = ENV["START"] || "A"

@@ -399,17 +399,25 @@ class Institution < ActiveRecord::Base
     mean
   end
 
-  def service_level_graph(sl_average_by_dimension, service_level, options = {})
+  def self.service_level_graph(sl_average_by_dimension, options = {})
     segments = %w(Educandos Familiares Funcionarios Gestores Professores)
+    segments.delete("Educandos") if options[:group] == "Ensino Infantil"
 
     # Graph labels
     graph_labels =  {}
     segments.each {|k,v| graph_labels[graph_labels.length] = k}
+    
+    graph_labels[graph_labels.length] = "Geral"
 
     a={}
+
     sl_average_by_dimension.each do |i|
       avgs = i[1][:segments]
-      graph_avgs = [avgs["Educandos"] ? avgs["Educandos"] : 0.0, avgs["Familiares"], avgs["Funcionarios"], avgs["Gestores"], avgs["Professores"]]
+      if segments.include?("Educandos")
+        graph_avgs = [avgs["Educandos"] ? avgs["Educandos"] : 0.0, avgs["Familiares"], avgs["Funcionarios"], avgs["Gestores"], avgs["Professores"], i[1][:mean]]
+      else
+        graph_avgs = [avgs["Familiares"], avgs["Funcionarios"], avgs["Gestores"], avgs["Professores"], i[1][:mean]]
+      end
       a[i[0]] = graph_avgs
     end
 
@@ -417,10 +425,10 @@ class Institution < ActiveRecord::Base
       :labels => graph_labels,
       :title => options[:title]
     )
-    
+    # debugger
     a.each {|name, data| graph.data(name, data)}
 
-    graph.data(" ", Array.new(segments.length, 0))
+    # graph.data(" ", Array.new(segments.length, 0))
     graph_path = "#{Rails.root}/tmp/graphs/#{id}"
     graph.save_temporary(graph_path, "general_average_dimension#{options[:id]}-")
   end

@@ -102,21 +102,20 @@ class ReportData
     graph
   end
 
-  def service_level_graph(dimension)
+  def service_level_graph(dimension, service_levels)
     graph_start_time = now = Time.now
     data_service_level = {}
-    @institution.service_levels.each do |service_level|
+    service_levels.each do |service_level|
       service_level_average_data = Institution.mean_dimension_by_sl(dimension, service_level)
-      data_service_level[service_level.name] = service_level_average_data.reject{|k,v| k == :mean}
+      data_service_level[service_level.name] = service_level_average_data#.reject{|k,v| k == :mean}
     end
     service_level_time = Time.now - now
-    
     now = Time.now
     p "Graph Service Level Dimension: #{dimension.number}. #{dimension.name}"
     dimension_time = Time.now - now
     
     now = Time.now
-    graph = @institution.service_level_graph(data_service_level, @service_level, :id => dimension.number)
+    graph = Institution.service_level_graph(data_service_level, :id => dimension.number, :group => "Ensino Infantil")
     graph_time = Time.now - now
 
     p_times(graph, :sl => service_level_time, :dimension => dimension_time, :graph => graph_time, :total => Time.now - graph_start_time)
