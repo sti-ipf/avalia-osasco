@@ -10,9 +10,6 @@ class TableGeneratorTest < ActiveSupport::TestCase
     (1..60).each{|i| @institutions << ["teste_#{i}",i]}
     @eleven_dimensions = (1..11).collect
     @ten_dimensions = (1..10).collect
-    puts @institutions.inspect
-    puts @eleven_dimensions.inspect
-    puts @emef_data.inspect
   end
 
   def get_hash(last_dimension)
@@ -27,16 +24,22 @@ class TableGeneratorTest < ActiveSupport::TestCase
     hash
   end
 
-  test "gerar tabela do EMEF" do
+  test "gerar tabela com 11 dimensões (EMEF)" do
     UniFreire::Tables::Generator.build_html(@emef_data, @institutions, @eleven_dimensions)
     table_file = File.new(File.join(TEMP_DIRECTORY,'tabela.html'))
-    UniFreire::Tables::Generator.send(:convert_html_to_pdf,table_file, "tabela_TESTE")
+    UniFreire::Tables::Generator.send(:convert_html_to_pdf,table_file, "tabela_11_dimensoes_TESTE")
   end
 
-  test "gerar tabela do EMEI" do
+  test "gerar tabela com 10 dimensões (EMEI e Creche)" do
+    UniFreire::Tables::Generator.build_html(@emef_data, @institutions, @ten_dimensions)
+    table_file = File.new(File.join(TEMP_DIRECTORY,'tabela.html'))
+    UniFreire::Tables::Generator.send(:convert_html_to_pdf,table_file, "tabela_10_dimensoes_TESTE")
   end
 
-  test "gerar tabela do Creche" do
+  test "gerar legenda com 57 escolas" do
+    UniFreire::Tables::Generator.build_legends(@institutions, "Unidades Escolares TESTE")
+    table_file = File.new(File.join(TEMP_DIRECTORY,'legenda.html'))
+    UniFreire::Tables::Generator.send(:convert_html_to_pdf,table_file, "legenda_TESTE")
   end
 
 end

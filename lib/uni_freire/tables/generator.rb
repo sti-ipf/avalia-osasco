@@ -32,69 +32,59 @@ module UniFreire
         html_code = get_initial_html
         html_code << "<h5>#{title}</h5>
                       <table>"
+        break_control = 0
+        institutions_size = institutions.size
         institutions.each do |i|
           html_code << "
             <tr>
               <td style=\"font-size:11px\">#{i[1]}</td>
               <td style=\"width:auto;font-size:11px\">#{i[0]}</td>
             </tr>"
+          break_control += 1
+          if break_control == 40 && institutions_size > 50
+            html_code << "</table> <div class=\"break_page\"> </div> <table>"
+            break_control = 0
+          end
         end
         html_code << '</table></body></html>'
         create_html_file(html_code, 'legenda.html')
       end
 
       def self.build_html(data,institutions, dimensions)
-        columns_size = 60
         html_code = get_initial_html
-        first_table = '<table>'
-        second_table = '<table>'
-        first_header = ''
-        second_header = ''
+        html_code << '<table>'
+        header = ''
 
-        [first_table, second_table, first_header, second_header].each do |s|
+        [html_code, header].each do |s|
           s << <<HEREDOC
            <tr>
-            <td class = "first_column" style= "text-align:center;" rowspan = "3"> Dimensão </td>
+            <td rowspan = "3"> Unidade Escolar </td>
            </tr>
            <tr>
-            <td colspan = \"#{institutions.count}\"> Unidade Escolar </td>
+            <td colspan = \"#{dimensions.count}\"> Dimensões </td>
            </tr>
            <tr>
 HEREDOC
         end
 
-        institutions.size.times do |i|
-          if i > columns_size
-            [second_table, second_header].each {|s| s << "<td> #{institutions[i][1]} </td>"}
-          else
-            [first_table, first_header].each {|s| s << "<td> #{institutions[i][1]} </td>"}
-          end
-        end
-
-        [first_table, second_table, first_header, second_header].each {|s| s << "</tr>"}
-
         dimensions.each do |dimension|
-          [first_table, second_table].each {|s| s << "<tr> <td class = \"first_column\"> #{DIMENSION[dimension]} </td>"}
-          institutions_columns_control = 0
-
-          institutions.each do |institution|
-            institutions_columns_control += 1
-            if institutions_columns_control > columns_size
-              second_table = add_data_in_table(data, institution[0], dimension, second_table)
-            else
-              first_table = add_data_in_table(data, institution[0], dimension, first_table)
-            end
+          [html_code, header].each do |s|
+            s << "<td>
+                    #{DIMENSION[dimension]}
+                  </td>"
           end
-
-          [first_table, second_table].each {|s| s << "</tr>"}
         end
 
-        if institutions.count > columns_size
-          first_table << "</table> <div class=\"break_page\"> </div>"
+        [html_code, header].each {|s| s << "</tr>"}
+
+        institutions.each do |institution|
+          html_code << "<tr> <td> #{institution[1]} </td>"
+          dimensions.each do |dimension|
+            html_code = add_data_in_table(data, institution[0], dimension, html_code)
+          end
+          html_code << "</tr>"
         end
-        second_table << "</table>"
-        html_code << first_table
-        html_code << second_table if institutions.count > columns_size
+        html_code << "</table>"
         create_html_file(html_code, 'tabela.html')
       end
 
@@ -107,6 +97,11 @@ HEREDOC
           institutions << [institutions_temp[i], (i+1)]
         end
         institutions
+      end
+
+      def self.get_dimensions(data)
+        institution_id = data.keys.first
+        data[institution_id].keys.sort!
       end
 
       def self.get_data(service_level)
@@ -122,11 +117,6 @@ HEREDOC
           end
         end
         data
-      end
-
-      def self.get_dimensions(data)
-        institution_id = data.keys.first
-        data[institution_id].keys.sort!
       end
 
       def self.add_data_in_table(data, institution, dimension, table)
@@ -174,7 +164,8 @@ HEREDOC
                 border-collapse: collapse;}
           tr{border:1px solid black;}
           td{border:1px solid black;
-             width:15px;padding:2px;
+             width:auto;
+             padding:1px;
              text-align:center;
              font-size: 8px;
              }
@@ -183,13 +174,6 @@ HEREDOC
           .yellow{background-color:yellow}
           .green{background-color:green}
           .space_betweet_tables{height:20px;}
-          .first_column{
-            border: 1px solid black;
-            width: 420px;
-            padding: 2px;
-            text-align: left;
-            font-size: 8px;
-          }
           .break_page {}
           @media print {
             .break_page { page-break-after: always;}
