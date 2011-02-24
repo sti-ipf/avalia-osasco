@@ -25,6 +25,7 @@ Rails::Initializer.run do |config|
   config.gem "gruff"
   config.gem "prawn"
   config.gem "rghost", :lib => "rghost"
+  config.gem "pdfkit"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -48,6 +49,4 @@ Rails::Initializer.run do |config|
   config.load_paths << "#{RAILS_ROOT}/app/reports"
 
 end
-
-
 
