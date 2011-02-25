@@ -258,5 +258,54 @@ class ReportData
     p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
     graph
   end
+
+  
+  def self.service_level_indicators_graph(dimension,sls)
+    # indicators_parties = dimension.indicators_parties.all(:conditions => {:service_level_id => sls.collect(&:id)})
+    indicators_parties = IndicatorsParty.find(:all, :conditions => {
+        :service_level_id => sls.collect(&:id),
+        :dimension_id => dimension.id
+      }
+    )
+    data = sls.inject({}) {|m,v| m[v.name]= indicators_parties.find_all {|i|i.service_level_id == v.id};m}
+    indicators_parties.each {|indicators_party| service_level_indicator_graph(indicators_party, sls)}
+    # service_level_indicator_graph(indicators_party, data)
+  end
+
+  def self.service_level_indicator_graph(indicators_party, sls)
+    now = graph_start_time = Time.now
+    # data_sl = {:mean=>0.0, :segments=>{"Professores"=>0.0, "Familiares"=>0.0, "Funcionarios"=>0.0, "Gestores"=>0.0}}
+    blur={}
+    sls.each do |i|
+      # {:mean=>4.37266173042644, :segments=>{"Professores"=>4.22963636363636, "Familiares"=>4.44846153846154, "Funcionarios"=>4.21, "Gestores"=>4.60254901960784}}
+      # temp = Institution.mean_indicator_by_sl(indicators_party, i)
+      # data_sl[:mean] = data_sl[:mean] + temp[:mean]
+      # temp[:segments].each_pair do |k,v|
+      #   data_sl[:segments][k] = data_sl[:segments][k] + temp[:segments][k]
+      # end
+      blur[i.name] = Institution.mean_indicator_by_sl2(indicators_party, sls)
+    end
+    #p data_sl
+    sl_time = Time.now - now
+    now = Time.now
+
+    # data_group = Institution.mean_indicator_by_group(indicators_party,@service_level, @group)
+    # #p data_group
+    # group_time = Time.now - now
+    # 
+    # now = Time.now
+    # data = @institution.mean_indicator(indicators_party,@service_level)
+    #p data
+    # graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
+    p "============"
+    p blur
+    graph = Institution.service_level_graph(blur, :id => "i#{indicators_party.indicators.first.number}", :title => "#{indicators_party.indicators.first.name}", :group => "Ensino Infantil")
+    now2 = Time.now
+    
+    # p_times(graph, :sl => sl_time,:graph => now2 - now)
+    #p "=============================================================================================================="
+    # graph
+  end
+
 end
 

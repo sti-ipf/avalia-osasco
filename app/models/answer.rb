@@ -10,6 +10,7 @@ class Answer < ActiveRecord::Base
   
   named_scope :by_group, proc { |group| {:conditions => ["answers.user_id in (select u2.id from users as u2 where u2.group_id=?)", group.id]} }
   named_scope :by_service_level, proc { |sl| {:conditions => ["answers.user_id in (select u2.id from users as u2 where u2.service_level_id=?)", sl.id]} }
+  named_scope :by_service_levels, proc { |sl| {:conditions => ["answers.user_id in (select u2.id from users as u2 where u2.service_level_id in (?))", sl.collect(&:id)]} }
   named_scope :min_participants, proc { |number| {:conditions => ["answers.participants_number > ?", number]} } 
   named_scope :newer, :order => "answers.created_at DESC"
   named_scope :with_valid_user, :include => :user, :conditions => ["users.id is not NULL"]

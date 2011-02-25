@@ -99,6 +99,45 @@ class Institution < ActiveRecord::Base
     indicator_mean
   end
 
+  def self.mean_indicator_by_sl2(indicators_party,sls)
+    indicators = Indicator.find(:all, 
+        :conditions => {
+            :service_level_id => sls.collect(&:id),
+            :number => indicators_party.indicators.first.number
+        }
+    )
+    indicator_mean = { :mean => 0 }
+    indicators_party_means = []
+    @users_data = Hash.new { |h, k| h[k] = Hash.new }
+    indicators.each do |indicator|
+      questions_parties = indicator.questions_parties
+      indicator_means = []
+      questions_means = []
+      questions_parties.each do |qp|
+        qp.questions.each do |q|
+          @curr_answers = {}
+          answers = q.answers.valid.by_service_levels(sls).min_participants(0).newer
+          answers.each do |a|
+            @curr_answers[a.user_id] ||= a.mean 
+            @users_data[a.user_id][a.question_id] ||= a 
+          end
+          #if @curr_answers.keys.size > 0
+            questions_means << @curr_answers.avg
+          #end
+        end
+      end
+      #if questions_means.size > 0
+        indicators_party_means << questions_means.avg
+      #end
+    end
+    #if indicators_party_means.size > 0
+      indicator_mean[:mean] = indicators_party_means.avg
+    #end
+    indicator_mean[:segments] = Institution.mean_by_segments(@users_data)
+    indicator_mean[:mean] = indicator_mean[:segments].avg
+    indicator_mean
+  end
+
   def self.mean_questions_parties_by_sl(indicator,service_level)
     questions_parties_mean = { :sl => {} }
     questions_parties = indicator.questions_parties
@@ -418,14 +457,16 @@ class Institution < ActiveRecord::Base
       else
         graph_avgs = [avgs["Familiares"], avgs["Funcionarios"], avgs["Gestores"], avgs["Professores"], i[1][:mean]]
       end
-      a[i[0]] = graph_avgs
+      a[i[0]] = graph_avgs.collect {|i| i || 0.0}
     end
 
     graph = UniFreire::Graphs::Base.new("450x300",
       :labels => graph_labels,
       :title => options[:title]
     )
-    # debugger
+    
+    p a
+    p "============"
     a.each {|name, data| graph.data(name, data)}
 
     # graph.data(" ", Array.new(segments.length, 0))

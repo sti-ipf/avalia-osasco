@@ -18,7 +18,7 @@ namespace :reports do
     #     end
     #   end
     # end
-
+    
     inst = Institution.find(87)
     puts inst.name
     inst.service_levels.each do |sl|
@@ -27,19 +27,35 @@ namespace :reports do
       not_generated = true
       dimensions.each do |dimension|
         sls = ServiceLevel.find(:all, :conditions => {:name => ['Creche','EMEI']})
-        rdata.service_level_graph(dimension, sls) if not_generated
+        # rdata.service_level_graph(dimension, sls) if not_generated
+        rdata.service_level_indicators_graph(dimension, sls)
         # rdata.dimension_graph(dimension)
         # rdata.indicators_graph(dimension)
         not_generated = false
       end
     end
   end
+  
+  desc "indicators by service_level"
+  task :indicator_by_service_level => :environment do
+    dimensions = Dimension.all
 
+    not_generated = true
+    sls = ServiceLevel.find(:all, :conditions => {:name => ['Creche','EMEI']})
+    dimensions.each do |dimension|
+      # rdata.service_level_graph(dimension, sls) if not_generated
+      ReportData.service_level_indicators_graph(dimension, sls)
+      # rdata.dimension_graph(dimension)
+      # rdata.indicators_graph(dimension)
+      not_generated = false
+    end
+  end
+  
   desc "Generates graphs for each institution"
   task :reports => :environment do
     start_letter = ENV["START"] || "A"
     end_letter = ENV["END"] || "Z"
-
+    
     # (start_letter.upcase..end_letter.upcase).each do |letter|
     #   Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
     #     puts inst.name
@@ -50,7 +66,7 @@ namespace :reports do
     #     end
     #   end
     # end
-
+    
     institution = Institution.find(87) #Maria José Ferreira Ferraz, Profª
     institution.service_levels.each do |service_level|
       puts "- #{service_level.name}"
@@ -59,28 +75,11 @@ namespace :reports do
       ri.to_pdf(institution, service_level, ReportData.new(institution, service_level))
 
       system "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/printer -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -sOutputFile=#{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}-final.pdf #{RAILS_ROOT}/public/relatorios/artifacts/capa_avalia.pdf #{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf #{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}.pdf"
-
+      
       after = Time.now
 
       p "pdf generated in #{after - before}"
     end
-  end
-
-  desc "Generate tables for all service_levels (EMEF, EMEI and Creche)"
-  task :tables => :environment do
-    log = ''
-    [3, 4].each do |service_level_id|
-      service_level = ServiceLevel.find(service_level_id)
-      start_time = Time.now
-      log << "Generating #{service_level.name} table"
-      UniFreire::Tables::Generator.generate(service_level)
-      end_time = Time.now
-      duration = (end_time - start_time).to_i/60
-      log << "\n#{service_level.name.capitalize} table generated, duration was #{duration} minutes"
-    end
-    log_file = File.new(File.join("#{RAILS_ROOT}/tmp",'log_table_generation.log'), 'w+')
-    log_file.puts log
-    log_file.close
   end
 
   namespace :generate do
