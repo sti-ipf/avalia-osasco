@@ -68,15 +68,19 @@ namespace :reports do
 
   desc "Generate tables for all service_levels (EMEF, EMEI and Creche)"
   task :tables => :environment do
-    [2, 3, 4].each do |service_level_id|
+    log = ''
+    [3, 4].each do |service_level_id|
       service_level = ServiceLevel.find(service_level_id)
       start_time = Time.now
-      puts "Generating #{service_level.name} table"
+      log << "Generating #{service_level.name} table"
       UniFreire::Tables::Generator.generate(service_level)
       end_time = Time.now
       duration = (end_time - start_time).to_i/60
-      puts "#{service_level.name.capitalize} table generated, duration was #{duration} minutes"
+      log << "\n#{service_level.name.capitalize} table generated, duration was #{duration} minutes"
     end
+    log_file = File.new(File.join("#{RAILS_ROOT}/tmp",'log_table_generation.log'), 'w+')
+    log_file.puts log
+    log_file.close
   end
 
   namespace :generate do

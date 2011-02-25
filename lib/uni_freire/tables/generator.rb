@@ -22,13 +22,13 @@ module UniFreire
         table_file_name = "tabela_#{service_level.name}"
         data = get_data(service_level)
         institutions = get_institutions(data)
-#        dimensions = get_dimensions(data)
-#        build_legends(institutions, "Unidades Escolares #{service_level.name}", legend_file_name)
-#        build_html(data,institutions, dimensions, table_file_name)
-#        table_file = File.new(File.join(TEMP_DIRECTORY,"#{table_file_name}.html"))
-#        legend_file = File.new(File.join(TEMP_DIRECTORY,"#{legend_file_name}.html"))
-#        convert_html_to_pdf(table_file, table_file_name)
-#        convert_html_to_pdf(legend_file, legend_file_name)
+        dimensions = get_dimensions(data)
+        build_legends(institutions, "Unidades Escolares #{service_level.name}", legend_file_name)
+        build_html(data,institutions, dimensions, table_file_name)
+        table_file = File.new(File.join(TEMP_DIRECTORY,"#{table_file_name}.html"))
+        legend_file = File.new(File.join(TEMP_DIRECTORY,"#{legend_file_name}.html"))
+        convert_html_to_pdf(table_file, table_file_name)
+        convert_html_to_pdf(legend_file, legend_file_name)
       end
 
       def self.build_legends(institutions, title, file_name)
