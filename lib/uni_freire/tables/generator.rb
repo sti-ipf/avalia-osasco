@@ -13,22 +13,25 @@ module UniFreire
                   8 => "8. Envolvimento com as Famílias e Participação na Rede de Proteção Social",
                   9 => "9. Gestão Escolar Democrática",
                   10 => "10. Formação e Condições de Trabalho dos Profissionais da Escola",
-                  11 => "11. Processos de Alfabetização e Letramento"
+                  11 => "11. Processos de Alfabetização e Letramento",
+                  12 => "Índice geral da unidade"
                   }
 
       def self.generate(service_level)
+        legend_file_name = "legenda_#{service_level.name}"
+        table_file_name = "tabela_#{service_level.name}"
         data = get_data(service_level)
         institutions = get_institutions(data)
-        dimensions = get_dimensions(data)
-        build_legends(institutions, "Unidades Escolares #{service_level.name}")
-        build_html(data,institutions, dimensions)
-        table_file = File.new(File.join(TEMP_DIRECTORY,'tabela.html'))
-        legends_file = File.new(File.join(TEMP_DIRECTORY,'legenda.html'))
-        convert_html_to_pdf(table_file, "tabela_#{service_level.name}")
-        convert_html_to_pdf(legends_file, "legenda_#{service_level.name}")
+#        dimensions = get_dimensions(data)
+#        build_legends(institutions, "Unidades Escolares #{service_level.name}", legend_file_name)
+#        build_html(data,institutions, dimensions, table_file_name)
+#        table_file = File.new(File.join(TEMP_DIRECTORY,"#{table_file_name}.html"))
+#        legend_file = File.new(File.join(TEMP_DIRECTORY,"#{legend_file_name}.html"))
+#        convert_html_to_pdf(table_file, table_file_name)
+#        convert_html_to_pdf(legend_file, legend_file_name)
       end
 
-      def self.build_legends(institutions, title)
+      def self.build_legends(institutions, title, file_name)
         html_code = get_initial_html
         html_code << "<h5>#{title}</h5>
                       <table>"
@@ -47,10 +50,10 @@ module UniFreire
           end
         end
         html_code << '</table></body></html>'
-        create_html_file(html_code, 'legenda.html')
+        create_html_file(html_code, "#{file_name}.html")
       end
 
-      def self.build_html(data,institutions, dimensions)
+      def self.build_html(data,institutions, dimensions, file_name)
         html_code = get_initial_html
         html_code << '<table>'
         header = ''
@@ -85,7 +88,7 @@ HEREDOC
           html_code << "</tr>"
         end
         html_code << "</table>"
-        create_html_file(html_code, 'tabela.html')
+        create_html_file(html_code, "#{file_name}.html")
       end
 
     private
@@ -108,15 +111,35 @@ HEREDOC
         data = {}
         institutions = service_level.institutions
         dimensions = Dimension.all
-        dimensions.each do |dimension|
-          institutions.each do |institution|
-            data[institution.name] = {} if data[institution.name].nil?
-            value = (institution.mean_dimension(dimension,service_level)[:mean]/5)
-            value = (value == 0)? value : value.round(2)
-            data[institution.name][dimension.number] = value
+        dimensions << Dimension.new(:name => "Índice geral da unidade", :number => 12)
+        institutions.each do |institution|
+          data[institution.name] = {}
+          institution_dimensions_values = []
+          dimensions.each do |dimension|
+            if dimension.number == 11 && service_level.name != "EMEF"
+              next
+            end
+            if dimension.number == 12
+              institution_index = calc_institution_index(institution_dimensions_values)
+              data[institution.name][dimension.number] = institution_index
+            else
+              value = (institution.mean_dimension(dimension,service_level)[:mean]/5)
+              value = (value == 0)? value : value.round(2)
+              data[institution.name][dimension.number] = value
+              institution_dimensions_values << value
+            end
           end
         end
         data
+      end
+
+      def self.calc_institution_index(institution_dimensions_values)
+        sum_values = 0
+        institution_dimensions_values.each do |value|
+            sum_values += value
+        end
+        index = (sum_values/institution_dimensions_values.size)
+        index = (index == 0)? index : index.round(2)
       end
 
       def self.add_data_in_table(data, institution, dimension, table)
