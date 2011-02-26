@@ -49,7 +49,7 @@ class Institution < ActiveRecord::Base
           @curr_answers = {}
           answers = q.answers.valid.by_service_level(service_level).min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean 
+            @curr_answers[a.user_id] ||= a.mean
             @users_data[a.user_id][a.question_id] ||= a
           end
             questions_means << @curr_answers.avg
@@ -79,8 +79,8 @@ class Institution < ActiveRecord::Base
           @curr_answers = {}
           answers       = q.answers.valid.by_service_level(service_level).min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean 
-            @users_data[a.user_id][a.question_id] ||= a 
+            @curr_answers[a.user_id] ||= a.mean
+            @users_data[a.user_id][a.question_id] ||= a
           end
           #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
@@ -100,7 +100,7 @@ class Institution < ActiveRecord::Base
   end
 
   def self.mean_indicator_by_sl2(indicators_party,sls)
-    indicators = Indicator.find(:all, 
+    indicators = Indicator.find(:all,
         :conditions => {
             :service_level_id => sls.collect(&:id),
             :number => indicators_party.indicators.first.number
@@ -118,8 +118,8 @@ class Institution < ActiveRecord::Base
           @curr_answers = {}
           answers = q.answers.valid.by_service_levels(sls).min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean 
-            @users_data[a.user_id][a.question_id] ||= a 
+            @curr_answers[a.user_id] ||= a.mean
+            @users_data[a.user_id][a.question_id] ||= a
           end
           #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
@@ -176,8 +176,8 @@ class Institution < ActiveRecord::Base
           answers = q.answers
           answers = q.answers.by_group(group).valid.min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean 
-            @users_data[a.user_id][a.question_id] ||= a 
+            @curr_answers[a.user_id] ||= a.mean
+            @users_data[a.user_id][a.question_id] ||= a
           end
           #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
@@ -235,8 +235,8 @@ class Institution < ActiveRecord::Base
           @curr_answers = {}
           answers = q.answers.by_group(group).valid.min_participants(0).newer
           answers.each do |a|
-            @curr_answers[a.user_id] ||= a.mean 
-            @users_data[a.user_id][a.question_id] ||= a 
+            @curr_answers[a.user_id] ||= a.mean
+            @users_data[a.user_id][a.question_id] ||= a
           end
           #if @curr_answers.keys.size > 0
             questions_means << @curr_answers.avg
@@ -265,7 +265,7 @@ class Institution < ActiveRecord::Base
     end
     means
   end
-  
+
   def mean_questions(party_id)
     questions = QuestionsParty.find(party_id)
     mean = {}
@@ -443,10 +443,11 @@ class Institution < ActiveRecord::Base
     segments.delete("Educandos") if options[:group] == "Ensino Infantil"
 
     # Graph labels
+
     graph_labels =  {}
     segments.each {|k,v| graph_labels[graph_labels.length] = k}
-    
     graph_labels[graph_labels.length] = "Geral"
+    graph_labels[graph_labels.length] = "    "
 
     a={}
 
@@ -464,12 +465,11 @@ class Institution < ActiveRecord::Base
       :labels => graph_labels,
       :title => options[:title]
     )
-    
     p a
     p "============"
     a.each {|name, data| graph.data(name, data)}
 
-    # graph.data(" ", Array.new(segments.length, 0))
+    graph.data(" ", Array.new(segments.length, 0), "white")
     graph_path = "#{Rails.root}/tmp/graphs/#{id}"
     graph.save_temporary(graph_path, "general_average_dimension#{options[:id]}-")
   end
@@ -509,3 +509,4 @@ class Institution < ActiveRecord::Base
     graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "single_institution_#{options[:id]}-")
   end
 end
+

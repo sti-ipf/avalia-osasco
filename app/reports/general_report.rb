@@ -7,7 +7,8 @@ class GeneralReport
 
   def self.to_pdf
     margin = [30, 30, 30, 30]
-    Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/geral.pdf", :margin => margin) do
+    Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/geral.pdf",
+      :margin => margin, :template => "#{RAILS_ROOT}/public/relatorios/artifacts/capa_geral.pdf") do
 
       def insert_graphics(graphics_numbers, type)
         i = 0
@@ -30,9 +31,9 @@ class GeneralReport
 
       def number_pages(string, position)
         page_count.times do |i|
-          unless(i < 3)
-           go_to_page(i+1)
-           str = string.gsub("<page>","#{i+2}").gsub("<total>","#{page_count}")
+          unless(i < 7)
+           go_to_page(i)
+           str = string.gsub("<page>","#{i}").gsub("<total>","#{page_count}")
            draw_text str, :at => position, :size => 14, :style => :italic
           end
         end
@@ -42,7 +43,7 @@ class GeneralReport
         result = ActiveRecord::Base.connection.execute(
           "
           SELECT sum(participants), seg.name FROM
-            (SELECT user_id,survey_id, max(participants_number) AS participants FROM answers
+            (SELECT user_id,survey_id, MAX(participants_number) AS participants FROM answers
             GROUP BY user_id, survey_id) a
           INNER JOIN surveys s ON s.id = a.survey_id
           INNER JOIN segments seg ON seg.id = s.segment_id
@@ -64,7 +65,10 @@ class GeneralReport
                       :bolditalic => "#{RAILS_ROOT}/public/fonts/PT_Sans-BoldItalic.ttf"
                       })
       font "pt sans"
+
       # inicio do texto
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf", :template_page => 1)
+      start_new_page
       text "\n Resultados gerais da Avaliação 2010 - Osasco", :align => :center, :size => 16, :style => :bold
       text "\n Sumário", :align => :center, :size => 13
       text "\n 1 APRESENTAÇÃO", :style => :bold
@@ -1019,7 +1023,7 @@ class GeneralReport
         Olhando para as unidades que compõem os agrupamentos, podemos observar alguns padrões entre elas que contribuiu para o desempenho no IDEB? Quais são esses padrões?", :indent_paragraphs => 30
       text "É possível afirmar que o grupo de escolas que conseguiu médias melhores nas dimensões também conseguiu uma pontuação favorável no IDEB? Existe correlação entre esses resultados?", :indent_paragraphs => 30
 
-      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
 
       text " \n 5. Meta-avaliação", :style => :bold
 
@@ -1030,7 +1034,7 @@ class GeneralReport
       text "e) Análise Coletiva"
 
       text " \n 6. Considerações Finais", :style => :bold
-
+      number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
     end
   end
 
