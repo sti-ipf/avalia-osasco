@@ -202,7 +202,7 @@ HEREDOC
              text-align:center;
              font-size: 8px;
              }
-          h5{font-size:12px;}
+          h5{font-size:12px; font-weight:bold}
           .red{background-color:red}
           .yellow{background-color:yellow}
           .green{background-color:green}
