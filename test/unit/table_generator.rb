@@ -43,7 +43,7 @@ class TableGeneratorTest < ActiveSupport::TestCase
 
   test "gerar legenda com 57 escolas" do
     file_name = "legenda_TESTE"
-    UniFreire::Tables::Generator.build_legends(@institutions, "Unidades Escolares TESTE")
+    UniFreire::Tables::Generator.build_legends(@institutions, "Unidades Escolares TESTE", file_name)
     table_file = File.new(File.join(TEMP_DIRECTORY,"#{file_name}.html"))
     UniFreire::Tables::Generator.send(:convert_html_to_pdf,table_file, "legenda_TESTE")
   end

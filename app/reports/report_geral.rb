@@ -673,8 +673,11 @@ HEREDOC
       table14 =[["Índice","Situação das unidades de acordo com os resultados obtidos"],[" 0 – 0,33","Unidades que necessitam ser priorizadas nas intervenções relacionadas com a dimensão"],["0,34 – 0,66","Unidades que ainda necessitam de intervenções, mas que já apresentam avanços relacionados a essa dimensão"],["0,67 - 1","Unidades com ações já desenvolvidas com relação à dimensão"]]
       table table14
 
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/legend_EMEF.pdf", :template_page => 1)
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/table_EMEF.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 2)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_table.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_legend.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_table.pdf", :template_page => 1)
       start_new_page
 
       text "Questões para dialogar:"
@@ -871,9 +874,9 @@ HEREDOC
       table15 =[["Índice","Situação das unidades de acordo com os resultados obtidos"],[" 0 – 0,33","Unidades que necessitam ser priorizadas nas intervenções relacionadas com a dimensão"],["0,34 – 0,66","Unidades que ainda necessitam de intervenções, mas que já apresentam avanços relacionados a essa dimensão"],["0,67 - 1","Unidades com ações já desenvolvidas com relação à dimensão"]]
       table table15
 
-      start_new_page
-      text "\n tabela colorida"
-
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEF_legend.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEF_legend.pdf", :template_page => 2)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEF_table.pdf", :template_page => 1)
       start_new_page
 
       text "Questões para dialogar:"

@@ -181,10 +181,20 @@ HEREDOC
         <html lang='pt-BR'>
         <head>
         <meta charset='utf-8'>
-
         <style type="text/css">
-          table{border:1px solid black;
-                border-collapse: collapse;}
+          @font-face {
+            font-family: PTSans;
+            src: local("#{RAILS_ROOT}/public/fonts/PT_Sans-Regular.ttf")
+          }
+
+          @font-face {
+            font-family: PTSans;
+            src: local("#{RAILS_ROOT}/public/fonts/PT_Sans-Bold.ttf")
+            font-weight: bold;
+          }
+
+          body {font-family: PTSans;}
+          table{border:1px solid black; border-collapse: collapse;}
           tr{border:1px solid black;}
           td{border:1px solid black;
              width:auto;
