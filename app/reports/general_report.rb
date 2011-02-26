@@ -37,6 +37,25 @@ class GeneralReport
           end
         end
       end
+
+      def get_total_number_of_people_that_answered_the_surveys
+        result = ActiveRecord::Base.connection.execute(
+          "
+          SELECT sum(participants), seg.name FROM
+            (SELECT user_id,survey_id, max(participants_number) AS participants FROM answers
+            GROUP BY user_id, survey_id) a
+          INNER JOIN surveys s ON s.id = a.survey_id
+          INNER JOIN segments seg ON seg.id = s.segment_id
+          WHERE name != 'Educandos'
+          GROUP BY seg.id
+          ")
+        hash = {}
+        result.each do |r|
+          hash[r[1]] = r[0]
+        end
+        hash
+      end
+
       # font
       font_families.update(
         "pt sans" => {:normal => "#{RAILS_ROOT}/public/fonts/PT_Sans-Regular.ttf",
@@ -524,8 +543,15 @@ class GeneralReport
       text "Esta etapa apresenta a sistematização das reflexões advindas dos encontros com os principais envolvidos no processo de avaliação, isto é, supervisores de ensino, membros do Corpo Técnico Pedagógico e membros do Observatório, sobre os resultados e análises dos dados. Nesse momento, com base nos gráficos e mapas, foram produzidas as reflexões, conclusões e recomendações para a atualização do PTA da Secretaria de Educação e para a construção do PME de 2011.", :indent_paragraphs => 30
 
       text "\n III. Resultados da avaliação do PEC- Osasco 2010", :style => :bold
+      data = get_total_number_of_people_that_answered_the_surveys
 
-      table13 = [["Segmento","Total da rede","Total que responderam os questionários"," % "],["Gestor","341"," "," "],["Professor","4866"," "," "],["Funcionários de apoio","2089"," "," "],["Familiar *","32893"," "," "]]
+      table13 = [
+        ["Segmento","Total da rede","Total que responderam os questionários"," % "],
+        ["Gestor","341",data["Gestores"],((data["Gestores"].to_i*100)/341)],
+        ["Professor","4866",data["Professores"],((data["Professores"].to_i*100)/4866)],
+        ["Funcionários de apoio","2089",data["Funcionarios"],((data["Funcionarios"].to_i*100)/2089)],
+        ["Familiar *","32893",data["Familiares"],((data["Familiares"].to_i*100)/32893)]
+      ]
       table table13
       text "* considerando 1 representante dos familiares para cada 2 alunos."
 
