@@ -1,10 +1,30 @@
 namespace :reports do
+  desc "Generate general report"
+  task :general => :environment do
+    GeneralReport.to_pdf
+  end
+
   desc "Generate graphs for all institutions, in all service levels"
   task :graphs => :environment do
+    abort "TYPE parameter is mandatody (infantil or fundamental)" if ENV['TYPE'].nil?
     dimensions = Dimension.all
-    start_letter = ENV["START"] || "A"
-    end_letter = ENV["END"] || ENV["START"] || "Z"
+    type = ENV['TYPE']
+    case type
+      when 'infantil'
+        sl_names = %w(Creche EMEI)
+      when 'fundamental'
+        sl_names = 'EMEF'
+    end
 
+    dimensions.each do |dimension|
+      sls = ServiceLevel.all(:conditions => {:name => sl_names})
+      # rdata.service_level_graph(dimension, sls) if not_generated
+      ReportData.service_level_indicators_graph(dimension, sls)
+
+      # rdata.dimension_graph(dimension)
+      # rdata.indicators_graph(dimension)
+      not_generated = false
+    end
     # (start_letter.upcase..end_letter.upcase).each do |letter|
     #   Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
     #     puts inst.name
@@ -18,16 +38,6 @@ namespace :reports do
     #     end
     #   end
     # end
-
-    dimensions.each do |dimension|
-      sls = ServiceLevel.all(:conditions => {:name => ['Creche','EMEI', 'EMEF']})
-      # rdata.service_level_graph(dimension, sls) if not_generated
-      ReportData.service_level_indicators_graph(dimension, sls)
-
-      # rdata.dimension_graph(dimension)
-      # rdata.indicators_graph(dimension)
-      not_generated = false
-    end
   end
 
   desc "indicators by service_level"

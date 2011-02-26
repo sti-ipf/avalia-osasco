@@ -18,8 +18,8 @@ module UniFreire
                   }
 
       def self.generate(service_level)
-        legend_file_name = "legenda_#{service_level.name}"
-        table_file_name = "tabela_#{service_level.name}"
+        legend_file_name = "#{service_level.name}_legend"
+        table_file_name = "#{service_level.name}_table"
         data = get_data(service_level)
         institutions = get_institutions(data)
         dimensions = get_dimensions(data)
