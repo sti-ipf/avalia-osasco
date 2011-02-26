@@ -9,6 +9,7 @@ namespace :reports do
     abort "TYPE parameter is mandatody (infantil or fundamental)" if ENV['TYPE'].nil?
     dimensions = Dimension.all
     type = ENV['TYPE']
+
     case type
       when 'infantil'
         sl_names = %w(Creche EMEI)
@@ -18,26 +19,9 @@ namespace :reports do
 
     dimensions.each do |dimension|
       sls = ServiceLevel.all(:conditions => {:name => sl_names})
-      # rdata.service_level_graph(dimension, sls) if not_generated
+      ReportData.service_level_graph(dimension, sls)
       ReportData.service_level_indicators_graph(dimension, sls)
-
-      # rdata.dimension_graph(dimension)
-      # rdata.indicators_graph(dimension)
-      not_generated = false
     end
-    # (start_letter.upcase..end_letter.upcase).each do |letter|
-    #   Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
-    #     puts inst.name
-    #     inst.service_levels.each do |sl|
-    #       puts "- #{sl.name}"
-    #       rdata = ReportData.new(inst, sl)
-    #       dimensions.each do |dimension|
-    #         puts rdata.dimension_graph(dimension.number)
-    #         puts rdata.indicators_graph(dimension.number)
-    #       end
-    #     end
-    #   end
-    # end
   end
 
   desc "indicators by service_level"

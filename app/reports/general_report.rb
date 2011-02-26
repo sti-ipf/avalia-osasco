@@ -542,9 +542,11 @@ class GeneralReport
 
       text " \n 3.1.1 DIMENSÃO 1. AMBIENTE EDUCATIVO", :style => :bold
       text "O Ambiente Educativo visa fornecer indicadores do ambiente que predomina na escola, das relações entre os diversos segmentos, do grau de conhecimento e participação deles na elaboração dos princípios de convivência e no conhecimento que se tem dos direitos das crianças, tendo em vista sua importância como referência às ações educativas para a escola. A escola é um dos espaços de ensino, aprendizagem e vivência de valores. Nela, os indivíduos se socializam, brincam e experimentam a convivência com a diversidade humana. No ambiente educativo, o respeito, a alegria, a amizade e a solidariedade, a disciplina, a negociação, o combate à discriminação e o exercício dos direitos e deveres são práticas que garantem a socialização e a convivência, desenvolvem e fortalecem a noção de cidadania e de igualdade entre todos.", :indent_paragraphs => 30
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
 
-#      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/", :scale => 0.7, :position => :center
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension1-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
 
@@ -559,7 +561,10 @@ class GeneralReport
       text " \n 3.1.2. DIMENSÃO 2. AMBIENTE FÍSICO ESCOLAR E MATERIAIS", :style => :bold
       text "O ambiente físico escolar está diretamente relacionado à qualidade social da educação. Este deve ser atrativo, organizado, limpo, arejado, agradável, com árvores e plantas. Deve ainda dispor de móveis, equipamentos e materiais didáticos acessíveis, adequados à realidade da escola e que permitam a prestação de serviços de qualidade aos alunos, aos pais e a toda a comunidade.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension2-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(2.1 2.2 2.3 2.4), "infantil")
@@ -577,7 +582,10 @@ class GeneralReport
       text " \n 3.1.3. DIMENSÃO 3. PLANEJAMENTO INSTITUCIONAL E PRÁTICA PEDAGÓGICA", :style => :bold
       text "Essa dimensão visa fornecer indicadores sobre o processo fundamental da escola: fazer com que os educandos aprendam e adquiram o desejo de aprender cada vez mais e com autonomia. Construção de uma proposta pedagógica bem definida e a necessidade de um planejamento com base em conhecimentos sobre o que os educandos já possuem e o que eles precisam e desejam saber são indicadores fundamentais de uma prática pedagógica centrada no desenvolvimento dos educandos.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension3-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8 3.9), "infantil")
@@ -591,7 +599,11 @@ class GeneralReport
 
       text " \n 3.1.4. DIMENSÃO 4. AVALIAÇÃO", :style => :bold
       text "Essa dimensão visa fornecer os indicadores que dizem respeito à prática da avaliação como parte integrante e fundamental do processo educativo. Monitoramento do processo de aprendizagem, mecanismos e variedades de avaliação, participação dos educandos no processo de avaliação da aprendizagem; autoavaliação; avaliação dos profissionais e da escola como um todo; discussão e reflexão sobre as avaliações externas implementadas pelo MEC são indicadores fundamentais que apontam se a escola vem construindo a cultura da avaliação, pressuposto fundamental para o desenvolvimento de uma educação de qualidade, que garanta o direito de aprender.", :indent_paragraphs => 30
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension4-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(4.1 4.2 4.3 4.4), "infantil")
@@ -607,7 +619,10 @@ class GeneralReport
       text " \n 3.1.5 DIMENSÃO 5. ACESSO E PERMANÊNCIA DOS EDUCANDOS NA ESCOLA", :style => :bold
       text "Esta dimensão visa fornecer indicadores sobre como a escola tem tratado a questão da democratização do acesso do aluno à instituição educativa, das faltas, da evasão e do abandono e dos esforços que a escola vem promovendo para fazer com que os educandos que evadiram ou abandonaram voltem para a escola. O acesso, ou seja, a matrícula, é a porta inicial para a democratização, mas torna-se necessário, também, garantir o direito de todos os que ingressam na  escola a condições de nela permanecer com sucesso (ou seja, permanecer e “aprender” na escola), sem interrupções até o término de um ciclo. Essa dimensão trata ainda da identificação dos indicadores referentes às necessidades educativas das respectivas comunidades.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension5-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(5.1 5.2 5.3), "infantil")
@@ -624,7 +639,10 @@ class GeneralReport
       text " \n 3.1.6. DIMENSÃO 6. PROMOÇÃO DA SAÚDE", :style => :bold
       text "A dimensão Promoção da Saúde se relaciona com os indicadores que dizem respeito às práticas cotidianas e os cuidados que a instituição tem com relação à saúde das crianças e dos adultos da escola. A atenção à saúde das crianças é um aspecto muito importante do trabalho em instituições de educação. As práticas cotidianas precisam assegurar a prevenção de acidentes, os cuidados com a higiene e uma alimentação saudável, para o bom desenvolvimento das crianças em idade de crescimento.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension6-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(6.1 6.2 6.3 6.4), "infantil")
@@ -639,7 +657,10 @@ class GeneralReport
       text " \n 3.1.7. DIMENSÃO 7. EDUCAÇÃO SOCIOAMBIENTAL E PRÁTICAS ECOPEDAGÓGICAS", :style => :bold
       text "A dimensão Educação Socioambiental e Práticas Ecopedagógicas visa fornecer indicadores sobre a formação em torno dos temas da cidadania planetária e as práticas educativas que garantem o conhecimento da realidade e a participação na construção de uma sociedade sustentável, com fundamentos da ecopedagogia.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension7-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(7.1 7.2), "infantil")
@@ -654,7 +675,10 @@ class GeneralReport
       text " \n 3.1.8. DIMENSÃO 8. ENVOLVIMENTO COM AS FAMÍLIAS E PARTICIPAÇÃO NA REDE DE PROTEÇÃO SOCIAL", :style => :bold
       text "A dimensão Envolvimento com as Famílias e Participação na Rede de Proteção Social visa fornecer os indicadores que apontam se as famílias vêm sendo acolhidas pela escola e em que medida a escola vem garantido o direito das famílias acompanharem as vivências e produções das crianças. Essa dimensão visa ainda a fornecer os indicadores que apontam em que medida se dá a articulação da escola com a Rede de Proteção aos Direitos das Crianças, pois a instituição escolar é responsável, juntamente com as famílias, por garantir os direitos das crianças. Também visa refletir como os demais serviços públicos de alguma forma estão contribuindo para que todas as crianças sejam, de fato, sujeitos de direitos, conforme preconiza o Estatuto da Criança e do Adolescente (ECA).", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension8-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(8.1 8.2 8.3), "infantil")
@@ -673,7 +697,10 @@ class GeneralReport
       text " \n 3.1.9. DIMENSÃO 9. GESTÃO ESCOLAR DEMOCRÁTICA", :style => :bold
       text "A dimensão Gestão Escolar Democrática visa fornecer indicadores sobre o grau de participação da comunidade que as escolas vêm conseguindo instituir, como tem se dado a comunicação entre todos, o papel e a atuação dos coletivos escolares e as parcerias e recursos que elas têm conseguido conquistar.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension9-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(9.1 9.2 9.3), "infantil")
@@ -687,7 +714,10 @@ class GeneralReport
       text " \n 3.1.10. DIMENSÃO 10. FORMAÇÃO E CONDIÇÕES DE TRABALHO DOS PROFISSIONAIS DA ESCOLA", :style => :bold
       text "A dimensão Formação e Condições de Trabalho dos Profissionais da Escola visa fornecer indicadores sobre as condições de trabalho implementadas pela escola em relação à formação inicial, à formação continuada, à assiduidade e à estabilidade da equipe que a escola tem conseguido institucionalizar.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension10-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(10.1 10.2 10.3), "infantil")
@@ -736,7 +766,10 @@ class GeneralReport
       text " \n 4.1.1. Dimensão 1. Ambiente Educativo", :style => :bold
       text "O Ambiente Educativo visa fornecer indicadores do ambiente que predomina na escola, das relações entre os diversos segmentos, do grau de conhecimento e participação deles na elaboração dos princípios de convivência e no conhecimento que se tem dos direitos das crianças, tendo em vista sua importância como referência às ações educativas para a escola. A escola é um dos espaços de ensino, aprendizagem e vivência de valores. Nela, os indivíduos se socializam, brincam e experimentam a convivência com a diversidade humana. No ambiente educativo, o respeito, a alegria, a amizade e a solidariedade, a disciplina, a negociação, o combate à discriminação e o exercício dos direitos e deveres são práticas que garantem a socialização e a convivência, desenvolvem e fortalecem a noção de cidadania e de igualdade entre todos.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension1-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10), "fundamental")
@@ -750,7 +783,10 @@ class GeneralReport
       text " \n 4.1.2. DIMENSÃO 2. AMBIENTE FÍSICO ESCOLAR E MATERIAIS", :style => :bold
       text "O ambiente físico escolar está diretamente relacionado à qualidade social da educação. Este deve ser atrativo, organizado, limpo, arejado, agradável, com árvores e plantas. Deve ainda dispor de móveis, equipamentos e materiais didáticos acessíveis, adequados à realidade da escola e que permitam a prestação de serviços de qualidade aos alunos, aos pais e a toda comunidade.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension2-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(2.1 2.2 2.3 2.4), "fundamental")
@@ -768,7 +804,10 @@ class GeneralReport
       text " \n 4.1.3. DIMENSÃO 3. PLANEJAMENTO INSTITUCIONAL E PRÁTICA PEDAGÓGICA", :style => :bold
       text "Essa dimensão visa fornecer indicadores sobre o processo fundamental da escola, que é o de fazer com que os educandos aprendam e adquiram o desejo de aprender cada vez mais e com autonomia. Construção de uma proposta pedagógica bem definida e a necessidade de um planejamento com base em conhecimentos sobre o que os educandos já possuem e o que eles precisam e desejam saber são indicadores fundamentais de uma prática pedagógica centrada no desenvolvimento dos educandos.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension3-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8), "fundamental")
@@ -783,7 +822,10 @@ class GeneralReport
       text " \n 4.1.4. DIMENSÃO 4. AVALIAÇÃO", :style => :bold
       text "Essa dimensão visa fornecer os indicadores que dizem respeito à prática da avaliação como parte integrante e fundamental do processo educativo. Monitoramento do processo de aprendizagem, mecanismos e variedades de avaliação, participação dos educandos no processo de avaliação da aprendizagem; autoavaliação; avaliação dos profissionais e da escola como um todo; discussão e reflexão sobre as avaliações externas implementadas pelo MEC são indicadores fundamentais que apontam se a escola vem construindo a cultura da avaliação, pressuposto fundamental para o desenvolvimento de uma educação de qualidade, que garanta o direito de aprender.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension4-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(4.1 4.2 4.3 4.4 4.5), "fundamental")
@@ -799,7 +841,10 @@ class GeneralReport
       text " \n 4.1.5 DIMENSÃO 5. ACESSO E PERMANÊNCIA DOS EDUCANDOS NA ESCOLA", :style => :bold
       text "Esta dimensão visa fornecer indicadores sobre como a escola tem tratado a questão da democratização do acesso do aluno à instituição educativa, das faltas, da evasão e do abandono e dos esforços que a escola vem promovendo, para fazer com que os educandos que evadiram ou abandonaram voltem para a escola. O acesso, ou seja, a matrícula, é a porta inicial para a democratização, mas torna-se necessário, também, garantir o direito de todos os que ingressam na  escola a condições de nela permanecer com sucesso (ou seja, permanecer e “aprender” na escola), sem interrupções até o término de um ciclo. Essa dimensão trata ainda da identificação dos indicadores referentes às necessidades educativas das respectivas comunidades.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension5-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(5.1 5.2 5.3 5.4), "fundamental")
@@ -817,7 +862,10 @@ class GeneralReport
       text " \n 4.1.6. DIMENSÃO 6. PROMOÇÃO DA SAÚDE", :style => :bold
       text "A dimensão Promoção da Saúde se relaciona com os indicadores que dizem respeito às práticas cotidianas e os cuidados que a instituição tem com relação à saúde das crianças e dos adultos da escola. A atenção à saúde das crianças é um aspecto muito importante do trabalho em instituições de educação. As práticas cotidianas precisam assegurar a prevenção de acidentes, os cuidados com a higiene e uma alimentação saudável, para o bom desenvolvimento das crianças em idade de crescimento.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension6-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(6.1 6.2 6.3 6.4), "fundamental")
@@ -833,7 +881,10 @@ class GeneralReport
       text " \n 4.1.7. DIMENSÃO 7. EDUCAÇÃO SOCIOAMBIENTAL E PRÁTICAS ECOPEDAGÓGICAS", :style => :bold
       text "A dimensão Educação Socioambiental e Práticas Ecopedagógicas visa fornecer indicadores sobre a formação em torno dos temas da cidadania planetária e as práticas educativas que garantem o conhecimento da realidade e a participação na construção de uma sociedade sustentável, com fundamentos da ecopedagogia.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension7-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(7.1 7.2), "fundamental")
@@ -848,7 +899,10 @@ class GeneralReport
       text " \n 4.1.8. DIMENSÃO 8. ENVOLVIMENTO COM AS FAMÍLIAS E PARTICIPAÇÃO NA REDE DE PROTEÇÃO SOCIAL", :style => :bold
       text "A dimensão Envolvimento com as Famílias e Participação na Rede de Proteção Social visa fornecer os indicadores que apontam se as famílias vêm sendo acolhidas pela Escola e em que medida a escola vem garantido o direito das famílias em acompanhar as vivências e produções das crianças. Essa dimensão visa ainda fornecer os indicadores que apontam em que medida se dá a articulação da Escola com a Rede de Proteção aos Direitos das Crianças, pois a instituição escolar é responsável, juntamente com as famílias, por garantir os direitos das crianças. Também visa refletir como os demais serviços públicos de alguma forma estão contribuindo para que todas as crianças sejam, de fato, sujeitos de direitos, conforme preconiza o Estatuto da Criança e do Adolescente (ECA).", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension8-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(8.1 8.2 8.3), "fundamental")
@@ -868,7 +922,10 @@ class GeneralReport
       text " \n 4.1.9. DIMENSÃO 9. GESTÃO ESCOLAR DEMOCRÁTICA", :style => :bold
       text "A dimensão Gestão Escolar Democrática visa fornecer indicadores sobre o grau de participação da comunidade que as escolas vêm conseguindo instituir, como tem se dado a comunicação entre todos, o papel e a atuação dos coletivos escolares e as parcerias e recursos que elas têm conseguido conquistar.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension9-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(9.1 9.2 9.3 9.4), "fundamental")
@@ -883,7 +940,10 @@ class GeneralReport
       text " \n 4.1.10. DIMENSÃO 10. FORMAÇÃO E CONDIÇÕES DE TRABALHO DOS PROFISSIONAIS DA ESCOLA", :style => :bold
       text "A dimensão Formação e Condições de Trabalho dos Profissionais da Escola visa fornecer indicadores sobre as condições de trabalho implementadas pela escola em relação à formação inicial, à formação continuada, à assiduidade e à estabilidade da equipe que a escola tem conseguido institucionalizar.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension10-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(10.1 10.2 10.3), "fundamental")
@@ -897,7 +957,10 @@ class GeneralReport
       text " \n 4.1.11. DIMENSÃO  11.PROCESSOS DE ALFABETIZAÇÃO E LETRAMENTO (Apenas para o Ensino Fundamental)", :style => :bold
       text "Essa dimensão diz respeito aos indicadores referentes a todos os aspectos que, no conjunto, favorecem a alfabetização inicial e a ampliação da capacidade da leitura e escrita de todas as crianças e adolescentes ao longo do Ensino Fundamental.  O domínio da leitura e da escrita é condição para o bom desenvolvimento de outros conteúdos escolares e, também, para que, depois de concluída a educação básica, o cidadão ea cidadã possam continuar aprendendo e se desenvolvendo com autonomia.", :indent_paragraphs => 30
 
-      text "a) Gráfico geral das percepções da rede sobre a dimensão"
+      start_new_page
+      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension11-graph.jpg", :scale => 1, :position => :center
+
       start_new_page
       text "b) Gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(11.1 11.2 11.3 11.4 11.5), "fundamental")

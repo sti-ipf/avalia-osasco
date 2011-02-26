@@ -102,7 +102,7 @@ class ReportData
     graph
   end
 
-  def service_level_graph(dimension, service_levels)
+  def self.service_level_graph(dimension, service_levels)
     graph_start_time = now = Time.now
     data_service_level = {}
     service_levels.each do |service_level|
@@ -154,7 +154,7 @@ class ReportData
     graph
   end
 
-  def p_times(filename, times={})
+  def self.p_times(filename, times={})
     t = []
     times.to_a.reverse.each do |k, v|
       t << ("%s: %0.3f" % [k, v])
