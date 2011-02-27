@@ -87,7 +87,7 @@ HEREDOC
           end
           html_code << "</tr>"
         end
-        html_code << "</table>"
+        html_code << "</table></body></html>"
         create_html_file(html_code, "#{file_name}.html")
       end
 
@@ -191,6 +191,12 @@ HEREDOC
             font-family: PTSans;
             src: local("#{RAILS_ROOT}/public/fonts/PT_Sans-Bold.ttf")
             font-weight: bold;
+          }
+
+          @font-face {
+            font-family: PTSans;
+            src: local("#{RAILS_ROOT}/public/fonts/PT_Sans-Italic.ttf")
+            font-weight: italic;
           }
 
           body {font-family: PTSans;}

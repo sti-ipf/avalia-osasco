@@ -6,19 +6,12 @@ require "prawn/layout"
 class GeneralReport
 
   def self.get_group_data(type)
-#{:group1 => :service_level => :dimensao => VALOR}
-#{:group1 => :dimension1 => VALOR}
     hash = {:group_1 => {}, :group_2 => {}, :group_3 => {}, :group_4 => {},}
     if type == "infantil"
       Dimension.infantil.each do |dimension|
-        dimension_media = 0
         dimension_values = []
         ServiceLevel.infantil.each do |service_level|
-          if service_level.name == "EMEI"
-            dimension_values << calc_emei_media_by_group(dimension, service_level)
-          else
-            dimension_values << calc_creche_media_by_group(dimension, service_level)
-          end
+          dimension_values << calc_media_by_group_and_service_level(dimension, service_level)
         end
         group_1_value = (dimension_values[0][0] + dimension_values[1][0])/2
         group_2_value = (dimension_values[0][1] + dimension_values[1][1])/2
@@ -30,10 +23,13 @@ class GeneralReport
         hash[:group_4][dimension.number] = group_4_value
       end
     else
-      group_1_fundamental = Group.all(:conditions => "name = 'EF-Grupo 1'")
-      group_2_fundamental = Group.all(:conditions => "name = 'EF-Grupo 2'")
-      group_3_fundamental = Group.all(:conditions => "name = 'EF-Grupo 3'")
-      group_4_fundamental = Group.all(:conditions => "name = 'EF-Grupo 4'")
+      Dimension.fundamental.each do |dimension|
+        dimension_values = calc_media_by_group_and_service_level(dimension, ServiceLevel.fundamental.first)
+        hash[:group_1][dimension.number] = dimension_values[0]
+        hash[:group_2][dimension.number] = dimension_values[1]
+        hash[:group_3][dimension.number] = dimension_values[2]
+        hash[:group_4][dimension.number] = dimension_values[3]
+      end
     end
     hash
   end
@@ -797,9 +793,9 @@ class GeneralReport
 
       start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 1)
       start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 2)
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_table.pdf", :template_page => 1)
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_legend.pdf", :template_page => 1)
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_table.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_table.pdf")
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_legend.pdf")
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_table.pdf")
       start_new_page
 
       text "Questões para dialogar:"
@@ -814,7 +810,6 @@ class GeneralReport
 
       infantil_group = GeneralReport.get_group_data("infantil")
       image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
-      #draw_text "#{infantil_group[:group_1][1].round(2)}", :at => [250,400]
       y_positions = [414,394,365,339,306,282,254,218,190,160]
       (0..9).each do |i|
         draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
@@ -1065,7 +1060,16 @@ class GeneralReport
         Olhando para as unidades que compõem os agrupamentos, podemos observar alguns padrões entre elas que contribuiu para o desempenho no IDEB? Quais são esses padrões?", :indent_paragraphs => 30
       text "É possível afirmar que o grupo de escolas que conseguiu médias melhores nas dimensões também conseguiu uma pontuação favorável no IDEB? Existe correlação entre esses resultados?", :indent_paragraphs => 30
 
+      fundamental_group = GeneralReport.get_group_data("fundamental")
       image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
+      y_positions = [445,426,406,379,348,320,292,257,231,203,170]
+      (0..10).each do |i|
+        draw_text "#{fundamental_group[:group_1][i+1].round(2)}", :at => [252,y_positions[i]]
+        draw_text "#{fundamental_group[:group_2][i+1].round(2)}", :at => [323,y_positions[i]]
+        draw_text "#{fundamental_group[:group_3][i+1].round(2)}", :at => [392,y_positions[i]]
+        draw_text "#{fundamental_group[:group_4][i+1].round(2)}", :at => [463,y_positions[i]]
+      end
+
 
       text " \n 5. Meta-avaliação", :style => :bold
 
@@ -1076,36 +1080,28 @@ class GeneralReport
       text "e) Análise Coletiva"
 
       text " \n 6. Considerações Finais", :style => :bold
+      draw_text "108", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
       number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
     end
   end
 
 private
 
-  def self.calc_creche_media_by_group(dimension, service_level)
-    group_creche = []
-    group_creche_medias = []
-    group_creche << Group.first(:conditions => "name = 'C-Grupo 1'")
-    group_creche << Group.first(:conditions => "name = 'C-Grupo 2'")
-    group_creche << Group.first(:conditions => "name = 'C-Grupo 3'")
-    group_creche << Group.first(:conditions => "name = 'C-Grupo 4'")
-    group_creche.each do |group|
-      group_creche_medias << Institution.mean_dimension_by_group(dimension, service_level, group)[:mean]
+  def self.calc_media_by_group_and_service_level(dimension, service_level)
+    case service_level.name
+      when "EMEF"
+        group_names = ['EF-Grupo 1', 'EF-Grupo 2', 'EF-Grupo 3', 'EF-Grupo 4']
+      when "EMEI"
+        group_names = ['EI-Grupo 1', 'EI-Grupo 2', 'EI-Grupo 3', 'EI-Grupo 4']
+      when "Creche"
+        group_names = ['C-Grupo 1', 'C-Grupo 2', 'C-Grupo 3', 'C-Grupo 4']
     end
-    group_creche_medias
-  end
-
-  def self.calc_emei_media_by_group(dimension, service_level)
-    group_emei = []
-    group_emei_medias = []
-    group_emei << Group.first(:conditions => "name = 'EI-Grupo 1'")
-    group_emei << Group.first(:conditions => "name = 'EI-Grupo 2'")
-    group_emei << Group.first(:conditions => "name = 'EI-Grupo 3'")
-    group_emei << Group.first(:conditions => "name = 'EI-Grupo 4'")
-    group_emei.each do |group|
-      group_emei_medias << Institution.mean_dimension_by_group(dimension, service_level, group)[:mean]
+    group_medias = []
+    group_names.each do |group|
+      group = Group.first(:conditions => "name = '#{group}'")
+      group_medias << Institution.mean_dimension_by_group(dimension, service_level, group)[:mean]
     end
-    group_emei_medias
+    group_medias
   end
 
 end
