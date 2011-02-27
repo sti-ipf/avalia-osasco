@@ -5,6 +5,39 @@ require "prawn/layout"
 
 class GeneralReport
 
+  def self.get_group_data(type)
+#{:group1 => :service_level => :dimensao => VALOR}
+#{:group1 => :dimension1 => VALOR}
+    hash = {:group_1 => {}, :group_2 => {}, :group_3 => {}, :group_4 => {},}
+    if type == "infantil"
+      Dimension.infantil.each do |dimension|
+        dimension_media = 0
+        dimension_values = []
+        ServiceLevel.infantil.each do |service_level|
+          if service_level.name == "EMEI"
+            dimension_values << calc_emei_media_by_group(dimension, service_level)
+          else
+            dimension_values << calc_creche_media_by_group(dimension, service_level)
+          end
+        end
+        group_1_value = (dimension_values[0][0] + dimension_values[1][0])/2
+        group_2_value = (dimension_values[0][1] + dimension_values[1][1])/2
+        group_3_value = (dimension_values[0][2] + dimension_values[1][2])/2
+        group_4_value = (dimension_values[0][3] + dimension_values[1][3])/2
+        hash[:group_1][dimension.number] = group_1_value
+        hash[:group_2][dimension.number] = group_2_value
+        hash[:group_3][dimension.number] = group_3_value
+        hash[:group_4][dimension.number] = group_4_value
+      end
+    else
+      group_1_fundamental = Group.all(:conditions => "name = 'EF-Grupo 1'")
+      group_2_fundamental = Group.all(:conditions => "name = 'EF-Grupo 2'")
+      group_3_fundamental = Group.all(:conditions => "name = 'EF-Grupo 3'")
+      group_4_fundamental = Group.all(:conditions => "name = 'EF-Grupo 4'")
+    end
+    hash
+  end
+
   def self.to_pdf
     margin = [30, 30, 30, 30]
     Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/geral.pdf",
@@ -392,7 +425,7 @@ class GeneralReport
         ["7. Educação Socioambiental e Práticas Ecopedagógicas", "7. Educação Socioambiental e Práticas Ecopedagógicas"],
         ["7.1. Respeito às diversas formas de vida", "7.1. Respeito às diversas formas de vida"],
         ["7.2. Práticas ecopedagógicas", "7.2. Práticas ecopedagógicas"],
-        ["8. Cooperação e Envolvimento com as Famílias e Participação na Rede de Proteção Social", "8. Cooperação e Envolvimento com as Famílias e Participação na Rede de Proteção Social"],
+        ["8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", "8. Envolvimento com as Famílias e Participação na Rede de Proteção Social"],
         ["8.1. Respeito e acolhimento e envolvimento com as famílias", "8.1. Respeito, acolhimento e envolvimento com as famílias"],
         ["8.2. Garantia do direito das famílias de acompanhar as vivências e produções das crianças", "8.2. Garantia do direito das famílias de acompanhar as vivências e produções das crianças"],
         ["8.3. Participação da Instituição na Rede de Proteção aos Direitos da Criança", "8.3. Participação da Instituição na Rede de Proteção aos Direitos da Criança"],
@@ -779,7 +812,16 @@ class GeneralReport
       text "Nesse sentido, foi analisada a correlação entre os resultados da avaliação por dimensões e por conglomerados de escolas de Educação Infantil por regiões geográficas do município.", :indent_paragraphs => 30
       text "Neste quadro, podemos analisar o resultado da média de cada dimensão por agrupamentos, tendo como referência as regiões geográficas do município. O que podemos observar? Existe alguma correlação entre os resultados obtidos e as escolas localizadas em determinada região? Que elementos podem ter contribuído para este resultado?", :indent_paragraphs => 30
 
+      infantil_group = GeneralReport.get_group_data("infantil")
       image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
+      #draw_text "#{infantil_group[:group_1][1].round(2)}", :at => [250,400]
+      y_positions = [414,394,365,339,306,282,254,218,190,160]
+      (0..9).each do |i|
+        draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
+        draw_text "#{infantil_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
+        draw_text "#{infantil_group[:group_3][i+1].round(2)}", :at => [411,y_positions[i]]
+        draw_text "#{infantil_group[:group_4][i+1].round(2)}", :at => [490,y_positions[i]]
+      end
 
       text " \n 4. Análise dos Resultados do Ensino Fundamental
 
@@ -1036,6 +1078,34 @@ class GeneralReport
       text " \n 6. Considerações Finais", :style => :bold
       number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
     end
+  end
+
+private
+
+  def self.calc_creche_media_by_group(dimension, service_level)
+    group_creche = []
+    group_creche_medias = []
+    group_creche << Group.first(:conditions => "name = 'C-Grupo 1'")
+    group_creche << Group.first(:conditions => "name = 'C-Grupo 2'")
+    group_creche << Group.first(:conditions => "name = 'C-Grupo 3'")
+    group_creche << Group.first(:conditions => "name = 'C-Grupo 4'")
+    group_creche.each do |group|
+      group_creche_medias << Institution.mean_dimension_by_group(dimension, service_level, group)[:mean]
+    end
+    group_creche_medias
+  end
+
+  def self.calc_emei_media_by_group(dimension, service_level)
+    group_emei = []
+    group_emei_medias = []
+    group_emei << Group.first(:conditions => "name = 'EI-Grupo 1'")
+    group_emei << Group.first(:conditions => "name = 'EI-Grupo 2'")
+    group_emei << Group.first(:conditions => "name = 'EI-Grupo 3'")
+    group_emei << Group.first(:conditions => "name = 'EI-Grupo 4'")
+    group_emei.each do |group|
+      group_emei_medias << Institution.mean_dimension_by_group(dimension, service_level, group)[:mean]
+    end
+    group_emei_medias
   end
 
 end
