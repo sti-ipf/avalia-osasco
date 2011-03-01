@@ -37,7 +37,7 @@ class GeneralReport
   def self.to_pdf
     margin = [30, 30, 30, 30]
     Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/geral.pdf",
-      :margin => margin, :template => "#{RAILS_ROOT}/public/relatorios/artifacts/capa_geral.pdf") do
+      :margin => margin, :template => "#{RAILS_ROOT}/public/relatorios/artifacts/capa_avaliação.pdf") do
 
       def insert_graphics(graphics_numbers, type)
         i = 0
