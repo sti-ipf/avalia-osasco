@@ -283,7 +283,7 @@ class ReportData
       # temp[:segments].each_pair do |k,v|
       #   data_sl[:segments][k] = data_sl[:segments][k] + temp[:segments][k]
       # end
-      blur[i.name] = Institution.mean_indicator_by_sl2(indicators_party, sls)
+      blur[i.name] = Institution.mean_indicator_by_sl2(indicators_party, [i])
     end
     #p data_sl
     sl_time = Time.now - now
@@ -297,10 +297,9 @@ class ReportData
     # data = @institution.mean_indicator(indicators_party,@service_level)
     #p data
     # graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
-    p "============"
-    p blur
     graph = Institution.service_level_graph(blur, :id => "i#{indicators_party.indicators.first.number}", :title => "#{indicators_party.indicators.first.name}", :group => "Ensino Infantil")
     now2 = Time.now
+    sleep 30
 
     # p_times(graph, :sl => sl_time,:graph => now2 - now)
     #p "=============================================================================================================="

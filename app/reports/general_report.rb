@@ -60,7 +60,7 @@ class GeneralReport
 
       def number_pages(string, position)
         page_count.times do |i|
-          unless(i < 7)
+          unless(i < 3)
            go_to_page(i)
            str = string.gsub("<page>","#{i}").gsub("<total>","#{page_count}")
            draw_text str, :at => position, :size => 14, :style => :italic
@@ -76,7 +76,6 @@ class GeneralReport
             GROUP BY user_id, survey_id) a
           INNER JOIN surveys s ON s.id = a.survey_id
           INNER JOIN segments seg ON seg.id = s.segment_id
-          WHERE name != 'Educandos'
           GROUP BY seg.id
           ")
         hash = {}
@@ -98,157 +97,159 @@ class GeneralReport
       # inicio do texto
       start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf", :template_page => 1)
       start_new_page
-      text "\n Resultados gerais da Avaliação 2010 - Osasco", :align => :center, :size => 16, :style => :bold
+      text "\n Relatório Geral da Avaliação Educacional de Osasco de 2010", :align => :center, :size => 16, :style => :bold
       text "\n Sumário", :align => :center, :size => 13
-      text "\n 1 APRESENTAÇÃO", :style => :bold
+      text "\n APRESENTAÇÃO", :style => :bold, :size => 14
       text "Apresentando o Programa Escola Cidadã e Inclusiva
-      Apresentando o processo de Avaliação e seu histórico
-      Linha do tempo"
+        Apresentando o processo de Avaliação e seu histórico
+        Linha do tempo", :indent_paragraphs => 20
 
-      text "\n Capítulo I – Quem Somos ", :style => :bold
-      text "1. Apresentando o lugar e os sujeitos protagonistas
-        1.1. O município
+      text "\n CAPÍTULO I – QUEM SOMOS ", :style => :bold
+      text "1. Apresentando o lugar e os sujeitos protagonistas", :indent_paragraphs => 20
+      text "1.1. O município
         1.2. As Unidades Educacionais
         1.3. A composição da Rede
         1.4. A Supervisão de Ensino
-        1.5. O Corpo Técnico Pedagógico (CTP)"
+        1.5. O Corpo Técnico Pedagógico (CTP)", :indent_paragraphs => 30
 
-      text "\n Capítulo II. Metodologia", :style => :bold
+      text "\n CAPÍTULO II. METODOLOGIA", :style => :bold
       text "2.1. Foco da Avaliação
         2.2. Dimensões e Indicadores de Avaliação
         2.3. Instrumentos
         2.4. Definição de Amostragem
         2.5. Estratégias de Coleta de Dados
-        2.6.  Análise e Interpretação dos Dados
-        2.6.1. Análise estatística e descritiva dos dados da rede de ensino por nível de atendimento
+        2.6. Análise e Interpretação dos Dados", :indent_paragraphs => 20
+      text "2.6.1. Análise estatística e descritiva dos dados da rede de ensino por nível de atendimento
         2.6.2. Organização, sistematização e análise de conteúdo de dados qualitativos
         2.6.3. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB, no caso do Ensino Fundamental
         2.6.4. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação Infantil
         2.6.5. Análise dos índices das unidades escolares por dimensão
-        2.6.6.  Reflexão e aprendizagem compartilhada"
+        2.6.6. Reflexão e aprendizagem compartilhada", :indent_paragraphs => 30
 
-      text "\n Capítulo III. Resultados da Avaliação do PEC- Osasco 2010", :style => :bold
-      text "3. Análise dos resultados da Educação Infantil
-        \n 3.1. Análise dos dados, por dimensões e indicadores", :style => :bold
-      text "3.1.1. Dimensão 1.  Ambiente Educativo
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "\n CAPÍTULO III. RESULTADOS DA AVALIAÇÃO DO PEC- OSASCO 2010", :style => :bold
+      text "3. Análise dos resultados da Educação Infantil", :style => :bold, :indent_paragraphs => 20
+      text "3.1. Análise dos dados, por dimensões e indicadores", :style => :bold, :indent_paragraphs => 30
+      text "3.1.1. Dimensão 1. Ambiente Educativo", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.2 . Dimensão 2. Ambiente Físico Escolar e Materiais
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
-        3.1.3.  Dimensão 3. Planejamento Institucional e Prática Pedagógica
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.1.2. Dimensão 2. Ambiente Físico Escolar e Materiais", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.4. Dimensão 4. Avaliação
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.1.3. Dimensão 3. Planejamento Institucional e Prática Pedagógica", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.5. Dimensão 5. Acesso e Permanência dos Educandos na Escola
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.1.4. Dimensão 4. Avaliação", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.6 Dimensão 6. Promoção da Saúde
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.1.5. Dimensão 5. Acesso e Permanência dos Educandos na Escola", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.1.6 Dimensão 6. Promoção da Saúde", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.8 Dimensão  8. Envolvimento com as Famílias e Participação na Rede de Proteção Social
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.9. Dimensão 9. Gestão Escolar Democrática
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.1.8 Dimensão 8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-        3.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras"
+      text "3.1.9. Dimensão 9. Gestão Escolar Democrática", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-      text "\n 3.2. Quadro dos índices das unidades por dimensões: Educação Infantil
-        \n 3.3. Resultados dos agrupamentos a partir das regiões geográficas, por dimensões: Educação Infantil
-        \n 4. Análise dos resultados do Ensino Fundamental
-        \n 4.1. Análise dos dados por dimensões e indicadores", :style => :bold
+      text "3.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+          b) gráficos gerais das percepções da rede sobre os indicadores
+          c) questões problematizadoras", :indent_paragraphs => 50
 
-      text "4.1.1.  Dimensão 1.  Ambiente Educativo
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "3.2. Quadro dos índices das unidades por dimensões: Educação Infantil
+        3.3. Resultados dos agrupamentos a partir das regiões geográficas, por dimensões: Educação Infantil", :style => :bold, :indent_paragraphs => 30
+      text "4. Análise dos resultados do Ensino Fundamental", :style => :bold, :indent_paragraphs => 20
+      text "4.1. Análise dos dados por dimensões e indicadores", :style => :bold, :indent_paragraphs => 30
 
-        4.1.2. Dimensão 2. Ambiente Físico Escolar e Materiais
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.1. Dimensão 1. Ambiente Educativo", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.3.  Dimensão 3. Planejamento Institucional e Prática Pedagógica
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.2. Dimensão 2. Ambiente Físico Escolar e Materiais", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.4. Dimensão 4. Avaliação
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.3. Dimensão 3. Planejamento Institucional e Prática Pedagógica", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.5. Dimensão 5. Acesso e Permanência dos Educandos na Escola
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.4. Dimensão 4. Avaliação", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.6.Dimensão 6. Promoção da Saúde
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.5. Dimensão 5. Acesso e Permanência dos Educandos na Escola", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.6. Dimensão 6. Promoção da Saúde", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.8. Dimensão  8. Envolvimento com as Famílias e Participação na Rede de Proteção Social
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.9. Dimensão 9. Gestão Escolar Democrática
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.8. Dimensão  8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras
+      text "4.1.9. Dimensão 9. Gestão Escolar Democrática", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-        4.1.11. Dimensão 11. Processos de Alfabetização e Letramento
-        a) gráfico geral das percepções da rede sobre a dimensão
-        b) gráfico geral das percepções da rede sobre os indicadores
-        c) questões problematizadoras"
+      text "4.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
 
-      text "\n 4.2. Resultados dos agrupamentos a partir das notas obtidas no IDEB, por dimensões: Ensino Fundamental
-        \n 4.3. Quadro dos índices das unidades de Ensino Fundamental
-        \n 5. Meta-avaliação", :style => :bold
+      text "4.1.11. Dimensão 11. Processos de Alfabetização e Letramento", :indent_paragraphs => 40
+      text "a) gráficos gerais das percepções da rede sobre a dimensão
+        b) gráficos gerais das percepções da rede sobre os indicadores
+        c) questões problematizadoras", :indent_paragraphs => 50
+
+      text "4.3. Quadro dos índices das unidades de Ensino Fundamental
+        4.2. Resultados dos agrupamentos a partir das notas obtidas no IDEB, por dimensões: Ensino Fundamental", :style => :bold, :indent_paragraphs => 30
+      text "5. Meta-avaliação", :style => :bold, :indent_paragraphs => 20
       text "a) Mobilização
         b) Participação
-        c) Condições Físicas e Materiais
-        d) Período de Aplicação e Inserção dos dados no on-line
-        e) Análise Coletiva"
+        c) Metodologia
+        d) Condições Físicas e Materiais
+        e) Período de Aplicação e Inserção dos dados no on-line
+        f) Análise Coletiva", :indent_paragraphs => 30
 
-      text "\n 6. Considerações Finais", :style => :bold
+      text "6. Considerações Finais", :style => :bold, :indent_paragraphs => 20
 
       start_new_page
       text "APRESENTAÇÃO
@@ -306,19 +307,18 @@ class GeneralReport
         • <b>novembro e dezembro de 2010:</b> aplicação dos instrumentais de avaliação separadamente, por nível de ensino ( Educação  Infantil e Ensino Fundamental) e segmento (educandos, familiares, funcionários, professores e gestores). Apesar da discussão coletiva, cada participante atribuiu uma síntese numérica individualmente às questões propostas, que foi somada aos outros grupos do mesmo segmento, gerando posteriormente um cálculo de média do segmento.
         • <b>dezembro de 2010:</b> inserção das sínteses numéricas diretamente no sistema online dos dados oriundos da pesquisa avaliativa com os diversos segmentos.", :indent_paragraphs => 30, :inline_format => true
 
-      text "\n Capítulo I – Quem Somos
-
-        1. Apresentando o lugar e os sujeitos protagonistas
-
-        1.1. O município", :style => :bold
+      start_new_page
+      text "\n CAPÍTULO I – QUEM SOMOS", :style => :bold
+      text "1. Apresentando o lugar e os sujeitos protagonistas", :style => :bold, :size => 13
+      text "1.1. O município", :style => :bold
 
       text "O município de Osasco possui uma história que se confunde em grande medida com a formação brasileira. Foi uma região de povoamento indígena da etnia Tupi-Guarani, no período pré-colonial, anterior ao século XVI. Durante o período colonial, nos séculos XVII e XVIII, abrigou um núcleo de bandeirantes.", :indent_paragraphs => 30
       text "No século XIX, com o processo de imigração, a cidade recebe muitos europeus, dentre os quais se destaca Antonio Agú. Ao chegar ao Brasil, em 1893, Agú, adquiriu terras circunvizinhas à capital paulista e nelas se fixou. Objetivando transformá-las num grande centro agrícola, loteou-as, e assim outros italianos foram chegando e instalando chácaras para produção de uva e limão. Entre os diversos empreendimentos, Antônio Agú construiu uma olaria, uma fábrica de tecidos e uma cartonagem, em sociedade com Narciso Sturlini. Em 1895, construiu uma estação ferroviária e a ofertou à Estação de Ferro Sorocabana, hoje FEPASA (da qual foi funcionário), pedindo à Diretoria da Empresa que a ela desse o nome de Osasco, em homenagem à sua cidade natal, na Itália. João Brícola, também imigrante italiano e que viera ao Brasil para trabalhar como engenheiro na Estrada de Ferro Paulista, construiu uma casa de campo na região e deu apoio a Antônio Agú na escolha do nome de Osasco.", :indent_paragraphs => 30
-      text "A industrialização do subdistrito de Osasco, iniciada nos fins do século XIX, e impulsionada a partir da década de 1940, acabou por atrair mão de obra especializada e, consequentemente, mais moradores para o bairro. O caráter de urbanismo mudou significativamente a localidade.", :indent_paragraphs => 30
+      text "A industrialização do subdistrito de Osasco, iniciada nos fins do século XIX, e impulsionada a partir da década de 1940, acabou por atrair mão de obra especializada e, consequentemente, mais moradores para o bairro. O caráter da urbanização mudou significativamente a localidade.", :indent_paragraphs => 30
       text "Do ponto de vista político, em 1918, foi criado o Distrito de Paz. Em 1938 e em 1944, passou à Zona Distrital (15ª) do Distrito-sede do Município de São Paulo e ao 14º. Subdistrito, respectivamente. Em 1953, começou a luta pela emancipação, realizando-se a 13 de dezembro desse mesmo ano o primeiro plebiscito. Cinco anos depois, no segundo plebiscito Osasco foi emancipado.", :indent_paragraphs => 30
       text "Embora o resultado do segundo plebiscito tenha sido homologado, decorreu muito tempo para que a questão ficasse definitivamente resolvida. O desligamento de Osasco da Capital somente ocorreu em 19 de janeiro de 1962, com a eleição para a primeira administração.", :indent_paragraphs => 30
       text "A partir da metade do século XX, a formação de um parque industrial faz também crescer o comércio na região.", :indent_paragraphs => 30
-      text "Do ponto de vista político, a história de Osasco também é marcada por um passado fervoroso na luta contra a ditadura militar (1964-1985). A cidade foi palco de lutas históricas dos movimentos operários nos finais dos anos 1970 e 1980, tendo sido um cenário de grande importância estratégica que abrigou personalidades e lideranças políticas, como o o ex-presidente da República, Luiz Inácio Lula da Silva, na ocasião uma liderança sindical.", :indent_paragraphs => 30
+      text "Do ponto de vista político, a história de Osasco também é marcada por um passado fervoroso na luta contra a ditadura militar (1964-1985). A cidade foi palco de lutas históricas dos movimentos operários nos finais dos anos 1970 e 1980, tendo sido um cenário de grande importância estratégica que abrigou personalidades e lideranças políticas, como o o ex-presidente da República, Luiz Inácio Lula da Silva, na ocasião uma liderança sindical.<font size='6'>1</font>", :indent_paragraphs => 30, :inline_format => true
       text "Atualmente, o município tem uma intensa vida cultural, com teatros, cinemas, bibliotecas, escola de artes, espaços culturais, escolas de música e faculdades.", :indent_paragraphs => 30
       text "A população da cidade é de cerca de 700 mil habitantes (IBGE, 2010), concentrados no perímetro urbano. A densidade demográfica é de 10.055,36 habitantes por km², considerada alta. A taxa de mortalidade infantil para crianças de até 1 ano é de cerca de  13 por mil nascidos vivos (IBGE, 2010).", :indent_paragraphs => 30
 
@@ -345,15 +345,14 @@ class GeneralReport
       text "Um outro destaque desse grupo tem sido a sua atuação em conjunto com o Corpo Técnico no atendimento às famílias e crianças com necessidades especiais, garantindo a expansão e a efetividade das ações desenvolvidas por este.", :indent_paragraphs => 30
 
       text "\n 1.5. O Corpo Técnico Pedagógico (CTP)", :style => :bold
-      text "O Corpo Técnico Pedagógico (CTP) foi criado em 2010 por meio da Portaria nº09/10, do dia 25/02/2010¹, com o objetivo de formar um corpo de profissionais de áreas distintas como fonoaudiólogos, terapeutas ocupacionais, psicólogos, fisioterapeutas, assistentes sociais entre outros, visando o atendimento às famílias e principalmente às crianças com necessidades especiais, tendo como especificidade a orientação direta aos pais e profissionais das unidades educacionais, quanto ao tratamento das crianças, suas respectivas necessidades e deficiências.", :indent_paragraphs => 30
+      text "O Corpo Técnico Pedagógico (CTP) foi criado em 2010 por meio da Portaria nº09/10, do dia 25/02/2010<font size='6'>1</font>, com o objetivo de formar um corpo de profissionais de áreas distintas como fonoaudiólogos, terapeutas ocupacionais, psicólogos, fisioterapeutas, assistentes sociais entre outros, visando o atendimento às famílias e principalmente às crianças com necessidades especiais, tendo como especificidade a orientação direta aos pais e profissionais das unidades educacionais, quanto ao tratamento das crianças, suas respectivas necessidades e deficiências.", :indent_paragraphs => 30, :inline_format => true
       text "O atendimento realizado por estes profissionais se caracteriza por visitas periódicas às unidades. Divididos por regiões, subgrupos do corpo técnico se deslocam até as escolas para orientar pais, gestores e principalmente professores, procurando manter uma agenda de visitas para garantir o acompanhamento da demanda. Suas ações abrangem problemas diversos, que perpassam as dificuldades na fala, deficiências intelectuais, dentre outros.", :indent_paragraphs => 30
       text "Os profissionais que compõem esse conjunto possuem uma larga trajetória no atendimento a crianças da rede, no entanto, em 2010 ampliaram suas ações, indo diretamente às unidades. Desta forma, potencializaram suas ações na medida em que passaram a estar mais próximos das unidades, podendo realizar orientações in loco, tornando o contato mais direto com a realidade vivida por cada criança em sua unidade e região. Os novos moldes de atuação desses profissionais, permitem que pais e filhos não necessitem deslocar-se até os serviços de atendimento, mas que o recebam diretamente na unidade.", :indent_paragraphs => 30
       text "O trabalho desenvolvido pelo Corpo Técnico Pedagógico fortalece a parceria da escola com a família e cumpre com metas da política educacional, no que diz respeito ao acesso e permanência das crianças nas escolas, uma vez que aumenta a capacidade de atendimento das unidades e permite que as crianças não percam o dia de aula, podendo assim permanecer mais tempo na escola, integrando-se e interagindo com os demais educandos. Além de promover a inclusão, promove-se também a cidadania das crianças com deficiências e necessidades especiais.", :indent_paragraphs => 30
-      text "\n\n\n\n\n\n
-        <font size='11'>¹ IOMO - Imprensa Oficial do Município de Osasco,  de 26 de fevereiro de 2010; Edição nº 702, Ano XIII; pp. 22 e 23.</font>", :inline_format => true
+      text "<font size='10'><font size='6'>1</font> IOMO - Imprensa Oficial do Município de Osasco,  de 26 de fevereiro de 2010; Edição nº 702, Ano XIII; pp. 22 e 23.</font>", :inline_format => true
 
       start_new_page
-      text "Capítulo II. Metodologia
+      text "CAPÍTULO II. METODOLOGIA
 
         2.1. Foco da Avaliação
 
@@ -370,12 +369,15 @@ class GeneralReport
       text "\n 2.2. Dimensões e Indicadores de Avaliação", :style => :bold
       text"Os indicadores são as referências que nos ajudam a responder às perguntas avaliativas. A proposição de indicadores é uma etapa fundamental do processo avaliativo. Se o espírito da avaliação está nas perguntas avaliatórias, que apontam o porquê de sua existência, os indicadores são os elementos concretos que levarão todos os interessados a visualizarem e a compreenderem uma imagem do objeto avaliado.", :indent_paragraphs => 30
       text "Os indicadores devem ser contextuais, relacionais e de medição das ações em si. Devem permitir procedimentos para observá-los e também medidas qualitativas e quantitativas.", :indent_paragraphs => 30
-      text "A partir das premissas acima descritas, tomando como base as diretrizes da política educacional e inspirados nos Indicadores de Qualidade da Educação do MEC/Ação Educativa, identificamos um conjunto de elementos que julgamos serem fundamentais e que serviram de base na reflexão sobre a qualidade da escola que se quer para o município de Osasco. A esse conjunto de elementos que denominamos dimensões, indexamos um outro conjunto de elementos que servirão de sinalizadores de qualidade de importantes aspectos da realidade escolar - os indicadores.", :indent_paragraphs => 30
+      text "A partir das premissas acima descritas, tomando como base as diretrizes da política educacional e inspirados nos documentos publicados pelo Ministério da Educação que definem os indicadores de qualidade na educação: Indicadores de Qualidade na Educação Infantil<font size='6'>2</font> e Indicadores de Qualidade na Educação<font size='6'>3</font>, identificamos um conjunto de elementos que julgamos serem fundamentais e que serviram de base na reflexão sobre a qualidade da escola que se quer para o município de Osasco. A esse conjunto de elementos que denominamos dimensões, indexamos um outro conjunto de elementos que servirão de sinalizadores de qualidade de importantes aspectos da realidade escolar - os indicadores.", :indent_paragraphs => 30, :inline_format => true
       text "Considerando que as diversas modalidades de ensino guardam especifidades singulares, a partir tanto das características dos segmentos envolvidos no processo educativo (educandos, familiares, professores, funcionários de apoio, gestores, comunidade) quanto das condições da oferta de ensino, tais como estrutura física das unidades, financiamentos, etc., construímos um conjunto de dimensões, e seus respectivos indicadores, para cada uma das modalidades de ensino, a saber: Escolas Municipais de Ensino Fundamental – EMEF e Educação Infantil (EMEI/Creche).", :indent_paragraphs => 30
+      text " \n <font size='10'>
+        <font size='6'>2</font> Indicadores de Qualidade na Educação Infantil – Ministério da Educação/Secretaria da Educação Básica – Brasília: MEC/SEB, 2009.
+        <font size='6'>3</font> Indicadores da Qualidade na Educação - Ação Educativa, UNICEF, PNUD, INEP, SEB/MEC (coordenadores) – São Paulo: Ação Educativa,  2007, 3ª Edição.", :inline_format => true
       text "A seguir, detalhamos separadamente os conjuntos de Dimensões e Indicadores para cada um dos níveis de ensino e suas respectivas questões problematizadoras. Cabe destacar que tais questões referem-se a ações, atitudes, percepções e sentimentos que apontam as representações de cada segmento em relação ao indicador analisado.", :indent_paragraphs => 30
       table_with_dimensions_and_indicator = [
-        ["Indicadores da Qualidade Social na Educação do Ensino Fundamental", "Indicadores da Qualidade Social na Educação Infantil"],
-        ["1. Ambiente Educativo", "1. Ambiente Educativo"],
+        ["<font size='13'><b>Indicadores da Qualidade Social na Educação do Ensino Fundamental</b></font>", "<font size='13'><b>Indicadores da Qualidade Social na Educação Infantil</b></font>"],
+        ["<b>1. Ambiente Educativo</b>", "<b>1. Ambiente Educativo</b>"],
         ["1.1. Amizade e Solidariedade", "1.1. Amizade e Solidariedade"],
         ["1.2. Alegria",  "1.2. Alegria"],
         ["1.3. Combate à discriminação social",  "1.3. Combate à discriminação"],
@@ -387,12 +389,12 @@ class GeneralReport
         ["1.9 Respeito às ideias, conquistas e produções das crianças." , "1.9 Respeito às ideias, conquistas e produções das crianças."],
         ["1.10 Interação entre crianças e crianças","1.10 Interação entre crianças e crianças"],
         ["","1.11. Respeito ao ritmo das crianças"],
-        ["2. Ambiente Físico Escolar e Materiais", "2. Ambiente Físico Escolar e Materiais"],
+        ["<b>2. Ambiente Físico Escolar e Materiais</b>", "<b>2. Ambiente Físico Escolar e Materiais</b>"],
         ["2.1. Ambiente físico escolar", "2.1. Ambiente físico escolar"],
         ["2.2. Espaços e mobiliários que favoreçam as experiências das crianças", "2.2. Espaços e mobiliários que favoreçam as experiências das crianças"],
         ["2.3. Materiais variados e acessíveis às crianças", "2.3. Materiais variados e acessíveis às crianças"],
         ["2.4. Espaços, materiais e mobiliários para responder aos interesses e necessidades dos adultos", "2.4. Espaços, materiais e mobiliários para responder aos interesses e necessidades dos adultos"],
-        ["3. Planejamento Institucional e Prática Pedagógica", "3. Planejamento Institucional e Prática Pedagógica"],
+        ["<b>3. Planejamento Institucional e Prática Pedagógica</b>", "<b>3. Planejamento Institucional e Prática Pedagógica</b>"],
         ["3.1. Projeto Eco-Político-Pedagógico definido e conhecido por todos", "3.1. Projeto Eco-Político-Pedagógico definido e conhecido por todos"],
         ["3.2. Registro da prática educativa", "3.2. Registro da prática educativa"],
         ["3.3. Planejamento", "3.3. Planejamento"],
@@ -402,46 +404,46 @@ class GeneralReport
         ["3.7. Prática Pedagógica de Apoio à Diversidade", "3.7. Prática Pedagógica de Apoio à Diversidade"],
         ["3.8. Multiplicidade de diferentes linguagens plásticas, simbólicas, musicais e corporais", "3.8. Multiplicidade de diferentes linguagens plásticas, simbólicas, musicais e corporais"],
         ["", "3.9 Experiências e aproximação com a linguagem oral e escrita"],
-        ["4. Avaliação", "4. Avaliação"],
+        ["<b>4. Avaliação</b>", "<b>4. Avaliação</b>"],
         ["4.1. Monitoramento do processo de aprendizagem do aluno", "4.1. Monitoramento do processo de aprendizagem do aluno"],
         ["4.2. Mecanismos de avaliação dos educandos", "4.2. Mecanismos de avaliação dos educandos"],
         ["4.3. Participação dos educandos na avaliação", "4.3. Participação dos educandos na avaliação"],
         ["4.4. Avaliação do trabalho dos profissionais da escola", "4.4. Avaliação do trabalho dos profissionais da escola"],
         ["4.5. Acesso, compreensão e uso dos indicadores oficiais de avaliação da escola",""],
-        ["5. Acesso e Permanência dos Educandos na Escola", "5. Acesso e Permanência dos Educandos na Escola"],
+        ["<b>5. Acesso e Permanência dos Educandos na Escola</b>", "<b>5. Acesso e Permanência dos Educandos na Escola</b>"],
         ["5.1. Atenção aos educandos com alguma defasagem de aprendizagem", "5.1. Atenção aos educandos com alguma defasagem de aprendizagem"],
         ["5.2. Atenção às necessidades educativas da comunidade", "5.2. Atenção às necessidades educativas da comunidade"],
         ["5.3. Atenção especial aos educandos que faltam" , "5.3. Atenção especial aos educandos que faltam"],
         ["5.4. Preocupação com o abandono e a evasão",""],
-        ["6. Promoção da Saúde", "6. Promoção da Saúde"],
+        ["<b>6. Promoção da Saúde</b>", "<b>6. Promoção da Saúde</b>"],
         ["6.1. Responsabilidade pela alimentação saudável das crianças", "6.1. Responsabilidade pela alimentação saudável das crianças"],
         ["6.2. Limpeza, salubridade e conforto", "6.2. Limpeza, salubridade e conforto"],
         ["6.3. Segurança", "6.3. Segurança"],
         ["6.4. Cuidados com a higiene e saúde", "6.4. Cuidados com a higiene e saúde"],
-        ["7. Educação Socioambiental e Práticas Ecopedagógicas", "7. Educação Socioambiental e Práticas Ecopedagógicas"],
+        ["<b>7. Educação Socioambiental e Práticas Ecopedagógicas</b>", "<b>7. Educação Socioambiental e Práticas Ecopedagógicas</b>"],
         ["7.1. Respeito às diversas formas de vida", "7.1. Respeito às diversas formas de vida"],
         ["7.2. Práticas ecopedagógicas", "7.2. Práticas ecopedagógicas"],
-        ["8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", "8. Envolvimento com as Famílias e Participação na Rede de Proteção Social"],
+        ["<b>8. Envolvimento com as Famílias e Participação na Rede de Proteção Social</b>", "<b>8. Envolvimento com as Famílias e Participação na Rede de Proteção Social</b>"],
         ["8.1. Respeito e acolhimento e envolvimento com as famílias", "8.1. Respeito, acolhimento e envolvimento com as famílias"],
         ["8.2. Garantia do direito das famílias de acompanhar as vivências e produções das crianças", "8.2. Garantia do direito das famílias de acompanhar as vivências e produções das crianças"],
         ["8.3. Participação da Instituição na Rede de Proteção aos Direitos da Criança", "8.3. Participação da Instituição na Rede de Proteção aos Direitos da Criança"],
-        ["9. Gestão Escolar Democrática", "9. Gestão Escolar Democrática"],
+        ["<b>9. Gestão Escolar Democrática</b>", "<b>9. Gestão Escolar Democrática</b>"],
         ["9.1. Democratização da informação e da gestão", "9.1. Democratização da informação e da gestão"],
         ["9.2. Conselhos atuantes", "9.2. Conselhos atuantes"],
         ["9.3. Parcerias locais e relacionamento da escola com os serviços públicos", "9.3. Parcerias locais e relacionamento da escola com os serviços públicos"],
         ["9.4. Participação efetiva de estudantes, pais, responsáveis e comunidade em geral",""],
-        ["10. Formação e Condições de Trabalho dos Profissionais da Escola", "10. Formação e Condições de Trabalho dos Profissionais da Escola"],
+        ["<b>10. Formação e Condições de Trabalho dos Profissionais da Escola</b>", "<b>10. Formação e Condições de Trabalho dos Profissionais da Escola</b>"],
         ["10.1. Formação inicial e continuada", "10.1. Formação inicial e continuada"],
         ["10.2. Suficiência da equipe escolar e condições de trabalho", "10.2. Suficiência da equipe escolar e condições de trabalho"],
         ["10.3. Assiduidade da equipe escolar", "10.3. Assiduidade da equipe escolar"],
-        ["11. Processos de Alfabetização e Letramento (somente para as EMEFs)",""],
+        ["<b>11. Processos de Alfabetização e Letramento (somente para as EMEFs)</b>",""],
         ["11.1. Orientações para a alfabetização inicial implementadas",""],
         ["11.2. Existência de práticas alfabetizadoras na escola",""],
         ["11.3. Atenção ao processo de alfabetização de cada criança",""],
         ["11.4. Ampliação da capacidade de leitura e escrita dos educandos ao longo do ensino",""],
         ["11.5. Acesso e aproveitamento da biblioteca e sala de leitura",""]
       ]
-      table table_with_dimensions_and_indicator
+      table(table_with_dimensions_and_indicator, :cell_style => {:inline_format => true })
       text "\n2.3. Instrumentos", :style => :bold
       text "A partir da definição do conjunto de dimensões e indicadores foram desenvolvidos os instrumentais da pesquisa avaliativa, que é constituída de questionários estruturados para os diversos segmentos da comunidade escolar, isto é: educandos, familiares, profissionais de apoio e gestores. Os questionários foram compostos por perguntas agrupadas por indicadores e dimensões, e acompanhados por um gabarito geral cujas respostas seguiram a seguinte escala:", :indent_paragraphs => 30
       table_with_scales =  [
@@ -458,7 +460,7 @@ class GeneralReport
       start_new_page
       table4 = [
           ["Práticas Consolidadas","Práticas que precisam avançar"],
-          ["                                       \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n","                                                                                                            "]
+          ["                                       \n\n\n\n\n\n\n\n\n\n\n\n","                                                                                                            "]
         ]
       table([["Descrição da síntese dos apontamentos do grupo a partir das questões e indicadores desta dimensão"],[table4]])
 
@@ -495,11 +497,11 @@ class GeneralReport
       table8_2 = [
           ["Segmentos","Amostra por unidade"],
           ["Familiares","Mín de 10% por classe"],
-          ["Funcionários de Apoio","Mín de 50% do total"],
-          ["Professores","Mín de 50% do total"],
-          ["Funcionários de Apoio","Mín de 50% do total"],
+          ["Funcionários de Apoio","Mín de 50% "],
+          ["Professores","Mín de 50%"],
+          ["Funcionários de Apoio","Mín de 50%"],
           ["Gestores","100%"],
-          ["Educandos","Mín de 10% do total"]
+          ["Educandos","Mín de 10%"]
         ]
       table([["Educação Infantil", "Ensino Fundamental"],[table8_1, table8_2]])
 
@@ -509,20 +511,20 @@ class GeneralReport
       text "Ao final do preenchimento do gabarito de respostas coube a cada unidade de ensino a responsabilidade pela inserção dos resultados e lista de presença no sistema on-line. Uma vez que estes questionários foram aplicados no espaço institucional das Unidades de Ensino, estas foram as responsáveis pelo envolvimento e mobilização, especialmente das crianças e dos familiares, visando garantir o maior número possível de respondentes.", :indent_paragraphs => 30
 
       text "\n 2.6. Análise e interpretação dos dados", :style => :bold
-      text "A técnica utilizada na análise foi a de triangulação dos dados quantitativos (advindos da análise estatística), dos dados qualitativos (resultantes das discussões sintetizadas ao final de cada dimensão) e das reflexões e aprendizagens com os principais interessados no processo de avaliação. A proposta de análise baseada na triangulação de dados caracteriza, atualmente, as pesquisas na área de ciências humanas, da saúde, e da educação, inclusive aquelas aplicadas à área do desenvolvimento de projetos e programas sociais. De acordo com Patton² (1987), a triangulação é considerada fundamental para verificar a propriedade das interpretações apoiadas em dados quantitativos e qualitativos, e permite observar a realidade a partir de diferentes ângulos, o que possibilita uma discussão interativa dos dados. Nesse sentido, a avaliação por triangulação de dados se constitui como uma contribuição positiva e inovadora no avanço de políticas públicas e sociais no Brasil.", :indent_paragraphs => 30
+      text "A técnica utilizada na análise foi a de triangulação dos dados quantitativos (advindos da análise estatística), dos dados qualitativos (resultantes das discussões sintetizadas ao final de cada dimensão) e das reflexões e aprendizagens com os principais interessados no processo de avaliação. A proposta de análise baseada na triangulação de dados caracteriza, atualmente, as pesquisas na área de ciências humanas, da saúde, e da educação, inclusive aquelas aplicadas à área do desenvolvimento de projetos e programas sociais. De acordo com Patton<font size='6'>4</font>(1987), a triangulação é considerada fundamental para verificar a propriedade das interpretações apoiadas em dados quantitativos e qualitativos, e permite observar a realidade a partir de diferentes ângulos, o que possibilita uma discussão interativa dos dados. Nesse sentido, a avaliação por triangulação de dados se constitui como uma contribuição positiva e inovadora no avanço de políticas públicas e sociais no Brasil.", :indent_paragraphs => 30, :inline_format => true
 
       image "#{RAILS_ROOT}/public/relatorios/artifacts/triangle_image.jpg", :scale => 0.5, :position => :center
 
       text "\n As apresentações e análises dos resultados seguem as seguintes etapas
         \n 2.6.1. Análise estatística e descritiva dos dados da rede de ensino por nível de atendimento", :style => :bold
       text "A primeira etapa contemplou a geração de dados estatísticos a partir das informações inseridas no sistema on-line. Essa primeira análise foi elaborada pela equipe do Instituto Paulo Freire e comunicada através de gráficos e mapas aos interessados no processo de avaliação, isto é: as unidades educacionais, aos membros da Secretaria de Educação de Osasco e   ao Corpo Técnico Pedagógico.", :indent_paragraphs => 30
-      text "<font size='11'>² Patton MQ. Qualitative evaluation methods. London: Sage Publications, 1987.</font>", :inline_format => true
       text "A análise estatística apresentada  segue a mesma organização do instrumental das questões que as unidades responderam, isto é, em dimensões e indicadores. Os resultados e análises apresentadas seguem a estrutura detalhada a seguir:", :indent_paragraphs => 30
+      text " \n <font size='10'><font size='6'>4</font> Patton MQ. Qualitative evaluation methods. London: Sage Publications, 1987.</font>", :inline_format => true
 
       text "\n Educação Infantil e Ensino Fundamental", :style => :bold
       table_with_structure = [
         ["Identificação da dimensão: \n Nome e breve contextualização da dimensão."],
-        ["Gráfico geral das percepções da rede sobre a dimensão: \n Neste gráfico podemos observar e analisar as médias dos resultados gerais  das percepções da Rede de Ensino por segmentos."],
+        ["gráficos gerais das percepções da rede sobre a dimensão: \n Neste gráfico podemos observar e analisar as médias dos resultados gerais  das percepções da Rede de Ensino por segmentos."],
         ["Gráficos gerais das percepções da Rede sobre os indicadores: \n Nestes gráficos podemos observar e analisar as médias dos resultados gerais das percepções da Rede de Ensino por segmentos."],
         ["Questões problematizadoras: \n Ao final de cada dimensão, algumas questões são colocadas para reflexão mais aprofundada acerca da dimensão. O diálogo acerca destas questões contribui para que a Secretaria da Educação possa refletir sobre as metas estabelecidas no PME de 2009, quais foram alcançadas e quais ainda merecem atenção."]
       ]
@@ -546,7 +548,7 @@ class GeneralReport
 
       table [["AGRUPAMENTO DE EMEFs"],[table_emef_groups]]
 
-      text "\n"
+      start_new_page
       text "2.6.4. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação Infantil", :style => :bold
 
       table_creche_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["Creche Benedita de Oliveira","Creche Elza Batiston","Creche Vilma Catan","Creche Amélia Tozzeto"],["CEMEI Lourdes Candida","Creche Sadamitu Omosako","Creche Maria José da Anunciação","Creche José Espinosa"],["CEMEI Wilma Foltran","Creche Prof. Silvia Ferreira Farhat","Creche Seraphina Bissolati","Creche Alha Elias Abib"],["CMEIEF Maria José Ferreira Ferraz","CEU Zilda Arns","CEMEIEF Maria Tarsilla","Creche Giuseppa"],["CEMEI Rubens Bandeira","Creche Alzira Silva","Creche Lar da Infância","CEMEI José Ermírio"],["CEMEI João de Farias","Creche Olga Camolesi","Creche Pedro Penov","CEMEI Mário Quintana"],["Creche Prof. Joaquina França","CEMEI Leonil Crê","Creche Moacyr Ayres","Creche Mercedes Correa"], ["CEMEI Fortunato Antiório","Creche Rosa Broseguini","Creche Hilda","Creche Dayse Ribeiro"],["CEMEI Mário Sebastião","CEMEI Mário Sebastião","Creche Rosa Pereira Crê","Creche Sergio Zanardi"],["CEMEIEF Darcy Ribeiro","Creche Ézio Melli","Creche Lídia Thomaz","Cemei Zaira Colino"],["  ","  ","Creche João Correa","Creche Recanto Alegre"],["  ","  ","Creche Ida Belmonte","CEMEI Alberto Santos Dumont"]]
@@ -575,7 +577,8 @@ class GeneralReport
       text "\n 2.6.6. Reflexão e aprendizagem compartilhada", :style => :bold
       text "Esta etapa apresenta a sistematização das reflexões advindas dos encontros com os principais envolvidos no processo de avaliação, isto é, supervisores de ensino, membros do Corpo Técnico Pedagógico e membros do Observatório, sobre os resultados e análises dos dados. Nesse momento, com base nos gráficos e mapas, foram produzidas as reflexões, conclusões e recomendações para a atualização do PTA da Secretaria de Educação e para a construção do PME de 2011.", :indent_paragraphs => 30
 
-      text "\n III. Resultados da avaliação do PEC- Osasco 2010", :style => :bold
+      start_new_page
+      text "CAPÍTULO III. RESULTADOS DA AVALIAÇÃO DO PEC-OSASCO 2010", :style => :bold
       data = get_total_number_of_people_that_answered_the_surveys
 
       table13 = [
@@ -583,13 +586,14 @@ class GeneralReport
         ["Gestor","341",data["Gestores"],((data["Gestores"].to_i*100)/341)],
         ["Professor","4866",data["Professores"],((data["Professores"].to_i*100)/4866)],
         ["Funcionários de apoio","2089",data["Funcionarios"],((data["Funcionarios"].to_i*100)/2089)],
-        ["Familiar *","32893",data["Familiares"],((data["Familiares"].to_i*100)/32893)]
+        ["Familiar *","32893",data["Familiares"],((data["Familiares"].to_i*100)/32893)],
+        ["Educandos","39022",data["Educandos"],((data["Educandos"].to_i*100)/39022)]
       ]
       table table13
       text "* considerando 1 representante dos familiares para cada 2 alunos."
 
-      text "\n 3. ANÁLISE DOS RESULTADOS DA EDUCAÇÃO INFANTIL
-        \n 3.1. Análise dos dados, por dimensões e indicadores", :style => :bold
+      text "\n 3. Análise dos Resultados da Educação Infantil", :style => :bold, :size => 13
+      text "\n 3.1. Análise dos dados, por dimensões e indicadores", :style => :bold
 
       text "A seguir apresentamos os gráficos e mapas dos resultados obtidos, por dimensão. Sugerimos as seguintes questões para serem refletidas em todas as dimensões:", :indent_paragraphs => 30
       text "1. A partir da leitura detalhada dos resultados por dimensões, quais indicadores merecem atenção especial?", :indent_paragraphs => 30
@@ -599,11 +603,11 @@ class GeneralReport
       text "5. Que ações devem partir da Secretaria para que a rede melhore seu desempenho nestes indicadores/ dimensão? Qual deve ser o papel dos supervisores nestas ações?", :indent_paragraphs => 30
       text "6. Olhando para as nossas metas, tanto aquelas previstas pelas diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação” como pelo PME de 2009 e cotejando-as com os resultados da avaliação, por dimensões e indicadores, conseguimos alcançá-las com êxito? Quais não conseguimos e quais serão os nossos esforços para melhorar a educação que oferecemos para as crianças e jovens do município?", :indent_paragraphs => 30
 
-      text " \n 3.1.1 DIMENSÃO 1. AMBIENTE EDUCATIVO", :style => :bold
+      text " \n 3.1.1 Dimensão 1. Ambiente Educativo", :style => :bold
       text "O Ambiente Educativo visa fornecer indicadores do ambiente que predomina na escola, das relações entre os diversos segmentos, do grau de conhecimento e participação deles na elaboração dos princípios de convivência e no conhecimento que se tem dos direitos das crianças, tendo em vista sua importância como referência às ações educativas para a escola. A escola é um dos espaços de ensino, aprendizagem e vivência de valores. Nela, os indivíduos se socializam, brincam e experimentam a convivência com a diversidade humana. No ambiente educativo, o respeito, a alegria, a amizade e a solidariedade, a disciplina, a negociação, o combate à discriminação e o exercício dos direitos e deveres são práticas que garantem a socialização e a convivência, desenvolvem e fortalecem a noção de cidadania e de igualdade entre todos.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension1-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -617,11 +621,11 @@ class GeneralReport
       text "2. O conhecimento que as unidades têm sobre o ECA, revelado pela avaliação de 2010, tem sido suficiente? Tem sido referência em todas as ações educativas da UE? O que o CTP pode fazer em relação a isso?", :indent_paragraphs => 30
       text "3. Os resultados revelados pela avaliação de 2010 demonstram que há práticas suficientes nas UEs em relação à socialização e convivência? O que o CTP pode fazer para melhorar essa questão nas unidades?", :indent_paragraphs => 30
 
-      text " \n 3.1.2. DIMENSÃO 2. AMBIENTE FÍSICO ESCOLAR E MATERIAIS", :style => :bold
+      text " \n 3.1.2. Dimensão 2. Ambiente Físico Escolar e Materiais", :style => :bold
       text "O ambiente físico escolar está diretamente relacionado à qualidade social da educação. Este deve ser atrativo, organizado, limpo, arejado, agradável, com árvores e plantas. Deve ainda dispor de móveis, equipamentos e materiais didáticos acessíveis, adequados à realidade da escola e que permitam a prestação de serviços de qualidade aos alunos, aos pais e a toda a comunidade.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension2-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -638,11 +642,11 @@ class GeneralReport
       text "6. O espaço físico e materiais contemplam as necessidades dos diferentes segmentos? Que responsabilidades e ações devem partir da Secretaria para que a Rede melhore seu desempenho nestes indicadores/ dimensão? Qual deve ser o papel dos supervisores nestas ações?", :indent_paragraphs => 30
       text "7. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?", :indent_paragraphs => 30
 
-      text " \n 3.1.3. DIMENSÃO 3. PLANEJAMENTO INSTITUCIONAL E PRÁTICA PEDAGÓGICA", :style => :bold
+      text " \n 3.1.3. Dimensão 3. Planejamento Institucional e Prática Pedagógica", :style => :bold
       text "Essa dimensão visa fornecer indicadores sobre o processo fundamental da escola: fazer com que os educandos aprendam e adquiram o desejo de aprender cada vez mais e com autonomia. Construção de uma proposta pedagógica bem definida e a necessidade de um planejamento com base em conhecimentos sobre o que os educandos já possuem e o que eles precisam e desejam saber são indicadores fundamentais de uma prática pedagógica centrada no desenvolvimento dos educandos.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension3-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -656,11 +660,11 @@ class GeneralReport
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
       text "4. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?", :indent_paragraphs => 30
 
-      text " \n 3.1.4. DIMENSÃO 4. AVALIAÇÃO", :style => :bold
+      text " \n 3.1.4. Dimensão 4. Avaliação", :style => :bold
       text "Essa dimensão visa fornecer os indicadores que dizem respeito à prática da avaliação como parte integrante e fundamental do processo educativo. Monitoramento do processo de aprendizagem, mecanismos e variedades de avaliação, participação dos educandos no processo de avaliação da aprendizagem; autoavaliação; avaliação dos profissionais e da escola como um todo; discussão e reflexão sobre as avaliações externas implementadas pelo MEC são indicadores fundamentais que apontam se a escola vem construindo a cultura da avaliação, pressuposto fundamental para o desenvolvimento de uma educação de qualidade, que garanta o direito de aprender.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension4-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -675,11 +679,11 @@ class GeneralReport
       text "4.As escolas estão utilizando os indicadores e dados das avaliações oficiais no seu dia a dia? Que ações a Secretaria de Educação propõe para que estes dados sejam atualizados, conhecidos e utilizados por todos?Em que medida a política educacional do município é pautada por estes dados e indicadores?", :indent_paragraphs => 30
       text "5. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
 
-      text " \n 3.1.5 DIMENSÃO 5. ACESSO E PERMANÊNCIA DOS EDUCANDOS NA ESCOLA", :style => :bold
+      text " \n 3.1.5 Dimensão 5. Acesso e Permanência dos Educandos na Escola", :style => :bold
       text "Esta dimensão visa fornecer indicadores sobre como a escola tem tratado a questão da democratização do acesso do aluno à instituição educativa, das faltas, da evasão e do abandono e dos esforços que a escola vem promovendo para fazer com que os educandos que evadiram ou abandonaram voltem para a escola. O acesso, ou seja, a matrícula, é a porta inicial para a democratização, mas torna-se necessário, também, garantir o direito de todos os que ingressam na  escola a condições de nela permanecer com sucesso (ou seja, permanecer e “aprender” na escola), sem interrupções até o término de um ciclo. Essa dimensão trata ainda da identificação dos indicadores referentes às necessidades educativas das respectivas comunidades.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension5-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -695,11 +699,11 @@ class GeneralReport
       text "5. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
       text "6. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?", :indent_paragraphs => 30
 
-      text " \n 3.1.6. DIMENSÃO 6. PROMOÇÃO DA SAÚDE", :style => :bold
+      text " \n 3.1.6. Dimensão 6. Promoção da Saúde", :style => :bold
       text "A dimensão Promoção da Saúde se relaciona com os indicadores que dizem respeito às práticas cotidianas e os cuidados que a instituição tem com relação à saúde das crianças e dos adultos da escola. A atenção à saúde das crianças é um aspecto muito importante do trabalho em instituições de educação. As práticas cotidianas precisam assegurar a prevenção de acidentes, os cuidados com a higiene e uma alimentação saudável, para o bom desenvolvimento das crianças em idade de crescimento.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension6-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -713,11 +717,11 @@ class GeneralReport
       text "3. A Secretaria tem conhecimento do perfil epidemiológico de seus alunos e alunas para melhorar direcionar as políticas públicas voltadas para a promoção da saúde?", :indent_paragraphs => 30
       text "4. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
 
-      text " \n 3.1.7. DIMENSÃO 7. EDUCAÇÃO SOCIOAMBIENTAL E PRÁTICAS ECOPEDAGÓGICAS", :style => :bold
+      text " \n 3.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas", :style => :bold
       text "A dimensão Educação Socioambiental e Práticas Ecopedagógicas visa fornecer indicadores sobre a formação em torno dos temas da cidadania planetária e as práticas educativas que garantem o conhecimento da realidade e a participação na construção de uma sociedade sustentável, com fundamentos da ecopedagogia.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension7-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -731,11 +735,11 @@ class GeneralReport
       text "2. O que o CTP pode planejar para incentivar práticas educativas que garantam o conhecimento da realidade e a participação de toda comunidade escolar na construção de uma sociedade sustentável?", :indent_paragraphs => 30
       text "3. Tendo em vista que um dos princípios e objetivos do sistema municipal de educação de Osasco é o compromisso com a promoção e o incentivo à cultura da educação ambiental, nas instituições públicas e privadas, pró-recuperação e conservação dos recursos naturais, do desenvolvimento sustentável e da paz, como a rede educacional lida com a questão socioambiental? Temos conseguido desenvolver uma educação socioambiental e práticas ecopedagógicas consistentes?", :indent_paragraphs => 30
 
-      text " \n 3.1.8. DIMENSÃO 8. ENVOLVIMENTO COM AS FAMÍLIAS E PARTICIPAÇÃO NA REDE DE PROTEÇÃO SOCIAL", :style => :bold
+      text " \n 3.1.8. Dimensão 8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", :style => :bold
       text "A dimensão Envolvimento com as Famílias e Participação na Rede de Proteção Social visa fornecer os indicadores que apontam se as famílias vêm sendo acolhidas pela escola e em que medida a escola vem garantido o direito das famílias acompanharem as vivências e produções das crianças. Essa dimensão visa ainda a fornecer os indicadores que apontam em que medida se dá a articulação da escola com a Rede de Proteção aos Direitos das Crianças, pois a instituição escolar é responsável, juntamente com as famílias, por garantir os direitos das crianças. Também visa refletir como os demais serviços públicos de alguma forma estão contribuindo para que todas as crianças sejam, de fato, sujeitos de direitos, conforme preconiza o Estatuto da Criança e do Adolescente (ECA).", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension8-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -753,11 +757,11 @@ class GeneralReport
       text "7. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
       text "8. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?", :indent_paragraphs => 30
 
-      text " \n 3.1.9. DIMENSÃO 9. GESTÃO ESCOLAR DEMOCRÁTICA", :style => :bold
+      text " \n 3.1.9. Dimensão 9. Gestão Escolar Democrática", :style => :bold
       text "A dimensão Gestão Escolar Democrática visa fornecer indicadores sobre o grau de participação da comunidade que as escolas vêm conseguindo instituir, como tem se dado a comunicação entre todos, o papel e a atuação dos coletivos escolares e as parcerias e recursos que elas têm conseguido conquistar.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension9-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -770,11 +774,11 @@ class GeneralReport
       text "2. A Secretaria vem estimulando a sua rede a criar mecanismos permanentes de consulta como o CGC e a participação no processo de orçamento participativo?", :indent_paragraphs => 30
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
 
-      text " \n 3.1.10. DIMENSÃO 10. FORMAÇÃO E CONDIÇÕES DE TRABALHO DOS PROFISSIONAIS DA ESCOLA", :style => :bold
+      text " \n 3.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola", :style => :bold
       text "A dimensão Formação e Condições de Trabalho dos Profissionais da Escola visa fornecer indicadores sobre as condições de trabalho implementadas pela escola em relação à formação inicial, à formação continuada, à assiduidade e à estabilidade da equipe que a escola tem conseguido institucionalizar.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension10-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -808,19 +812,18 @@ class GeneralReport
       text "Nesse sentido, foi analisada a correlação entre os resultados da avaliação por dimensões e por conglomerados de escolas de Educação Infantil por regiões geográficas do município.", :indent_paragraphs => 30
       text "Neste quadro, podemos analisar o resultado da média de cada dimensão por agrupamentos, tendo como referência as regiões geográficas do município. O que podemos observar? Existe alguma correlação entre os resultados obtidos e as escolas localizadas em determinada região? Que elementos podem ter contribuído para este resultado?", :indent_paragraphs => 30
 
-      infantil_group = GeneralReport.get_group_data("infantil")
-      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
-      y_positions = [414,394,365,339,306,282,254,218,190,160]
-      (0..9).each do |i|
-        draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
-        draw_text "#{infantil_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
-        draw_text "#{infantil_group[:group_3][i+1].round(2)}", :at => [411,y_positions[i]]
-        draw_text "#{infantil_group[:group_4][i+1].round(2)}", :at => [490,y_positions[i]]
-      end
+#      infantil_group = GeneralReport.get_group_data("infantil")
+#      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
+#      y_positions = [414,394,365,339,306,282,254,218,190,160]
+#      (0..9).each do |i|
+#        draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
+#        draw_text "#{infantil_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
+#        draw_text "#{infantil_group[:group_3][i+1].round(2)}", :at => [411,y_positions[i]]
+#        draw_text "#{infantil_group[:group_4][i+1].round(2)}", :at => [490,y_positions[i]]
+#      end
 
-      text " \n 4. Análise dos Resultados do Ensino Fundamental
-
-        4.1. Análise dos dados, por dimensões e indicadores", :style => :bold
+      text " \n 4. Análise dos Resultados do Ensino Fundamental", :style => :bold, :size => 13
+      text " 4.1. Análise dos dados, por dimensões e indicadores", :style => :bold
 
       text "A seguir apresentamos os gráficos e mapas dos resultados obtidos, por dimensão. Sugerimos as seguintes questões para todas as dimensões:", :indent_paragraphs => 30
       text "1. A partir da leitura detalhada dos resultados por dimensões, quais indicadores merecem atenção especial?", :indent_paragraphs => 30
@@ -834,7 +837,7 @@ class GeneralReport
       text "O Ambiente Educativo visa fornecer indicadores do ambiente que predomina na escola, das relações entre os diversos segmentos, do grau de conhecimento e participação deles na elaboração dos princípios de convivência e no conhecimento que se tem dos direitos das crianças, tendo em vista sua importância como referência às ações educativas para a escola. A escola é um dos espaços de ensino, aprendizagem e vivência de valores. Nela, os indivíduos se socializam, brincam e experimentam a convivência com a diversidade humana. No ambiente educativo, o respeito, a alegria, a amizade e a solidariedade, a disciplina, a negociação, o combate à discriminação e o exercício dos direitos e deveres são práticas que garantem a socialização e a convivência, desenvolvem e fortalecem a noção de cidadania e de igualdade entre todos.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension1-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -847,11 +850,11 @@ class GeneralReport
       text "2. O conhecimento que as unidades têm sobre o ECA, revelado pela avaliação de 2010, tem sido suficiente? Tem sido referência em todas as ações educativas da UE? O que o CTP pode fazer em relação a isto?"
       text "3. Os resultados revelados pela avaliação de 2010 demonstram que há práticas suficientes nas UEs em relação à socialização e convivência? O que o CTP pode fazer para melhorar essa questão nas unidades?"
 
-      text " \n 4.1.2. DIMENSÃO 2. AMBIENTE FÍSICO ESCOLAR E MATERIAIS", :style => :bold
+      text " \n 4.1.2. Dimensão 2. Ambiente Físico Escolar e Materiais", :style => :bold
       text "O ambiente físico escolar está diretamente relacionado à qualidade social da educação. Este deve ser atrativo, organizado, limpo, arejado, agradável, com árvores e plantas. Deve ainda dispor de móveis, equipamentos e materiais didáticos acessíveis, adequados à realidade da escola e que permitam a prestação de serviços de qualidade aos alunos, aos pais e a toda comunidade.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension2-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -868,11 +871,11 @@ class GeneralReport
       text "6. O espaço físico e materiais contemplam as necessidades dos diferentes segmentos? Que responsabilidades e ações devem partir da Secretaria para que a rede melhore seu desempenho nestes indicadores/dimensão? Qual deve ser o papel dos supervisores nestas ações?"
       text "7. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?"
 
-      text " \n 4.1.3. DIMENSÃO 3. PLANEJAMENTO INSTITUCIONAL E PRÁTICA PEDAGÓGICA", :style => :bold
+      text " \n 4.1.3. Dimensão 3. Planejamento Institucional e Prática Pedagógica", :style => :bold
       text "Essa dimensão visa fornecer indicadores sobre o processo fundamental da escola, que é o de fazer com que os educandos aprendam e adquiram o desejo de aprender cada vez mais e com autonomia. Construção de uma proposta pedagógica bem definida e a necessidade de um planejamento com base em conhecimentos sobre o que os educandos já possuem e o que eles precisam e desejam saber são indicadores fundamentais de uma prática pedagógica centrada no desenvolvimento dos educandos.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension3-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -886,11 +889,11 @@ class GeneralReport
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
       text "4. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?"
 
-      text " \n 4.1.4. DIMENSÃO 4. AVALIAÇÃO", :style => :bold
+      text " \n 4.1.4. Dimensão 4. Avaliação", :style => :bold
       text "Essa dimensão visa fornecer os indicadores que dizem respeito à prática da avaliação como parte integrante e fundamental do processo educativo. Monitoramento do processo de aprendizagem, mecanismos e variedades de avaliação, participação dos educandos no processo de avaliação da aprendizagem; autoavaliação; avaliação dos profissionais e da escola como um todo; discussão e reflexão sobre as avaliações externas implementadas pelo MEC são indicadores fundamentais que apontam se a escola vem construindo a cultura da avaliação, pressuposto fundamental para o desenvolvimento de uma educação de qualidade, que garanta o direito de aprender.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension4-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -905,11 +908,11 @@ class GeneralReport
       text "4. As escolas estão utilizando os indicadores e dados das avaliações oficiais no seu dia a dia? Que ações a Secretaria de Educação propõe para que estes dados sejam atualizados, conhecidos e utilizados por todos? Em que medida a política educacional do município é pautada por estes dados e indicadores?"
       text "5. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
 
-      text " \n 4.1.5 DIMENSÃO 5. ACESSO E PERMANÊNCIA DOS EDUCANDOS NA ESCOLA", :style => :bold
+      text " \n 4.1.5 Dimensão 5. Acesso e Permanência dos Educandos na Escola", :style => :bold
       text "Esta dimensão visa fornecer indicadores sobre como a escola tem tratado a questão da democratização do acesso do aluno à instituição educativa, das faltas, da evasão e do abandono e dos esforços que a escola vem promovendo, para fazer com que os educandos que evadiram ou abandonaram voltem para a escola. O acesso, ou seja, a matrícula, é a porta inicial para a democratização, mas torna-se necessário, também, garantir o direito de todos os que ingressam na  escola a condições de nela permanecer com sucesso (ou seja, permanecer e “aprender” na escola), sem interrupções até o término de um ciclo. Essa dimensão trata ainda da identificação dos indicadores referentes às necessidades educativas das respectivas comunidades.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension5-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -926,11 +929,11 @@ class GeneralReport
       text "5. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
       text "6. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?"
 
-      text " \n 4.1.6. DIMENSÃO 6. PROMOÇÃO DA SAÚDE", :style => :bold
+      text " \n 4.1.6. Dimensão 6. Promoção da Saúde", :style => :bold
       text "A dimensão Promoção da Saúde se relaciona com os indicadores que dizem respeito às práticas cotidianas e os cuidados que a instituição tem com relação à saúde das crianças e dos adultos da escola. A atenção à saúde das crianças é um aspecto muito importante do trabalho em instituições de educação. As práticas cotidianas precisam assegurar a prevenção de acidentes, os cuidados com a higiene e uma alimentação saudável, para o bom desenvolvimento das crianças em idade de crescimento.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension6-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -945,11 +948,11 @@ class GeneralReport
       text "3. A Secretaria tem conhecimento do perfil epidemiológico de seus alunos e alunas para melhorar direcionar as políticas públicas voltadas para a promoção da saúde?"
       text "4. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
 
-      text " \n 4.1.7. DIMENSÃO 7. EDUCAÇÃO SOCIOAMBIENTAL E PRÁTICAS ECOPEDAGÓGICAS", :style => :bold
+      text " \n 4.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas", :style => :bold
       text "A dimensão Educação Socioambiental e Práticas Ecopedagógicas visa fornecer indicadores sobre a formação em torno dos temas da cidadania planetária e as práticas educativas que garantem o conhecimento da realidade e a participação na construção de uma sociedade sustentável, com fundamentos da ecopedagogia.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension7-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -963,11 +966,11 @@ class GeneralReport
       text "2. O que o CTP pode planejar para incentivar práticas educativas que garantam o conhecimento da realidade e a participação de toda comunidade escolar na construção de uma sociedade sustentável? "
       text "3. Tendo em vista que um dos princípios e objetivos do sistema municipal de educação de Osasco é o compromisso com a promoção e o incentivo à cultura da educação ambiental, nas instituições públicas e privadas, pró-recuperação e conservação dos recursos naturais, do desenvolvimento sustentável e da paz, como a rede educacional lida com a questão socioambiental? Temos conseguido desenvolver uma educação socioambiental e práticas ecopedagógicas consistentes?"
 
-      text " \n 4.1.8. DIMENSÃO 8. ENVOLVIMENTO COM AS FAMÍLIAS E PARTICIPAÇÃO NA REDE DE PROTEÇÃO SOCIAL", :style => :bold
+      text " \n 4.1.8. Dimensão 8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", :style => :bold
       text "A dimensão Envolvimento com as Famílias e Participação na Rede de Proteção Social visa fornecer os indicadores que apontam se as famílias vêm sendo acolhidas pela Escola e em que medida a escola vem garantido o direito das famílias em acompanhar as vivências e produções das crianças. Essa dimensão visa ainda fornecer os indicadores que apontam em que medida se dá a articulação da Escola com a Rede de Proteção aos Direitos das Crianças, pois a instituição escolar é responsável, juntamente com as famílias, por garantir os direitos das crianças. Também visa refletir como os demais serviços públicos de alguma forma estão contribuindo para que todas as crianças sejam, de fato, sujeitos de direitos, conforme preconiza o Estatuto da Criança e do Adolescente (ECA).", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension8-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -986,11 +989,11 @@ class GeneralReport
       text "7. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
       text "8. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?"
 
-      text " \n 4.1.9. DIMENSÃO 9. GESTÃO ESCOLAR DEMOCRÁTICA", :style => :bold
+      text " \n 4.1.9. Dimensão 9. Gestão Escolar Democrática", :style => :bold
       text "A dimensão Gestão Escolar Democrática visa fornecer indicadores sobre o grau de participação da comunidade que as escolas vêm conseguindo instituir, como tem se dado a comunicação entre todos, o papel e a atuação dos coletivos escolares e as parcerias e recursos que elas têm conseguido conquistar.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension9-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -1004,11 +1007,11 @@ class GeneralReport
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
 
 
-      text " \n 4.1.10. DIMENSÃO 10. FORMAÇÃO E CONDIÇÕES DE TRABALHO DOS PROFISSIONAIS DA ESCOLA", :style => :bold
+      text " \n 4.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola", :style => :bold
       text "A dimensão Formação e Condições de Trabalho dos Profissionais da Escola visa fornecer indicadores sobre as condições de trabalho implementadas pela escola em relação à formação inicial, à formação continuada, à assiduidade e à estabilidade da equipe que a escola tem conseguido institucionalizar.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension10-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -1021,11 +1024,11 @@ class GeneralReport
       text "1. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
       text "2. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?"
 
-      text " \n 4.1.11. DIMENSÃO  11.PROCESSOS DE ALFABETIZAÇÃO E LETRAMENTO (Apenas para o Ensino Fundamental)", :style => :bold
+      text " \n 4.1.11. Dimensão  11.Processos de Alfabetização e Letramento", :style => :bold
       text "Essa dimensão diz respeito aos indicadores referentes a todos os aspectos que, no conjunto, favorecem a alfabetização inicial e a ampliação da capacidade da leitura e escrita de todas as crianças e adolescentes ao longo do Ensino Fundamental.  O domínio da leitura e da escrita é condição para o bom desenvolvimento de outros conteúdos escolares e, também, para que, depois de concluída a educação básica, o cidadão ea cidadã possam continuar aprendendo e se desenvolvendo com autonomia.", :indent_paragraphs => 30
 
       start_new_page
-      text "a) Gráfico geral das percepções da rede sobre a dimensão \n"
+      text "a) gráficos gerais das percepções da rede sobre a dimensão \n"
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension11-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
@@ -1060,27 +1063,28 @@ class GeneralReport
         Olhando para as unidades que compõem os agrupamentos, podemos observar alguns padrões entre elas que contribuiu para o desempenho no IDEB? Quais são esses padrões?", :indent_paragraphs => 30
       text "É possível afirmar que o grupo de escolas que conseguiu médias melhores nas dimensões também conseguiu uma pontuação favorável no IDEB? Existe correlação entre esses resultados?", :indent_paragraphs => 30
 
-      fundamental_group = GeneralReport.get_group_data("fundamental")
-      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
-      y_positions = [445,426,406,379,348,320,292,257,231,203,170]
-      (0..10).each do |i|
-        draw_text "#{fundamental_group[:group_1][i+1].round(2)}", :at => [252,y_positions[i]]
-        draw_text "#{fundamental_group[:group_2][i+1].round(2)}", :at => [323,y_positions[i]]
-        draw_text "#{fundamental_group[:group_3][i+1].round(2)}", :at => [392,y_positions[i]]
-        draw_text "#{fundamental_group[:group_4][i+1].round(2)}", :at => [463,y_positions[i]]
-      end
+#      fundamental_group = GeneralReport.get_group_data("fundamental")
+#      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
+#      y_positions = [445,426,406,379,348,320,292,257,231,203,170]
+#      (0..10).each do |i|
+#        draw_text "#{fundamental_group[:group_1][i+1].round(2)}", :at => [252,y_positions[i]]
+#        draw_text "#{fundamental_group[:group_2][i+1].round(2)}", :at => [323,y_positions[i]]
+#        draw_text "#{fundamental_group[:group_3][i+1].round(2)}", :at => [392,y_positions[i]]
+#        draw_text "#{fundamental_group[:group_4][i+1].round(2)}", :at => [463,y_positions[i]]
+#      end
 
 
       text " \n 5. Meta-avaliação", :style => :bold
 
       text "a) Mobilização"
       text "b) Participação"
-      text "c) Condições Físicas e Materiais"
-      text "d) Período de Aplicação e Inserção dos dados no on-line"
-      text "e) Análise Coletiva"
+      text "c) Metodologia"
+      text "d) Condições Físicas e Materiais"
+      text "e) Período de Aplicação e Inserção dos dados no on-line"
+      text "f) Análise Coletiva"
 
       text " \n 6. Considerações Finais", :style => :bold
-      draw_text "108", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
+      draw_text "107", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
       number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
     end
   end

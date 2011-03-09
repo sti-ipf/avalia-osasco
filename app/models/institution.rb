@@ -449,7 +449,7 @@ class Institution < ActiveRecord::Base
     graph_labels[graph_labels.length] = "Geral"
     graph_labels[graph_labels.length] = "    "
 
-    a={}
+    a = {}
 
     sl_average_by_dimension.each do |i|
       avgs = i[1][:segments]
@@ -490,7 +490,6 @@ class Institution < ActiveRecord::Base
       graph_labels[graph_labels.length] = indicators.present? ? "#{seg.name}\n(#{indicators[seg.name]})" : seg.name
       hash
     end
-
     graph_data["Media da UE"] << mean[:mean]
     # graph_data["Media do Grupo"] << mean_group[:mean]
     # graph_data["Media das #{service_level.name}s"] << mean_sl[:mean]
