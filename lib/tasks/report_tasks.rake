@@ -20,7 +20,7 @@ namespace :reports do
     dimensions.each do |dimension|
       sls = ServiceLevel.all(:conditions => {:name => sl_names})
       ReportData.service_level_graph(dimension, sls)
-      ReportData.service_level_indicators_graph(dimension, sls)
+#      ReportData.service_level_indicators_graph(dimension, sls)
     end
   end
 

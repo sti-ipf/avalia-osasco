@@ -35,8 +35,7 @@ class Institution < ActiveRecord::Base
     name <=> other.name
   end
 
-  def self.mean_dimension_by_sl(dimension,service_level)
-    indicators = dimension.indicators.by_service_level(service_level)
+  def self.mean_dimension_by_sl(indicators,service_level)
     dimension_mean = { :mean => 0 }
     indicators_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
@@ -47,7 +46,17 @@ class Institution < ActiveRecord::Base
       questions_parties.each do |qp|
         qp.questions.each do |q|
           @curr_answers = {}
-          answers = q.answers.valid.by_service_level(service_level).min_participants(0).newer
+          segment_id = Segment.find_by_sql("
+            SELECT seg.* FROM segments seg
+            INNER JOIN surveys s ON seg.id = s.segment_id
+            WHERE s.id = #{q.survey_id};
+          ").first.id
+          answers = Answer.find_by_sql("
+            SELECT * FROM answers
+            WHERE question_id = #{q.id} AND participants_number > 0 AND
+            user_id IN (SELECT u2.id FROM users as u2 WHERE u2.service_level_id IN (#{service_level.id}) AND u2.segment_id = #{segment_id})
+            AND participants_number > answers.zero
+            ")
           answers.each do |a|
             @curr_answers[a.user_id] ||= a.mean
             @users_data[a.user_id][a.question_id] ||= a

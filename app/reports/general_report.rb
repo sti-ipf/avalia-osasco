@@ -22,7 +22,7 @@ class GeneralReport
         hash[:group_3][dimension.number] = group_3_value
         hash[:group_4][dimension.number] = group_4_value
       end
-    else
+  else
       Dimension.fundamental.each do |dimension|
         dimension_values = calc_media_by_group_and_service_level(dimension, ServiceLevel.fundamental.first)
         hash[:group_1][dimension.number] = dimension_values[0]
@@ -578,19 +578,49 @@ class GeneralReport
         ["Unidades Educacionais que não atingiram a meta projetada para ela em 2007 e apresentam IDEB inferior ao da rede municipal.",
         "Unidades Educacionais que atingiram ou ultrapassaram a meta projetada para ela em 2007 mas mantiveram o seu IDEB inferior ao da rede municipal.",
         "Unidades Educacionais que não atingiram a meta projetada para ela em 2007 e apresentam IDEB igual ou superior ao da rede municipal.",
-        "Unidades Educacionais que atingiram ou ultrapassaram a meta projetada para ela em 2007 e apresentam IDEB igual ou superior ao da rede municipal."]
+        "Unidades Educacionais que atingiram ou ultrapassaram a meta projetada para ela em 2007 e apresentam IDEB igual ou superior ao da rede municipal."],
+        ["EMEIEF Elio Aparecido", "EMEF Terezinha Martins Pereira", "EMEIEF Messias Gonçalves da Silva", "CEMEIEF Maria José Ferreira Ferraz"],
+        ["EMEF Frei Gaspar da Madre de Deus", "EMEF Prof. Manoel Barbosa de Souza", "EMEIEF Etiene Sales Campelo Profa", "CEMEI Maria Tarcilla Fornasaro Melli"],
+        ["EMEF Dr. Francisco Manuel L Sa Carneiro", "EMEF Josias Baptista Pastor", "EMEF Prof. Olavo Antonio Barbosa Spinola", "EMEF Profa. Marina Von Putkammer Melli"],
+        ["EMEF Marina Saddi Haidar", "EMEF Deputado Alfredo Farhat", "EMEF João Guimarães Rosa", "EMEF Benedicto Weschenfelder"],
+        ["EMEF Domingos Blasco Maestro", "EMEF Prof. Olinda Moreira Lemes da Cunha", "EMEF Prof. Luciano Felicio Biondo", "EMEF Mal. Bittencourt"],
+        ["EMEF Dr. Hugo Ribeiro de Almeida", "EMEF Irma Tecla Merlo", "EMEF Tobias Barreto de Menezes", "EMEF Francisco Cavalcanti Pontes Miranda"],
+        ["EMEF Prof. João Campestrini", "EMEF Oscar Pennacino", "EMEF Profa. Cecília Correa Castelani", "EMEF Prof. Laerte José dos Santos"],
+        ["EMEIEF Valter de Oliveira", "EMEF Elidio Mantovani Monsenhor", "EMEF Prof. Elza de Carvalho Mello Battiston", "EMEF Dr. José Manoel Ayres"],
+        ["EMEF Saad Bechara", "CEU Dra. Zilda Arns Neumann", "EMEF Luiz Bortolosso", "EMEF Prof. Renato Fiuza Teles"],
+        ["EMEF Prof. Alipio da Silva Lavoura", "CEMEIEF Prof. Darcy Ribeiro", "EMEF Osvaldo Quirino Simões", "EMEF Prof. Anezio Cabral"],
+        ["EMEF Prof. Oneide Bortolote", "EMEF José Veríssimo de Matos", "EMEF General Antonio de Sampaio", "EMEF José Martiniano de Alencar"],
+        ["EMEF Prof. João Euclides Pereira", "", "EMEF Alice Rabechini Ferreira", "EMEF Prof. Max Zendron"],
+        ["EMEF Quintino Bocaiuva", "", "", "EMEF Escultor Victor Brecheret"]
         ]
 
       table [["AGRUPAMENTO DE EMEFs"],[table_emef_groups]]
 
       start_new_page
+      table [
+        ["EMEF Profa. Zuleica Gonçalves Mendes", "", "", "EMEF Padre José Grossi Dias"],
+        ["", "                                                                 ", "                                                        ", "EMEF Prof. João Larizzatti"],
+        ["", "                                                                 ", "                                                        ", "EMEF Benedito Alves Turibio"],
+        ["", "                                                                 ", "                                                        ", "EMEF Manoel Tertuliano de Cerqueira"]]
+
+      start_new_page
       text "2.6.4. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação Infantil", :style => :bold
 
-      table_creche_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["Creche Benedita de Oliveira","Creche Elza Batiston","Creche Vilma Catan","Creche Amélia Tozzeto"],["CEMEI Lourdes Candida","Creche Sadamitu Omosako","Creche Maria José da Anunciação","Creche José Espinosa"],["CEMEI Wilma Foltran","Creche Prof. Silvia Ferreira Farhat","Creche Seraphina Bissolati","Creche Alha Elias Abib"],["CMEIEF Maria José Ferreira Ferraz","CEU Zilda Arns","CEMEIEF Maria Tarsilla","Creche Giuseppa"],["CEMEI Rubens Bandeira","Creche Alzira Silva","Creche Lar da Infância","CEMEI José Ermírio"],["CEMEI João de Farias","Creche Olga Camolesi","Creche Pedro Penov","CEMEI Mário Quintana"],["Creche Prof. Joaquina França","CEMEI Leonil Crê","Creche Moacyr Ayres","Creche Mercedes Correa"], ["CEMEI Fortunato Antiório","Creche Rosa Broseguini","Creche Hilda","Creche Dayse Ribeiro"],["CEMEI Mário Sebastião","CEMEI Mário Sebastião","Creche Rosa Pereira Crê","Creche Sergio Zanardi"],["CEMEIEF Darcy Ribeiro","Creche Ézio Melli","Creche Lídia Thomaz","Cemei Zaira Colino"],["  ","  ","Creche João Correa","Creche Recanto Alegre"],["  ","  ","Creche Ida Belmonte","CEMEI Alberto Santos Dumont"]]
+      table_creche_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],
+        ["Creche Benedita de Oliveira","Creche Elza Batiston","Creche Vilma Catan","Creche Amélia Tozzeto"],
+        ["CEMEI Lourdes Candida","Creche Sadamitu Omosako","Creche Maria José da Anunciação","Creche José Espinosa"],
+        ["CEMEI Wilma Foltran","Creche Prof. Silvia Ferreira Farhat","Creche Seraphina Bissolati","Creche Alha Elias Abib"],["CMEIEF Maria José Ferreira Ferraz","CEU Zilda Arns","CEMEIEF Maria Tarsilla","Creche Giuseppa"],["CEMEI Rubens Bandeira","Creche Alzira Silva","Creche Lar da Infância","CEMEI José Ermírio"],["CEMEI João de Farias","Creche Olga Camolesi","Creche Pedro Penov","CEMEI Mário Quintana"],["Creche Prof. Joaquina França","CEMEI Leonil Crê","Creche Moacyr Ayres","Creche Mercedes Correa"], ["CEMEI Fortunato Antiório","Creche Rosa Broseguini","Creche Hilda","Creche Dayse Ribeiro"],["CEMEI Mário Sebastião","Creche Ézio Melli","Creche Rosa Pereira Crê","Creche Sergio Zanardi"],["CEMEIEF Darcy Ribeiro","","Creche Lídia Thomaz","Cemei Zaira Colino"],
+        ["  ","  ","Creche João Correa","Creche Recanto Alegre"],["  ","  ","Creche Ida Belmonte","CEMEI Alberto Santos Dumont"],
+        ["  ","Creche Olímpia Maria de Jesus Carvalho","Creche Hermínia Lopes","Creche Inês Sanches Mendes"]]
       table [["AGRUPAMENTO DE CRECHES"],[table_creche_groups]]
       text "\n"
 
-      table_emei_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["EMEI Maria Bertoni Fiorita","EMEI Maria Alves Dória","EMEI Helena Coutinho","CEMEI Zaíra Collino"],["EMEI Omar Ogeda","EMEI Nair Bellacoza","EMEI Pedro Martino","EMEI Cristine"],["EMEI Japhet Fonte","EMEIEF Valter de Oliveira","EMEI Maria Madalena Freixeda","CEMEI Alberto Santos Dumont"],["CEMEI Lourdes Candida","CEU Zilda Arns","EMEI Alípio Pereira","EMEI Osvaldo Salles"],["CEMEI Wilma Foltran","EMEI Gertrudes de Rossi","EMEI Estevão Brett","EMEI Esmeralda"],["EMEI Osvaldo Gonçalves","CEMEI Leonil Crê","CEMEIEF Maria Tarcilla","EMEIEF Messias"],["EMEI Yolanda Botaro","EMEI Sonia Maria ","EMEI Dalva Mirian","EMEI Emir Macedo"], ["CEMEI Fortunato Antiório","EMEI Maria Ap. Damy","EMEI Fernando Buonaduce","EMEI Descio Mendes"],["CEMEI Mário Sebastião","  ","EMEI Zuleika","EMEI Zuleika"],["CEMEIEF Darcy Ribeiro","  ","EMEI Fortunata","CEMEI José Emírio"],["EMEI Vivaldo","  ","EMEI Elide Alves","CEMEI Mário Quintana"],["CEMEIEF Maria José Ferreira Ferraz","  ","EMEI Adhemar Pereira","EMEI Salvador Sacco"],["CEMEI Rubens Bandeira","  ","EMEIF Etiene"," "],["CEMEI João de Farias"," ","EMEI Providencia dos Anjos"," "],["EMEI José Flávio","  ","EMEI Ignes Collino","  "]]
+      table_emei_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["EMEI Maria Bertoni Fiorita","EMEI Maria Alves Dória","EMEI Helena Coutinho","CEMEI Zaíra Collino"],["EMEI Omar Ogeda","EMEI Nair Bellacoza","EMEI Pedro Martino","EMEI Cristine"],["EMEI Japhet Fonte","EMEIEF Valter de Oliveira","EMEI Maria Madalena Freixeda","CEMEI Alberto Santos Dumont"],["CEMEI Lourdes Candida","CEU Zilda Arns","EMEI Alípio Pereira","EMEI Osvaldo Salles"],["CEMEI Wilma Foltran","EMEI Gertrudes de Rossi","EMEI Estevão Brett","EMEI Esmeralda"],["EMEI Osvaldo Gonçalves","CEMEI Leonil Crê","CEMEIEF Maria Tarcilla","EMEIEF Messias"],["EMEI Yolanda Botaro","EMEI Sonia Maria ","EMEI Dalva Mirian","EMEI Emir Macedo"], ["CEMEI Fortunato Antiório","EMEI Maria Ap. Damy","EMEI Fernando Buonaduce","EMEI Descio Mendes"],
+        ["CEMEI Mário Sebastião","  ","EMEI Fortunata","EMEI Zuleica"],["CEMEIEF Darcy Ribeiro","  ","EMEI Elide Alves","CEMEI José Emírio"],
+        ["EMEI Vivaldo","  ","EMEI Adhemar Pereira","CEMEI Mário Quintana"],["CEMEIEF Maria José Ferreira Ferraz","  ","EMEIF Etiene","EMEI Salvador Sacco"],
+        ["CEMEI Rubens Bandeira","  ","EMEI Providencia dos Anjos"," "],["CEMEI João de Farias"," ","EMEI Ignes Collino"," "],
+        ["EMEI José Flávio","  ","EMEI Antonio Paulino Ribeiro","  "],["EMEI Elio Aparecido da Silva","  ","EMEI Luzia Momi Sasso","  "],
+        ["","  ","EMEI Severino de Araujo Freire","  "],["","  ","EMEI Thereza Bianchi Collino","  "]]
       start_new_page
       table [["AGRUPAMENTO DE EMEIs"],[table_emei_groups]]
 
@@ -835,15 +865,15 @@ class GeneralReport
       text "Nesse sentido, foi analisada a correlação entre os resultados da avaliação por dimensões e por conglomerados de escolas de Educação Infantil por regiões geográficas do município.", :indent_paragraphs => 30
       text "Neste quadro, podemos analisar o resultado da média de cada dimensão por agrupamentos, tendo como referência as regiões geográficas do município. O que podemos observar? Existe alguma correlação entre os resultados obtidos e as escolas localizadas em determinada região? Que elementos podem ter contribuído para este resultado?", :indent_paragraphs => 30
 
-#      infantil_group = GeneralReport.get_group_data("infantil")
-#      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
-#      y_positions = [414,394,365,339,306,282,254,218,190,160]
-#      (0..9).each do |i|
-#        draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
-#        draw_text "#{infantil_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
-#        draw_text "#{infantil_group[:group_3][i+1].round(2)}", :at => [411,y_positions[i]]
-#        draw_text "#{infantil_group[:group_4][i+1].round(2)}", :at => [490,y_positions[i]]
-#      end
+      infantil_group = GeneralReport.get_group_data("infantil")
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
+      y_positions = [414,394,365,339,306,282,254,218,190,160]
+      (0..9).each do |i|
+        draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
+        draw_text "#{infantil_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
+        draw_text "#{infantil_group[:group_3][i+1].round(2)}", :at => [411,y_positions[i]]
+        draw_text "#{infantil_group[:group_4][i+1].round(2)}", :at => [490,y_positions[i]]
+      end
 
       start_new_page
       text "CAPÍTULO IV. RESULTADOS DA AVALIAÇÃO DO PEC-OSASCO 2010 - ENSINO FUNDAMENTAL", :style => :bold
@@ -1071,15 +1101,15 @@ class GeneralReport
         Olhando para as unidades que compõem os agrupamentos, podemos observar alguns padrões entre elas que contribuiu para o desempenho no IDEB? Quais são esses padrões?", :indent_paragraphs => 30
       text "É possível afirmar que o grupo de escolas que conseguiu médias melhores nas dimensões também conseguiu uma pontuação favorável no IDEB? Existe correlação entre esses resultados?", :indent_paragraphs => 30
 
-#      fundamental_group = GeneralReport.get_group_data("fundamental")
-#      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
-#      y_positions = [445,426,406,379,348,320,292,257,231,203,170]
-#      (0..10).each do |i|
-#        draw_text "#{fundamental_group[:group_1][i+1].round(2)}", :at => [252,y_positions[i]]
-#        draw_text "#{fundamental_group[:group_2][i+1].round(2)}", :at => [323,y_positions[i]]
-#        draw_text "#{fundamental_group[:group_3][i+1].round(2)}", :at => [392,y_positions[i]]
-#        draw_text "#{fundamental_group[:group_4][i+1].round(2)}", :at => [463,y_positions[i]]
-#      end
+      fundamental_group = GeneralReport.get_group_data("fundamental")
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
+      y_positions = [445,426,406,379,348,320,292,257,231,203,170]
+      (0..10).each do |i|
+        draw_text "#{fundamental_group[:group_1][i+1].round(2)}", :at => [252,y_positions[i]]
+        draw_text "#{fundamental_group[:group_2][i+1].round(2)}", :at => [323,y_positions[i]]
+        draw_text "#{fundamental_group[:group_3][i+1].round(2)}", :at => [392,y_positions[i]]
+        draw_text "#{fundamental_group[:group_4][i+1].round(2)}", :at => [463,y_positions[i]]
+      end
 
       start_new_page
       text "CAPÍTULO V. META-AVALIAÇÃO", :style => :bold
@@ -1092,7 +1122,7 @@ class GeneralReport
 
       start_new_page
       text "CAPÍTULO VI. CONSIDERAÇÕES FINAIS", :style => :bold
-      draw_text "107", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
+      draw_text "116", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
       number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
     end
   end

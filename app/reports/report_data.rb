@@ -106,7 +106,8 @@ class ReportData
     graph_start_time = now = Time.now
     data_service_level = {}
     service_levels.each do |service_level|
-      service_level_average_data = Institution.mean_dimension_by_sl(dimension, service_level)
+      indicators = Indicator.all(:conditions => {:dimension_id => dimension.id, :service_level_id => service_level.id})
+      service_level_average_data = Institution.mean_dimension_by_sl(indicators, service_level)
       data_service_level[service_level.name] = service_level_average_data#.reject{|k,v| k == :mean}
     end
     service_level_time = Time.now - now
@@ -278,7 +279,6 @@ class ReportData
           end
         end
       end
-      puts indicators.inspect
       service_level_indicator_graph(indicators, sls) if !indicators.first.nil?
     end
   end
