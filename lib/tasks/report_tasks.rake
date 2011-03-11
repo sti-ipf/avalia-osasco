@@ -55,7 +55,7 @@ namespace :reports do
     #   end
     # end
 
-    institution = Institution.find(87) #Maria José Ferreira Ferraz, Profª
+    institution = Institution.find(65) #Maria José Ferreira Ferraz, Profª
     institution.service_levels.each do |service_level|
       puts "- #{service_level.name}"
       before = Time.now
@@ -80,6 +80,21 @@ namespace :reports do
       end_time = Time.now
       duration = (end_time - start_time).to_i/60
       puts "#{service_level.name.capitalize} table generated, duration was #{duration} minutes"
+    end
+  end
+
+  task :graphs_by_institution => :environment do
+    dimensions = Dimension.all
+    inst = Institution.find(65)
+    puts inst.name
+    inst.service_levels.each do |sl|
+      puts "- #{sl.name}"
+      rdata = ReportData.new(inst, sl)
+      not_generated = true
+      dimensions.each do |dimension|
+        rdata.dimension_graph(dimension)
+        rdata.indicators_graph(dimension)
+      end
     end
   end
 

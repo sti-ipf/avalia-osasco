@@ -99,13 +99,8 @@ class Institution < ActiveRecord::Base
     indicator_mean
   end
 
-  def self.mean_indicator_by_sl2(indicators_party,sls)
-    indicators = Indicator.find(:all,
-        :conditions => {
-            :service_level_id => sls.collect(&:id),
-            :number => indicators_party.indicators.first.number
-        }
-    )
+  def self.mean_indicator_by_sl2(indicators,sls)
+    sls_id = sls.collect(&:id).join(',')
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
@@ -116,7 +111,19 @@ class Institution < ActiveRecord::Base
       questions_parties.each do |qp|
         qp.questions.each do |q|
           @curr_answers = {}
-          answers = q.answers.valid.by_service_levels(sls).min_participants(0).newer
+#q.answers.with_institution(self).by_service_level(service_level).min_participants(0).newer
+#          answers = q.answers.valid.by_service_levels(sls).min_participants(0).newer
+          segment_id = Segment.find_by_sql("
+            SELECT seg.* FROM segments seg
+            INNER JOIN surveys s ON seg.id = s.segment_id
+            WHERE s.id = #{q.survey_id};
+          ").first.id
+          answers = Answer.find_by_sql("
+            SELECT * FROM answers
+            WHERE question_id = #{q.id} AND participants_number > 0 AND
+            user_id IN (SELECT u2.id FROM users as u2 WHERE u2.service_level_id IN (#{sls_id}) AND u2.segment_id = #{segment_id})
+            AND participants_number > answers.zero
+            ")
           answers.each do |a|
             @curr_answers[a.user_id] ||= a.mean
             @users_data[a.user_id][a.question_id] ||= a

@@ -97,7 +97,7 @@ class ReportData
     dimension_time = Time.now - now
     now = Time.now
     graph = @institution.graph(data, data_group, data_sl, @service_level, :id => dimension.number)
-    p_times(graph, :sl => sl_time, :group => group_time, :dimension => dimension_time, :graph => Time.now - now, :total => Time.now - graph_start_time)
+    ReportData.p_times(graph, :sl => sl_time, :group => group_time, :dimension => dimension_time, :graph => Time.now - now, :total => Time.now - graph_start_time)
 
     graph
   end
@@ -115,7 +115,8 @@ class ReportData
     dimension_time = Time.now - now
 
     now = Time.now
-    graph = Institution.service_level_graph(data_service_level, :id => dimension.number, :group => "Ensino Infantil")
+    group = get_service_levels_type(service_levels)
+    graph = Institution.service_level_graph(data_service_level, :id => dimension.number, :group => group)
     graph_time = Time.now - now
 
     p_times(graph, :sl => service_level_time, :dimension => dimension_time, :graph => graph_time, :total => Time.now - graph_start_time)
@@ -149,7 +150,7 @@ class ReportData
     graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
     now2 = Time.now
 
-    p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
+    ReportData.p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
     #p "=============================================================================================================="
     graph
   end
@@ -261,18 +262,28 @@ class ReportData
 
 
   def self.service_level_indicators_graph(dimension,sls)
-    # indicators_parties = dimension.indicators_parties.all(:conditions => {:service_level_id => sls.collect(&:id)})
+    indicators_numbers = Indicator.find_by_sql("
+      SELECT DISTINCT number FROM indicators WHERE dimension_id = #{dimension.id}").collect(&:number)
     indicators_parties = IndicatorsParty.find(:all, :conditions => {
         :service_level_id => sls.collect(&:id),
         :dimension_id => dimension.id
       }
     )
-    data = sls.inject({}) {|m,v| m[v.name]= indicators_parties.find_all {|i|i.service_level_id == v.id};m}
-    indicators_parties.each {|indicators_party| service_level_indicator_graph(indicators_party, sls)}
-    # service_level_indicator_graph(indicators_party, data)
+    indicators_numbers.each do |indicator_number|
+      indicators = []
+      indicators_parties.each do |indicators_party|
+        if indicators_party.indicators.first.number == indicator_number
+          indicators_party.indicators.each do |indicator|
+            indicators << indicator if !indicators.include?(indicator)
+          end
+        end
+      end
+      puts indicators.inspect
+      service_level_indicator_graph(indicators, sls) if !indicators.first.nil?
+    end
   end
 
-  def self.service_level_indicator_graph(indicators_party, sls)
+  def self.service_level_indicator_graph(indicators, sls)
     now = graph_start_time = Time.now
     # data_sl = {:mean=>0.0, :segments=>{"Professores"=>0.0, "Familiares"=>0.0, "Funcionarios"=>0.0, "Gestores"=>0.0}}
     blur={}
@@ -283,7 +294,7 @@ class ReportData
       # temp[:segments].each_pair do |k,v|
       #   data_sl[:segments][k] = data_sl[:segments][k] + temp[:segments][k]
       # end
-      blur[i.name] = Institution.mean_indicator_by_sl2(indicators_party, [i])
+      blur[i.name] = Institution.mean_indicator_by_sl2(indicators, [i])
     end
     #p data_sl
     sl_time = Time.now - now
@@ -297,13 +308,28 @@ class ReportData
     # data = @institution.mean_indicator(indicators_party,@service_level)
     #p data
     # graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
-    graph = Institution.service_level_graph(blur, :id => "i#{indicators_party.indicators.first.number}", :title => "#{indicators_party.indicators.first.name}", :group => "Ensino Infantil")
+    group = get_service_levels_type(sls)
+    puts "_" * 100
+    puts indicators.inspect
+    puts "_" * 100
+    graph = Institution.service_level_graph(blur, :id => "i#{indicators.first.number}", :title => "#{indicators.first.name}", :group => group)
     now2 = Time.now
-    sleep 30
-
     # p_times(graph, :sl => sl_time,:graph => now2 - now)
     #p "=============================================================================================================="
     # graph
+  end
+
+private
+
+  def self.get_service_levels_type(sls)
+    group = "Ensino Infantil"
+    sls.each do |sl|
+      if sl.name == "EMEF"
+        group = "Ensino Fundamental"
+        break
+      end
+    end
+    group
   end
 
 end
