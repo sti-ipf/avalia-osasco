@@ -20,7 +20,7 @@ namespace :reports do
     dimensions.each do |dimension|
       sls = ServiceLevel.all(:conditions => {:name => sl_names})
       ReportData.service_level_graph(dimension, sls)
-#      ReportData.service_level_indicators_graph(dimension, sls)
+      ReportData.service_level_indicators_graph(dimension, sls)
     end
   end
 
@@ -85,7 +85,7 @@ namespace :reports do
 
   task :graphs_by_institution => :environment do
     dimensions = Dimension.all
-    inst = Institution.find(65)
+    inst = Institution.find(93)
     puts inst.name
     inst.service_levels.each do |sl|
       puts "- #{sl.name}"

@@ -17,7 +17,7 @@ class ReportIndividual
       )
       font "pt sans"
 
-      
+
       @report_data = report_data
 
       def number_pages(string, position)
@@ -80,7 +80,7 @@ class ReportIndividual
     invalid_segments = ["Alcir", "Alessandra", "Juliana Fonseca"]
     segments = Rails.cache.fetch("report-segments") { Segment.all(:conditions => ["name not in (?)", invalid_segments]) }.sort
     segments = segments.reject { |s| s.name == "Educandos" } if service_level != 2
-    
+
     segments.each_with_index do |segment, i|
       row = [segment.name, "numero-questao", "media-questao"]
       if i == 2
@@ -94,16 +94,21 @@ class ReportIndividual
  def get_graph_path(institution, service_level, dimension_number)
    "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/#{dimension_number}-graph.jpg"
  end
- 
+
  def indicators_graphs_by_dimension(institution, service_level, dimension_number)
+   dimension = Dimension.find_by_number(dimension_number)
+   indicators_numbers = Indicator.find_by_sql("
+    SELECT DISTINCT number FROM indicators WHERE dimension_id = #{dimension.id}").collect(&:number)
    indicators_parties = Dimension.find_by_number(dimension_number).indicators_parties.find(:all, :conditions => {:service_level_id => service_level.id})
-   
+
    indicators_parties.each do |indicators_party|
-     image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
-     text "Os números entre parênteses correspondem à numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
+     indicator_number = indicators_party.indicators.first.number
+     next if !File.exists?("#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/#{dimension_number}.#{indicator_number}-graph.jpg")
+     image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/#{dimension_number}.#{indicator_number}-graph.jpg"
+     text "Os números entre parênteses correspondem à numeração do indicador no instrumental da avaliação para cada um dos segmentos."
      text "O cálculo da média não considerou a questão quando a unidade inseriu \"0\" (zero) no sistema. Quando a UE não atribuiu resposta no sistema tal questão foi considerada na média."
 
-     first_time = true  
+     first_time = true
      indicators_party.questions_parties.each do |qp|
        if first_time
          text "\n Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
@@ -119,14 +124,14 @@ class ReportIndividual
      end
    end
  end
- 
+
  def question_table(ue,question_party)
    p "qp => #{question_party.inspect}"
    data = @report_data.questions_party_table(ue,question_party)
    questions_party_table = data[:table]
-   
+
    start_new_page if y < 400
-   
+
    text "\n #{data[:description]}"
    table questions_party_table, :column_widths => { 0 => 8 } do
      column(0).width = 90
@@ -167,7 +172,7 @@ class ReportIndividual
      cells[5,5].borders = [:bottom, :right]
    end
  end
- 
+
 
 # inicio do texto
 # inicio do texto
@@ -192,7 +197,7 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   text "2.1.1 Percepção da UE sobre a dimensão
 	2.1.2 Percepção da UE sobre cada indicador de qualidade
 	2.1.3 Questões problematizadoras"
-  
+
   fill_color "043ccb"
   text "\n 2.2 DIMENSÃO 2 - AMBIENTE FÍSICO ESCOLAR E MATERIAIS", :style => :bold
   fill_color "0000000"
@@ -229,7 +234,7 @@ text "1.1 Qual a importância da avaliação educacional na rede?
   text "2.6.1 Percepção da UE sobre a dimensão
 	2.6.2 Percepção da UE sobre cada indicador de qualidade
 	2.6.3 Questões problematizadoras"
-	
+
 
   fill_color "043ccb"
   text "\n 2.7 DIMENSÃO 7 - EDUCAÇÃO SOCIOAMBIENTAL E PRÁTICAS ECOPEDAGÓGICAS", :style => :bold
@@ -301,9 +306,9 @@ text "1.1 Qual a importância da avaliação educacional na rede?
 
   text "\n Percepção da UE sobre a Dimensão", :style => :bold
   text "Neste gráfico podemos analisar os resultados das médias da dimensão por segmento pesquisado. As colunas referentes a cada segmento apresentarão três informações, como seguem:", :indent_paragraphs => 40
-  text "● Cor azul: corresponde à média das respostas atribuídas pela unidade escolar à dimensão analisada (exemplo: média das respostas dos familiares apenas da sua unidade);"
-  text "● Cor vermelha: corresponde à média atribuída pelo grupo de unidades educacionais ao qual cada UE faz parte. No caso do ensino fundamental, a média das respostas de todas as escolas que integram o grupo em relação ao IDEB. No caso da educação infantil (creche e EMEI) corresponde à média das respostas de todas as escolas que integram o grupo por região;"
-  text "● Cor amarela: corresponde à média das respostas de todas as unidades pertencentes ao mesmo nível de ensino (todas as creches; ou todas EMEIs; ou todas as EMEFs)."
+  text "• Cor azul: corresponde à média das respostas atribuídas pela unidade escolar à dimensão analisada (exemplo: média das respostas dos familiares apenas da sua unidade);"
+  text "• Cor vermelha: corresponde à média atribuída pelo grupo de unidades educacionais ao qual cada UE faz parte. No caso do ensino fundamental, a média das respostas de todas as escolas que integram o grupo em relação ao IDEB. No caso da educação infantil (creche e EMEI) corresponde à média das respostas de todas as escolas que integram o grupo por região;"
+  text "• Cor amarela: corresponde à média das respostas de todas as unidades pertencentes ao mesmo nível de ensino (todas as creches; ou todas EMEIs; ou todas as EMEFs)."
 
   text "\n Percepção da UE sobre cada indicador de qualidade", :style => :bold
   text "Gráficos que apresentam as médias de cada indicador de qualidade por segmento, tendo como referência os resultados do nível de ensino e do grupo de unidades educacionais a que faz parte. A organização dos gráficos em colunas de cada segmento é a mesma dos gráficos das dimensões. Cabe destacar que em virtude de alguns indicadores de qualidade terem sido suprimidos para alguns segmentos, a numeração dos mesmos não segue a mesma seqüência para todos.
@@ -323,10 +328,10 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
   fill_color "000000"
   text "A avaliação feita pela sua unidade educacional foi bastante ampla e envolveu assuntos diversos. Para uma adequada análise e apropriação dos dados aqui revelados, é fundamental que a equipe escolar organize pequenos grupos de estudo deste documento, distribuindo entre eles um conjunto de dimensões, de modo que possam, detidamente, analisar a avaliação como um todo.", :indent_paragraphs => 40
   text "Para contribuir com esse momento de análise, seguem abaixo problematizações iniciais que os grupos de estudo podem utilizar. Ao final dos dados de cada dimensão, o documento também sugere problematizações específicas.", :indent_paragraphs => 40
-  text "\n ● Analisando os indicadores de qualidade e a dimensão em questão, quais tiveram resultado abaixo do esperado pelo grupo? Estes indicadores e esta dimensão merecem uma atenção especial da unidade em seu PTA? Quais fatores podem ter contribuído para o resultado apresentado? É possível identificarmos o que está influenciando estes resultados? O que pode ser planejado para  melhorar estes indicadores?"
-  text "\n ● Os resultados das médias são muito diferentes entre cada segmento?  As médias resultantes da avaliação entre os segmentos,estão próximas ou muito diferentes? O que isto pode nos indicar? No PTA, sem descuidar das ações que estão apresentando bons resultados, será necessário criar ações para que cada segmento atue prioritariamente nos indicadores que tiveram uma avaliação muito baixa. (Lembrando que se trata de um esforço coletivo para superar problemas e não para punir)"
-  text "\n ● Quais questões exerceram maior influência no resultado da média dos indicadores?"
-  text "\n ● Que ações podem ser previstas em 2011 para melhorar a dimensão em questão?"
+  text "\n • Analisando os indicadores de qualidade e a dimensão em questão, quais tiveram resultado abaixo do esperado pelo grupo? Estes indicadores e esta dimensão merecem uma atenção especial da unidade em seu PTA? Quais fatores podem ter contribuído para o resultado apresentado? É possível identificarmos o que está influenciando estes resultados? O que pode ser planejado para  melhorar estes indicadores?"
+  text "\n • Os resultados das médias são muito diferentes entre cada segmento?  As médias resultantes da avaliação entre os segmentos,estão próximas ou muito diferentes? O que isto pode nos indicar? No PTA, sem descuidar das ações que estão apresentando bons resultados, será necessário criar ações para que cada segmento atue prioritariamente nos indicadores que tiveram uma avaliação muito baixa. (Lembrando que se trata de um esforço coletivo para superar problemas e não para punir)"
+  text "\n • Quais questões exerceram maior influência no resultado da média dos indicadores?"
+  text "\n • Que ações podem ser previstas em 2011 para melhorar a dimensão em questão?"
 
   fill_color "043ccb"
   text "\n 1.4 É possível articular a avaliação educacional com as novas orientações curriculares?", :style => :bold, :size => 14
@@ -334,19 +339,19 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
   text "Durante a análise dos resultados da avaliação 2010 da sua unidade, é fundamental que os aspectos educacionais a serem melhorados sejam construídos em coerência com as novas orientações curriculares em construção na Rede. Os caminhos a serem trilhados pela equipe escolar para a melhoria da qualidade dos serviços educacionais precisam se mostrar coerentes com os pressupostos da atual política educacional em desenvolvimento. ", :indent_paragraphs => 40
   text "Se de um lado temos a avaliação educacional que indica o lugar e o momento vivido pela sua unidade educacional, do outro lado temos a proposta curricular em construção que já sinaliza certos horizontes que o coletivo docente da Rede quer alcançar. O plano de trabalho anual de 2011 deve ser entendido como o meio a ser utilizado pela sua unidade para se aproximar desse horizonte.", :indent_paragraphs => 40
   text "Para tanto, listamos abaixo princípios que caracterizam a proposta curricular em discussão na Rede:", :indent_paragraphs => 40
-  text "\n  ●  Os tempos de aprendizagem: Quando se pensa em tempos que devem ser assegurados aos educandos e educandas no processo de ensino e aprendizagem, busca-se o desenvolvimento de uma educação de qualidade sociocultural e socioambiental, intimamente relacionado à garantia do tempo de que a criança precisa para alcançar as aprendizagens pretendidas, pois cada criança tem um ritmo próprio."
-  text "\n  ● Os espaços de aprendizagem: O espaço deve ser compreendido como um lugar de encontros. Encontro das culturas, da diversidade, de pessoas que trazem consigo conhecimentos e aprendizagens acumulados ao longo de suas vidas. Os espaços devem ser intencionalmente organizados por educadores e educadoras com a finalidade de disponibilizar uma maior oferta de vivências interessantes, possibilitando a formação de crianças mais autônomas,  que sabem fazer escolhas individuais e,  gradativamente, aprendem a compartilhar  experiências coletivas."
-  text "\n  ● A expressão da criança: “se na entrada da escola, a criança encontra um painel com fotos suas e de seus colegas, ela se sente parte do lugar. Se, em lugar de fotos, o painel tem um desenho seu, uma pintura, uma modelagem de sua autoria, a criança se sente igualmente parte do espaço” (pg 50, Apostila RECEI 2010, A Reorganização Curricular da Ed. Infantil Municipal de Osasco: concepções para orientar o pensar e o agir docentes – Suely Amaral Mello)"
-  text "\n  ● A participação da criança: A construção de conhecimento implica reconhecer as vivências experienciadas pelas crianças e adolescentes como ponto de partida para ampliar as suas possibilidades de se relacionar com o mundo, transformando-o e sendo transformadas por ele. Desta forma, a participação das crianças no ambiente escolar, além de contribuir para a construção da autonomia, deve ser estimulada pois orientará a ação do educador."
-  text "\n  ● O fortalecimento do vínculo escola- família- comunidade: A presença das famílias nas escolas é extremamente positiva para o desenvolvimento das crianças e   adolescentes, na construção de suas identidades, na troca de informações entre familiares e educadores/as sobre suas aprendizagens. Acima de tudo, reconhece-se que todos envolvidos (crianças, adolescentes, familiares e educadores/as) constroem-se nesse movimento ativo de discussão, reflexão e debate."
-  text "\n  ● A valorização do brincar: O brincar tem influência fundamental no desenvolvimento da inteligência e personalidade da criança.  Nesta atividade, a criança desenvolve sua atenção, memória, inteligência, e a capacidade de solucionar problemas, imprescindíveis para a aprendizagem. Além disso, a criança exercita a comunicação e o relacionamento com outras crianças, pois precisa combinar a divisão de papéis. "
-  text "\n  ● Acesso à herança cultural da humanidade: a escola precisa garantir, em cada atividade, a oportunidade de conhecer a cultura historicamente acumulada, novas aprendizagens e conhecimentos, oferecendo às crianças um ambiente desafiador, agradável, aconchegante, criativo, curioso, repleto de atividades que contem para todos as suas vivências, aquilo que na vida cotidiana ela não tem ou não teve acesso."
+  text "\n  • Os tempos de aprendizagem: Quando se pensa em tempos que devem ser assegurados aos educandos e educandas no processo de ensino e aprendizagem, busca-se o desenvolvimento de uma educação de qualidade sociocultural e socioambiental, intimamente relacionado à garantia do tempo de que a criança precisa para alcançar as aprendizagens pretendidas, pois cada criança tem um ritmo próprio."
+  text "\n  • Os espaços de aprendizagem: O espaço deve ser compreendido como um lugar de encontros. Encontro das culturas, da diversidade, de pessoas que trazem consigo conhecimentos e aprendizagens acumulados ao longo de suas vidas. Os espaços devem ser intencionalmente organizados por educadores e educadoras com a finalidade de disponibilizar uma maior oferta de vivências interessantes, possibilitando a formação de crianças mais autônomas,  que sabem fazer escolhas individuais e,  gradativamente, aprendem a compartilhar  experiências coletivas."
+  text "\n  • A expressão da criança: “se na entrada da escola, a criança encontra um painel com fotos suas e de seus colegas, ela se sente parte do lugar. Se, em lugar de fotos, o painel tem um desenho seu, uma pintura, uma modelagem de sua autoria, a criança se sente igualmente parte do espaço” (pg 50, Apostila RECEI 2010, A Reorganização Curricular da Ed. Infantil Municipal de Osasco: concepções para orientar o pensar e o agir docentes – Suely Amaral Mello)"
+  text "\n  • A participação da criança: A construção de conhecimento implica reconhecer as vivências experienciadas pelas crianças e adolescentes como ponto de partida para ampliar as suas possibilidades de se relacionar com o mundo, transformando-o e sendo transformadas por ele. Desta forma, a participação das crianças no ambiente escolar, além de contribuir para a construção da autonomia, deve ser estimulada pois orientará a ação do educador."
+  text "\n  • O fortalecimento do vínculo escola- família- comunidade: A presença das famílias nas escolas é extremamente positiva para o desenvolvimento das crianças e   adolescentes, na construção de suas identidades, na troca de informações entre familiares e educadores/as sobre suas aprendizagens. Acima de tudo, reconhece-se que todos envolvidos (crianças, adolescentes, familiares e educadores/as) constroem-se nesse movimento ativo de discussão, reflexão e debate."
+  text "\n  • A valorização do brincar: O brincar tem influência fundamental no desenvolvimento da inteligência e personalidade da criança.  Nesta atividade, a criança desenvolve sua atenção, memória, inteligência, e a capacidade de solucionar problemas, imprescindíveis para a aprendizagem. Além disso, a criança exercita a comunicação e o relacionamento com outras crianças, pois precisa combinar a divisão de papéis. "
+  text "\n  • Acesso à herança cultural da humanidade: a escola precisa garantir, em cada atividade, a oportunidade de conhecer a cultura historicamente acumulada, novas aprendizagens e conhecimentos, oferecendo às crianças um ambiente desafiador, agradável, aconchegante, criativo, curioso, repleto de atividades que contem para todos as suas vivências, aquilo que na vida cotidiana ela não tem ou não teve acesso."
   text "\n"
   text "Estes temas devem nortear as discussões de todas as dimensões, indicadores de qualidade e questões. Este movimento dá continuidade à reflexão sobre a reorientação curricular em desenvolvimento na Rede. Ele também permite voltar o olhar para as ações que precisam ser priorizadas no planejamento de 2011, reforçando a importância da reflexão sobre os temas que estão sendo discutidos  neste momento de avaliação.", :indent_paragraphs => 40
 
   fill_color "043ccb"
   text "\n 1.5 As unidades educacionais podem comparar sua avaliação com as demais da Rede?", :style => :bold, :size => 14
-  fill_color "000000"	
+  fill_color "000000"
   text "O documento apresenta ainda um quadro que possibilita à unidade educacional  analisar quantitativamente os índices obtidos em 2010 em comparação ao grupo de análise do qual faz parte. No caso das unidades de Creche e Emei, o critério de agrupamento foi regional. No Ensino Fundamental, o critério de agrupamento foi com base no IDEB de 2007 da unidade.", :indent_paragraphs => 40
 
   text "A sua Unidade Educacional está inserida no seguinte grupo, tendo por base o quadro abaixo:", :indent_paragraphs => 40
@@ -371,21 +376,21 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
   text "O Ambiente Educativo visa fornecer indicadores do ambiente que predomina na escola, das relações entre os diversos segmentos, do grau de conhecimento e participação deles na elaboração dos princípios de convivência e no conhecimento que se tem dos direitos das crianças, tendo em vista sua importância como referência às ações educativas para a escola. A escola é um dos espaços de ensino, aprendizagem e vivência de valores. Nela, os indivíduos se socializam, brincam e experimentam a convivência com a diversidade humana. No ambiente educativo, o respeito, a alegria, a amizade e a solidariedade, a disciplina, a negociação, o combate à discriminação e o exercício dos direitos e deveres são práticas que garantem a socialização e a convivência, desenvolvem e fortalecem a noção de cidadania e de igualdade entre todos.", :indent_paragraphs => 40
 
   text "\n 2.1.1 Percepção da UE sobre a dimensão 1", :style => :bold
-  
+
   image get_graph_path(ue, service_level, 1)
-  
+
   start_new_page
 
   text "\n 2.1.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 1)
 
   start_new_page
 
   text "\n 2.1.4 Questões problematizadoras da dimensão 1", :style => :bold
-  text " ● O que faz com que o ambiente educativo na nossa escola propicie  vínculos fortes, solidários, afetivos e alegres entre os diversos segmentos? O que precisa ser melhorado?"
-  text " ● Como estamos construindo o nosso ambiente para que este seja compreendido como um lugar de encontros de culturas diversas, de inclusão de pessoas diferentes e que trazem consigo conhecimentos e aprendizagens diferentes?"
-  text " ● Que ações podem ser previstas em 2011 para melhorar as relações na acolhida das crianças? E no recreio? E na sala de aula? E no momento da alimentação? E no fim do dia? Quais segmentos estarão envolvidos em cada ação de melhorias do ambiente educativo?"
+  text " • O que faz com que o ambiente educativo na nossa escola propicie  vínculos fortes, solidários, afetivos e alegres entre os diversos segmentos? O que precisa ser melhorado?"
+  text " • Como estamos construindo o nosso ambiente para que este seja compreendido como um lugar de encontros de culturas diversas, de inclusão de pessoas diferentes e que trazem consigo conhecimentos e aprendizagens diferentes?"
+  text " • Que ações podem ser previstas em 2011 para melhorar as relações na acolhida das crianças? E no recreio? E na sala de aula? E no momento da alimentação? E no fim do dia? Quais segmentos estarão envolvidos em cada ação de melhorias do ambiente educativo?"
 
   start_new_page
 
@@ -409,12 +414,12 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
   text "\n 2.2.4 Questões problematizadoras da dimensão 2:", :style => :bold
   text "Nesta dimensão, itens fundamentais para o ambiente físico escolar serão avaliados de acordo com três referenciais: suficiência (disponibilidade de material, espaço ou equipamento quando deles se necessita) qualidade e adequação do material à prática pedagógica."
 
-  text "● Esses recursos respondem às necessidades do processo educativo e do envolvimento com a comunidade?"
-  text "● Esses recursos estão em boas condições de uso, conservação, organização e beleza, entre outros?"
-  text "● Os recursos que temos são bem aproveitados, valorizados? Seu uso é eficiente e flexibilizado?"
-  text "● O que no espaço físico da nossa escola  faz com que os educandos tenham prazer em nele permanecer?"
-  text "● O que fazer para que o nosso espaço  atenda às necessidades do processo educativo que desenvolvemos? Como estamos organizando o nosso espaço físico para que este seja um espaço adequado para  as brincadeiras? O que precisamos fazer para melhorar neste aspecto?"
-  text "● Como estamos organizando o nosso espaço físico e os  materiais  para que estes incentivem e motivem  a expressão das crianças?"
+  text "• Esses recursos respondem às necessidades do processo educativo e do envolvimento com a comunidade?"
+  text "• Esses recursos estão em boas condições de uso, conservação, organização e beleza, entre outros?"
+  text "• Os recursos que temos são bem aproveitados, valorizados? Seu uso é eficiente e flexibilizado?"
+  text "• O que no espaço físico da nossa escola  faz com que os educandos tenham prazer em nele permanecer?"
+  text "• O que fazer para que o nosso espaço  atenda às necessidades do processo educativo que desenvolvemos? Como estamos organizando o nosso espaço físico para que este seja um espaço adequado para  as brincadeiras? O que precisamos fazer para melhorar neste aspecto?"
+  text "• Como estamos organizando o nosso espaço físico e os  materiais  para que estes incentivem e motivem  a expressão das crianças?"
 
   start_new_page
 
@@ -434,12 +439,12 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
   start_new_page
 
   text "\n 2.3.4 Questões problematizadoras da dimensão 3:", :style => :bold
-  text "● O que pode ser pensado em nosso PTA 2011 para aumentar o desejo de aprender das  crianças? O que pode ser previsto em nosso PTA 2011 para que as crianças ampliem suas oportunidades de desenvolverem autonomia na busca por conhecimentos?"
-  text "● Como demonstramos  o conhecimento que temos  dos  alunos, das suas origens?   Como observamos as suas particularidades?"
-  text "● Buscamos conhecer e compreender as diferenças socioculturais entre os  educandos e suas famílias? Os educandos que chegam à escola com  repertórios, crenças e valores diferentes daqueles que predominam no grupo, da maioria dos professores e dos outros educandos, são bem acolhidos e  valorizados?"
-  text "● Conhecemos as suas dificuldades e incentivamos as potencialidades dos educandos? "
-  text "● Que ações desenvolvemos no cotidiano que fazem com que os educandos sejam sujeitos autônomos, cooperativos  e participativos?"
-  text "● Como organizamos o momento do recreio? O que precisamos melhorar para que esse momento seja cooperativo e interativo?"
+  text "• O que pode ser pensado em nosso PTA 2011 para aumentar o desejo de aprender das  crianças? O que pode ser previsto em nosso PTA 2011 para que as crianças ampliem suas oportunidades de desenvolverem autonomia na busca por conhecimentos?"
+  text "• Como demonstramos  o conhecimento que temos  dos  alunos, das suas origens?   Como observamos as suas particularidades?"
+  text "• Buscamos conhecer e compreender as diferenças socioculturais entre os  educandos e suas famílias? Os educandos que chegam à escola com  repertórios, crenças e valores diferentes daqueles que predominam no grupo, da maioria dos professores e dos outros educandos, são bem acolhidos e  valorizados?"
+  text "• Conhecemos as suas dificuldades e incentivamos as potencialidades dos educandos? "
+  text "• Que ações desenvolvemos no cotidiano que fazem com que os educandos sejam sujeitos autônomos, cooperativos  e participativos?"
+  text "• Como organizamos o momento do recreio? O que precisamos melhorar para que esse momento seja cooperativo e interativo?"
 
   start_new_page
 
@@ -455,20 +460,20 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
 
 
   text "\n 2.4.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 4)
 
   start_new_page
 
 text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
-  text "● Como estamos avaliando a aprendizagem dos educandos? Estamos contribuindo para que o processo de avaliação seja também um processo de aprendizagem? "
-  text "● Quais são as práticas de avaliação que existem na unidade? O que é avaliado? Quem avalia?  Os educandos participam dos processos de avaliação? "
-  text "● Como a escola lida com os resultados das avaliações, sejam elas externas ou internas? "
-  text "● Os resultados das avaliações são considerados e reorientam as práticas pedagógicas?"
-  text "● Que ações podem ser previstas no PTA 2011 para que os alunos monitorem seu próprio processo de aprendizagem? "
-  text "● Que mecanismos e variedades de avaliação podem ser previstas com educandos?"
-  text "● Que momentos podem ser previstos no PTA 2011 para que cada segmento se reúna para pensar numa auto avaliação das ações previstas para e por seu segmento?"
-  text "● Que ações podem ser previstas no PTA 2011 tendo por base as reflexões sobre avaliações externas implementadas pelo MEC?"
+  text "• Como estamos avaliando a aprendizagem dos educandos? Estamos contribuindo para que o processo de avaliação seja também um processo de aprendizagem? "
+  text "• Quais são as práticas de avaliação que existem na unidade? O que é avaliado? Quem avalia?  Os educandos participam dos processos de avaliação? "
+  text "• Como a escola lida com os resultados das avaliações, sejam elas externas ou internas? "
+  text "• Os resultados das avaliações são considerados e reorientam as práticas pedagógicas?"
+  text "• Que ações podem ser previstas no PTA 2011 para que os alunos monitorem seu próprio processo de aprendizagem? "
+  text "• Que mecanismos e variedades de avaliação podem ser previstas com educandos?"
+  text "• Que momentos podem ser previstos no PTA 2011 para que cada segmento se reúna para pensar numa auto avaliação das ações previstas para e por seu segmento?"
+  text "• Que ações podem ser previstas no PTA 2011 tendo por base as reflexões sobre avaliações externas implementadas pelo MEC?"
 
   start_new_page
 
@@ -483,21 +488,21 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   start_new_page
 
   text "\n 2.5.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 5)
 
   start_new_page
-  
+
   text "\n 2.5.4 Questões problematizadoras da dimensão 5", :style => :bold
-  text "● Há evasão e abandono dos alunos?"
-  text "● Estamos conseguindo garantir a permanência dos alunos na escola? "
-  text "● O que vem sendo feito para garantir a permanência? "
-  text "● A frequência dos alunos é satisfatória ou há muitas faltas por parte dos alunos? O que isso significa? "
-  text "● Buscamos conhecer as causas da ausência?"
-  text "● Há uma boa comunicação entre a escola e a família para este acompanhamento?"
-  text "● Como estamos lidando com a questão da evasão e do abandono escolar? "
-  text "● Como estamos lidando com as necessidades educativas da nossa comunidade? "
-  text "● O que precisamos fazer para melhorar esses indicadores?"
+  text "• Há evasão e abandono dos alunos?"
+  text "• Estamos conseguindo garantir a permanência dos alunos na escola? "
+  text "• O que vem sendo feito para garantir a permanência? "
+  text "• A frequência dos alunos é satisfatória ou há muitas faltas por parte dos alunos? O que isso significa? "
+  text "• Buscamos conhecer as causas da ausência?"
+  text "• Há uma boa comunicação entre a escola e a família para este acompanhamento?"
+  text "• Como estamos lidando com a questão da evasão e do abandono escolar? "
+  text "• Como estamos lidando com as necessidades educativas da nossa comunidade? "
+  text "• O que precisamos fazer para melhorar esses indicadores?"
 
   start_new_page
 
@@ -512,19 +517,19 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
 
 
   text "\n 2.6.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 6)
 
   start_new_page
-  
+
   text "\n 2.6.4 Questões problematizadoras da dimensão 6", :style => :bold
-  text "● Como estamos lidando com a questão da saúde entre os segmentos da nossa comunidade?"
-  text "● Qual a compreensão de saúde? Ausência de saúde é quando o corpo está doente? "
-  text "● A comunidade e a escola percebem a relação da saúde com as condições sociais, econômicas, culturais, afetivas e emocionais? "
-  text "● A escola busca um trabalho integrado com algum equipamento público da área da saúde que esteja no entorno da unidade educacional? "
-  text "● A escola procura adotar medidas preventivas para a promoção da saúde?"
-  text "● Quais ações estamos desenvolvendo que estejam diretamente relacionadas à promoção da saúde?"
-  text "● Quais precisam ser desenvolvidas para que esses dados sejam melhorados?"
+  text "• Como estamos lidando com a questão da saúde entre os segmentos da nossa comunidade?"
+  text "• Qual a compreensão de saúde? Ausência de saúde é quando o corpo está doente? "
+  text "• A comunidade e a escola percebem a relação da saúde com as condições sociais, econômicas, culturais, afetivas e emocionais? "
+  text "• A escola busca um trabalho integrado com algum equipamento público da área da saúde que esteja no entorno da unidade educacional? "
+  text "• A escola procura adotar medidas preventivas para a promoção da saúde?"
+  text "• Quais ações estamos desenvolvendo que estejam diretamente relacionadas à promoção da saúde?"
+  text "• Quais precisam ser desenvolvidas para que esses dados sejam melhorados?"
 
   start_new_page
 
@@ -539,15 +544,15 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   start_new_page
 
   text "\n 2.7.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 7)
 
   start_new_page
-  
+
   text "\n 2.7.4 Questões problematizadoras da dimensão 7", :style => :bold
-  text "● Como a Unidade Educacional lida com a questão socioambiental? Temos conseguido enraizar uma educação socioambiental e práticas ecopedagógicas mais consistentes entre os segmentos da comunidade escolar? "
-  text "● Como a dimensão “eco” do Projeto “ECO”-Político-Pedagógico vem se concretizando na unidade? O que deve ser priorizado para que tenhamos uma conscientização socioambiental ainda maior? E o que deve ser feito para que a consciência seja concretizada em práticas no cotidiano da escola?"
-  text "● Que ações cada segmento pode prever no seu PTA 2011 para que haja melhorias em relação a  práticas ecopedagógicas?"
+  text "• Como a Unidade Educacional lida com a questão socioambiental? Temos conseguido enraizar uma educação socioambiental e práticas ecopedagógicas mais consistentes entre os segmentos da comunidade escolar? "
+  text "• Como a dimensão “eco” do Projeto “ECO”-Político-Pedagógico vem se concretizando na unidade? O que deve ser priorizado para que tenhamos uma conscientização socioambiental ainda maior? E o que deve ser feito para que a consciência seja concretizada em práticas no cotidiano da escola?"
+  text "• Que ações cada segmento pode prever no seu PTA 2011 para que haja melhorias em relação a  práticas ecopedagógicas?"
 
   start_new_page
 
@@ -562,20 +567,20 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   start_new_page
 
   text "\n 2.8.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 8)
 
   start_new_page
-  
+
   text "\n 2.8.4 Questões problematizadoras da dimensão 8", :style => :bold
-  text "● Quanto maior e mais positiva for a interação entre a escola e os familiares e a comunidade a que ela atende, maior é a probabilidade da escola oferecer aos seus educandos um ensino de qualidade. Diante dessa afirmação, como estamos promovendo a cooperação e o envolvimento com as famílias de nossa comunidade? A nossa escola procura conhecer e trocar experiências com as famílias e com a comunidade?"
-  text "● A escola interage com e valoriza o conhecimento das famílias dos alunos? A escola conhece a profissão dos pais e das mães? A escola conhece as habilidades artístico-culturais dos pais e dos alunos? De que forma o conhecimento, os saberes dos pais e dos familiares dialogam com os saberes da escola? Essas habilidades, conhecimentos e saberes são mobilizados para promover uma integração maior entre a escola e as famílias?"
-  text "● Como são realizadas as reuniões de pais e familiares? Quem define as pautas, o conteúdo do que vai ser abordado nas reuniões? Os pais e familiares são ouvidos para que suas preocupações também sejam conhecidas e consideradas nas reuniões?"
-  text "● A nossa escola favorece vínculos positivos de parceria com os familiares dos educandos? Quais? De que forma eles são percebidos pelos diferentes segmentos e de que forma impactam no aprendizado e interesse e prazer da criança pelos estudos?"
-  text "● De que maneira criamos situações para que os familiares e comunidade possam participar do planejamento da escola?"
-  text "● A escola busca mapear e identificar o que existe no seu entorno que pode contribuir para a constituição de uma rede de proteção social dos direitos da criança?" 
-  text "● Mantemos uma articulação estreita com a Rede de Proteção aos Direitos das crianças e procuramos nos atualizar no tocante à observação dos educandos com possíveis sinais de negligência e violência física e psicológica?"
-  text "● Quais procedimentos a escola adota ao constatar sinais de violência e desrespeito à integridade da criança?"
+  text "• Quanto maior e mais positiva for a interação entre a escola e os familiares e a comunidade a que ela atende, maior é a probabilidade da escola oferecer aos seus educandos um ensino de qualidade. Diante dessa afirmação, como estamos promovendo a cooperação e o envolvimento com as famílias de nossa comunidade? A nossa escola procura conhecer e trocar experiências com as famílias e com a comunidade?"
+  text "• A escola interage com e valoriza o conhecimento das famílias dos alunos? A escola conhece a profissão dos pais e das mães? A escola conhece as habilidades artístico-culturais dos pais e dos alunos? De que forma o conhecimento, os saberes dos pais e dos familiares dialogam com os saberes da escola? Essas habilidades, conhecimentos e saberes são mobilizados para promover uma integração maior entre a escola e as famílias?"
+  text "• Como são realizadas as reuniões de pais e familiares? Quem define as pautas, o conteúdo do que vai ser abordado nas reuniões? Os pais e familiares são ouvidos para que suas preocupações também sejam conhecidas e consideradas nas reuniões?"
+  text "• A nossa escola favorece vínculos positivos de parceria com os familiares dos educandos? Quais? De que forma eles são percebidos pelos diferentes segmentos e de que forma impactam no aprendizado e interesse e prazer da criança pelos estudos?"
+  text "• De que maneira criamos situações para que os familiares e comunidade possam participar do planejamento da escola?"
+  text "• A escola busca mapear e identificar o que existe no seu entorno que pode contribuir para a constituição de uma rede de proteção social dos direitos da criança?"
+  text "• Mantemos uma articulação estreita com a Rede de Proteção aos Direitos das crianças e procuramos nos atualizar no tocante à observação dos educandos com possíveis sinais de negligência e violência física e psicológica?"
+  text "• Quais procedimentos a escola adota ao constatar sinais de violência e desrespeito à integridade da criança?"
 
   start_new_page
 
@@ -590,19 +595,19 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   start_new_page
 
   text "\n 2.9.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 9)
 
   start_new_page
-  
+
   text "\n 2.9.4 Questões problematizadoras da dimensão 9", :style => :bold
-  text "● O que podemos prever, no PTA 2011, para ampliar a participação da comunidade escolar nos órgãos colegiados (Conselho de Gestão Compartilhada, Associação de Pais e Mestres)? "
-  text "● Quais as iniciativas que a escola vem tomando para aproximar os pais/familiares e comunidade da unidade educacional?"
-  text "● A escola cria um ambiente e uma atmosfera adequada à participação? Como vêm sendo feitas as reuniões do CGC? Em que horário? Qual o tempo de duração e a periodicidade? Qual a pauta, o conteúdo dessas reuniões? Elas contemplam as preocupações dos pais/familiares e comunidade? Qual a metodologia de realização das reuniões? A forma como a reunião é realizada valoriza a participação dos diferentes segmentos? Que vozes são valorizadas e que vozes são silenciadas? As decisões do CGC são efetivamente encaminhadas? Há um Plano de Trabalho do CGC? Ou a atuação do CGC é para “apagar incêndios”? "
-  text "● De que forma os integrantes do CGC participam das avaliações, do PME, da elaboração do PTA, do PEPP?"
-  text "● Como estamos lidando com a questão da informação entre os membros de nossa comunidade? Compartilhamos as informações de maneira rápida e precisa com todos os segmentos? Como  informamos e compartilhamos com os nossos educandos e familiares as decisões importantes sobre o funcionamento da escola?"
-  text "● Como está  o diálogo com os parceiros da escola? A escola busca, por exemplo, integração com o Orçamento Participativo?  A escola busca integração com outros equipamentos públicos da região?"
-  text "● Numa gestão democrática, é preciso saber lidar com os conflitos e opiniões diferentes. Como a escola lida com os conflitos? A escola busca mapear/identificar as insatisfações dos diferentes segmentos e busca construir canais de diálogo para a  construção de soluções/propostas coletivas? Que ações a escola prevê para que haja mais espaços de escuta e de construção coletiva de propostas e encaminhamentos?"
+  text "• O que podemos prever, no PTA 2011, para ampliar a participação da comunidade escolar nos órgãos colegiados (Conselho de Gestão Compartilhada, Associação de Pais e Mestres)? "
+  text "• Quais as iniciativas que a escola vem tomando para aproximar os pais/familiares e comunidade da unidade educacional?"
+  text "• A escola cria um ambiente e uma atmosfera adequada à participação? Como vêm sendo feitas as reuniões do CGC? Em que horário? Qual o tempo de duração e a periodicidade? Qual a pauta, o conteúdo dessas reuniões? Elas contemplam as preocupações dos pais/familiares e comunidade? Qual a metodologia de realização das reuniões? A forma como a reunião é realizada valoriza a participação dos diferentes segmentos? Que vozes são valorizadas e que vozes são silenciadas? As decisões do CGC são efetivamente encaminhadas? Há um Plano de Trabalho do CGC? Ou a atuação do CGC é para “apagar incêndios”? "
+  text "• De que forma os integrantes do CGC participam das avaliações, do PME, da elaboração do PTA, do PEPP?"
+  text "• Como estamos lidando com a questão da informação entre os membros de nossa comunidade? Compartilhamos as informações de maneira rápida e precisa com todos os segmentos? Como  informamos e compartilhamos com os nossos educandos e familiares as decisões importantes sobre o funcionamento da escola?"
+  text "• Como está  o diálogo com os parceiros da escola? A escola busca, por exemplo, integração com o Orçamento Participativo?  A escola busca integração com outros equipamentos públicos da região?"
+  text "• Numa gestão democrática, é preciso saber lidar com os conflitos e opiniões diferentes. Como a escola lida com os conflitos? A escola busca mapear/identificar as insatisfações dos diferentes segmentos e busca construir canais de diálogo para a  construção de soluções/propostas coletivas? Que ações a escola prevê para que haja mais espaços de escuta e de construção coletiva de propostas e encaminhamentos?"
 
   start_new_page
 
@@ -617,21 +622,21 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   start_new_page
 
   text "\n 2.10.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
   indicators_graphs_by_dimension(ue, service_level, 10)
 
   start_new_page
-  
+
   text "\n 2.10.4 Questões problematizadoras da dimensão 10", :style => :bold
-  text "● Que ações a unidade pode prever no PTA 2011 para contemplar as demandas de formação continuada de cada segmento de profissionais da escola? Quais assuntos serão abordados com cada segmento? Quais momentos de formação continuada a unidade pode organizar para cada segmento de profissionais da escola?"
-  text "● A escola busca identificar as dificuldades, os desafios, as propostas dos funcionários para melhorar a formação e as condições de trabalho? "
-  text "● A escola busca construir uma atmosfera e um ambiente favorável à integração, ao trabalho coletivo e solidário? De que forma?"
-  text "● O que pode ser previsto por e para cada segmento no PTA 2011 da sua unidade para melhorar as condições de trabalho de todos profissionais da escola?"
-  text "● Como a nossa escola promove a responsabilidade e o comprometimento dos professores e demais funcionários com o trabalho que realizam na Escola?"
-  text "● A escola promove uma autoavaliação dos professores? De que forma? E como a autoavaliação interfere no aperfeiçoamento do trabalho?"
-  text "● Como motivamos os nossos  professores e demais funcionários para  o trabalho que realizam?"
-  text "● De que forma a escola tem se apropriado das Paradas Pedagógicas, das Conferências Municipais, dos Seminários de Práticas, dos Cursos e Oficinas, dos Encontros Internacionais de Educação e de outras iniciativas de formação da política educacional para a valorização e formação dos profissionais?"
-  text "● Como a escola pode se preparar para melhor aproveitar cada um desses importantes espaços de formação?"
+  text "• Que ações a unidade pode prever no PTA 2011 para contemplar as demandas de formação continuada de cada segmento de profissionais da escola? Quais assuntos serão abordados com cada segmento? Quais momentos de formação continuada a unidade pode organizar para cada segmento de profissionais da escola?"
+  text "• A escola busca identificar as dificuldades, os desafios, as propostas dos funcionários para melhorar a formação e as condições de trabalho? "
+  text "• A escola busca construir uma atmosfera e um ambiente favorável à integração, ao trabalho coletivo e solidário? De que forma?"
+  text "• O que pode ser previsto por e para cada segmento no PTA 2011 da sua unidade para melhorar as condições de trabalho de todos profissionais da escola?"
+  text "• Como a nossa escola promove a responsabilidade e o comprometimento dos professores e demais funcionários com o trabalho que realizam na Escola?"
+  text "• A escola promove uma autoavaliação dos professores? De que forma? E como a autoavaliação interfere no aperfeiçoamento do trabalho?"
+  text "• Como motivamos os nossos  professores e demais funcionários para  o trabalho que realizam?"
+  text "• De que forma a escola tem se apropriado das Paradas Pedagógicas, das Conferências Municipais, dos Seminários de Práticas, dos Cursos e Oficinas, dos Encontros Internacionais de Educação e de outras iniciativas de formação da política educacional para a valorização e formação dos profissionais?"
+  text "• Como a escola pode se preparar para melhor aproveitar cada um desses importantes espaços de formação?"
 
   start_new_page
   if (service_level.id == 2)
@@ -646,21 +651,21 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
     start_new_page
 
     text "\n 2.11.2 Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  
+
     indicators_graphs_by_dimension(ue, service_level, 11)
 
     start_new_page
-  
+
     text "\n 2.11.4 Questões problematizadoras da dimensão 11", :style => :bold
-    text "● Que ações podem ser previstas para que em 2011 outros segmentos da escola se envolvam no exercício da função social da escrita pela criança? "
-    text "● Que propostas podemos planejar para que em 2011 haja atividades lúdicas nas quais a criança exercite a expressão de suas produções e registros (abordando diversas esferas de circulação, práticas de linguagem, contextos e gêneros)? Que propostas podem ser previstas para que a criança socialize com diferentes segmentos as suas produções e registros?"
-    text "● Que outras ações podem ser previstas no PTA 2011 para que nossos educandos, familiares e demais membros da comunidade  desenvolvam o  prazer pela leitura e pela escrita?"
-    text "● Que ações os diferentes segmentos podem prever para que haja maior circulação dos livros da escola entre alunos, familiares e membros da comunidade?"
-    text "● Que ações podem ser previstas no PTA 2011 para que diversos tipos de linguagens artísticas sejam abordados pela unidade em sua biblioteca/sala de leitura com diferentes segmentos?"
-    text "● Que ações podem ser previstas no PTA 2011 para que os educandos e membros da comunidade tenham acesso e possam emprestar os livros e demais textos disponíveis na escola?"
+    text "• Que ações podem ser previstas para que em 2011 outros segmentos da escola se envolvam no exercício da função social da escrita pela criança? "
+    text "• Que propostas podemos planejar para que em 2011 haja atividades lúdicas nas quais a criança exercite a expressão de suas produções e registros (abordando diversas esferas de circulação, práticas de linguagem, contextos e gêneros)? Que propostas podem ser previstas para que a criança socialize com diferentes segmentos as suas produções e registros?"
+    text "• Que outras ações podem ser previstas no PTA 2011 para que nossos educandos, familiares e demais membros da comunidade  desenvolvam o  prazer pela leitura e pela escrita?"
+    text "• Que ações os diferentes segmentos podem prever para que haja maior circulação dos livros da escola entre alunos, familiares e membros da comunidade?"
+    text "• Que ações podem ser previstas no PTA 2011 para que diversos tipos de linguagens artísticas sejam abordados pela unidade em sua biblioteca/sala de leitura com diferentes segmentos?"
+    text "• Que ações podem ser previstas no PTA 2011 para que os educandos e membros da comunidade tenham acesso e possam emprestar os livros e demais textos disponíveis na escola?"
 
     fill_color "4e0d0d"
-    start_new_page  
+    start_new_page
   end
 
   text "\n\n 3 QUADRO DE ÍNDICES DA SUA UNIDADE EDUCACIONAL EM COMPARAÇÃO COM A REDE", :style => :bold
@@ -672,18 +677,18 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   text "D) O número máximo, que expressava a melhor situação em cada resposta era 5;"
 
   text "\n Com  base nessas premissas foi estabelecido um índice para cada U.E, em cada dimensão, utilizando a seguinte metodologia: "
-  text "● A soma das respostas dadas pelos segmentos, dividida pela máxima pontuação que a unidade educacional poderia atribuir a si mesma, dentro de cada dimensão. Por exemplo: numa determinada dimensão, 8 pessoas expressaram sua opinião numérica para as 10 questões contidas nela. Se 5 era a máxima opinião numérica que se podia dar,  para essa dimensão a máxima pontuação que a UE poderia receber é: 400, ou seja: 8 vezes 10, que é igual a 80, vezes 5, que é igual a 400. Contudo, a soma obtida pela UE, a partir da opinião dessas oito pessoas a essas 10 questões foi de 240. O índice obtido pela UE, nessa dimensão é obtida dividindo 240 por 400, ou seja: 0,6. Quanto mais próximo do 1,0 melhor o índice obtido pela unidade."
-  text "● Ao propor um índice de análise para a sua unidade educacional, busca-se construir alternativas que permitam à comunidade escolar avaliar o seu êxito, comparando o atual ano letivo com os anteriores, além de perceber-se em relação às demais unidades que integram a Rede de Osasco, sem jamais pretender o estabelecimento de ranking entre as escolas. Considerando as complexidades típicas de uma rede pública de ensino, a construção de índices e sínteses numéricas associadas a conjuntos de indicadores de qualidade, definidos não arbitrariamente mas democraticamente, favorecem uma melhor gestão das suas demandas e necessidades."
+  text "• A soma das respostas dadas pelos segmentos, dividida pela máxima pontuação que a unidade educacional poderia atribuir a si mesma, dentro de cada dimensão. Por exemplo: numa determinada dimensão, 8 pessoas expressaram sua opinião numérica para as 10 questões contidas nela. Se 5 era a máxima opinião numérica que se podia dar,  para essa dimensão a máxima pontuação que a UE poderia receber é: 400, ou seja: 8 vezes 10, que é igual a 80, vezes 5, que é igual a 400. Contudo, a soma obtida pela UE, a partir da opinião dessas oito pessoas a essas 10 questões foi de 240. O índice obtido pela UE, nessa dimensão é obtida dividindo 240 por 400, ou seja: 0,6. Quanto mais próximo do 1,0 melhor o índice obtido pela unidade."
+  text "• Ao propor um índice de análise para a sua unidade educacional, busca-se construir alternativas que permitam à comunidade escolar avaliar o seu êxito, comparando o atual ano letivo com os anteriores, além de perceber-se em relação às demais unidades que integram a Rede de Osasco, sem jamais pretender o estabelecimento de ranking entre as escolas. Considerando as complexidades típicas de uma rede pública de ensino, a construção de índices e sínteses numéricas associadas a conjuntos de indicadores de qualidade, definidos não arbitrariamente mas democraticamente, favorecem uma melhor gestão das suas demandas e necessidades."
   text "\n Diante do quadro a seguir, é importante que a comunidade escolar reflita: em quais dimensões a unidade educacional apresentou melhor desempenho? Quais merecem maior atenção durante a construção do seu Plano de Trabalho Anual de 2011?"
 
- start_new_page 
+ start_new_page
   fill_color "043ccb"
   text "\n 3 Quadro dos índices da unidade, por dimensões e por segmentos", :style => :bold, :align => :center
   fill_color "0000000"
-  
+
   text "O índice geral da sua Unidade em 2010, obtido com base na média dos índices de cada dimensão é: #{report_data.index_table[:institution_main_index]}"
   table report_data.index_table[:table] do
-    
+
     row(0).style(:background_color => 'dddddd', :size => 8, :font_style => :bold)
     row(1).style(:size => 8, :font_style => :bold)
     row(2).style(:size => 8, :font_style => :bold)
@@ -709,7 +714,7 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
     column(7).width = 60
 
   end
-  
+
   text "\n * Corresponde ao índice da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
   text "\nNota explicativa: Os valores foram arredondados até a segunda casa decimal.", :size => 10
   move_down(10)
@@ -735,3 +740,4 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
 end
 end
 end
+

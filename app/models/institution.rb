@@ -74,8 +74,7 @@ class Institution < ActiveRecord::Base
     dimension_mean
   end
 
-  def self.mean_indicator_by_sl(indicators_party,service_level)
-    indicators = indicators_party.indicators
+  def self.mean_indicator_by_sl(indicators,service_level)
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
@@ -177,8 +176,7 @@ class Institution < ActiveRecord::Base
     questions_parties_mean
   end
 
-  def self.mean_indicator_by_group(indicators_party,service_level,group)
-    indicators = indicators_party.indicators
+  def self.mean_indicator_by_group(indicators,service_level,group)
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
@@ -334,8 +332,75 @@ class Institution < ActiveRecord::Base
     dimension_mean
   end
 
-  def mean_indicator(indicators_party,service_level)
-    indicators = indicators_party.indicators
+  def mean_indicator(indicators,service_level)
+    indicators_numbers = []
+    questions_numbers = []
+    segments_names = []
+    data = Hash.new { |h, k| h[k] = Hash.new{ |h, k| h[k] = Hash.new } }
+    indicators.each do |indicator|
+      indicators_numbers << indicator.number if !indicators_numbers.include?(indicator.number)
+      questions_parties = indicator.questions_parties
+      questions_parties.each do |qp|
+        qp.questions.each do |q|
+          pass = true
+          [11,12,13,14].each do |i|
+            pass = false if q.survey_id == i
+          end
+          next if pass
+          questions_numbers << q.number if !questions_numbers.include?(q.number)
+          segment_name = nil
+          answers = q.answers.with_institution(self).by_service_level(service_level).min_participants(0).newer
+          unless answers.nil?
+            answers.each do |a|
+              segment_name = User.find(a.user_id, :include => :segment).segment.name
+              data[indicator.number][q.number][segment_name] = (a.mean.nil?) ? 0.0 : a.mean
+            end
+            if answers.size == 0 && q.present?
+              answers = q.answers.with_institution(self).by_service_level(service_level).valid.min_participants(0).newer
+              answers.each do |r|
+                data[indicator.number][q.number][r.segment_name] = 0 if !r.segment_name.nil?
+              end
+            end
+          end
+          segments_names << segment_name if !segments_names.include?(segment_name) && !segment_name.nil?
+        end
+      end
+    end
+
+    indicator_mean = calc_mean_indicator(data, indicators_numbers, questions_numbers, segments_names)
+    puts indicator_mean.inspect
+    puts data.inspect
+    puts "_" * 100
+    indicator_mean
+  end
+
+  def calc_mean_indicator(data, indicators, questions_numbers, segments_names)
+    hash = Hash.new
+    hash[:segments] = Hash.new
+    puts questions_numbers.inspect
+    segments_names.each do |sn|
+      array_temp = []
+      indicators.each do |i|
+        next if sn.nil?
+        questions_numbers.each do |qn|
+          value = data[i][qn][sn]
+          array_temp << value if value.to_s != "0.0" && !value.nil?
+        end
+      end
+      total = array_temp.sum_values
+      hash[:segments][sn] = total / array_temp.size.to_f if !total.nil?
+    end
+    media = hash[:segments].values.sum_values
+    if !media.nil?
+      hash[:mean] = media / hash[:segments].size.to_f
+    else
+      hash[:mean] = 0
+    end
+    hash
+  end
+
+
+ def mean_indicator2(indicators,service_level)
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
@@ -367,6 +432,7 @@ class Institution < ActiveRecord::Base
     end
     indicator_mean[:segments] = Institution.mean_by_segments(@users_data)
     indicator_mean[:mean] = indicator_mean[:segments].avg
+    puts indicator_mean.inspect
     indicator_mean
   end
 

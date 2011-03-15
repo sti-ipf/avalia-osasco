@@ -117,8 +117,6 @@ class GeneralReport
         Apresentando o Processo de Avaliação e seu Histórico
         Linha do Tempo", :indent_paragraphs => 20
 
-      start_new_page
-
       text "CAPÍTULO I – QUEM SOMOS ", :style => :bold
       text "1. Apresentando o lugar e os sujeitos protagonistas", :indent_paragraphs => 20
       text "1.1. O município
@@ -126,8 +124,6 @@ class GeneralReport
         1.3. A composição da Rede
         1.4. A Supervisão de Ensino
         1.5. O Corpo Técnico Pedagógico (CTP)", :indent_paragraphs => 30
-
-      start_new_page
 
       text "CAPÍTULO II. METODOLOGIA", :style => :bold
       text "2.1. Foco da Avaliação
@@ -138,14 +134,13 @@ class GeneralReport
         2.6. Análise e Interpretação dos Dados", :indent_paragraphs => 30
       text "2.6.1. Análise estatística e descritiva dos dados da rede de ensino por nível de atendimento
         2.6.2. Organização, sistematização e análise de conteúdo de dados qualitativos
-        2.6.3. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB,", :indent_paragraphs => 40
-      text " no caso do Ensino Fundamental
-        2.6.4. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação
-        Infantil", :indent_paragraphs => 40
-      text "2.6.5. Análise dos índices das unidades escolares por dimensão
-        2.6.6. Reflexão e aprendizagem compartilhada", :indent_paragraphs => 40
+        2.6.3. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação", :indent_paragraphs => 40
+      text "Infantil
+        2.6.4. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB", :indent_paragraphs => 40
 
-      start_new_page
+      text " no caso do Ensino Fundamental
+        2.6.5. Análise dos índices das unidades escolares por dimensão
+        2.6.6. Reflexão e aprendizagem compartilhada", :indent_paragraphs => 40
 
       text "CAPÍTULO III. RESULTADOS DA AVALIAÇÃO DO PEC- OSASCO 2010 - EDUCAÇÃO INFANTIL", :style => :bold
       text "3. Análise dos resultados da Educação Infantil", :style => :bold, :indent_paragraphs => 20
@@ -203,8 +198,6 @@ class GeneralReport
       text "3.2. Quadro dos índices das unidades por dimensões: Educação Infantil
         3.3. Resultados dos agrupamentos a partir das regiões geográficas, por dimensões: Educação", :style => :bold, :indent_paragraphs => 30
       text "Infantil", :style => :bold, :indent_paragraphs => 30
-
-      start_new_page
 
       text "CAPÍTULO IV. RESULTADOS DA AVALIAÇÃO DO PEC- OSASCO 2010 - EDUCAÇÃO FUNDAMENTAL", :style => :bold
       text "4. Análise dos resultados do Ensino Fundamental", :style => :bold, :indent_paragraphs => 20
@@ -269,8 +262,6 @@ class GeneralReport
         4.3. Resultados dos agrupamentos a partir das notas obtidas no IDEB, por dimensões: Ensino ", :style => :bold, :indent_paragraphs => 30
       text "Fundamental", :style => :bold, :indent_paragraphs => 30
 
-      start_new_page
-
       text "CAPÍTULO V. META-AVALIAÇÃO", :style => :bold, :indent_paragraphs => 20
       text "a) Mobilização
         b) Participação
@@ -278,8 +269,6 @@ class GeneralReport
         d) Condições Físicas e Materiais
         e) Período de Aplicação e Inserção dos dados no on-line
         f) Análise Coletiva", :indent_paragraphs => 30
-
-      start_new_page
 
       text "CAPÍTULO VI. CONSIDERAÇÕES FINAIS", :style => :bold, :indent_paragraphs => 20
 
@@ -571,7 +560,31 @@ class GeneralReport
 
       image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_about_practices.jpg", :scale => 0.8, :position => :center
 
-      text "\n 2.6.3. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB no caso do Ensino Fundamental", :style => :bold
+      start_new_page
+      text " \n2.6.3. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação Infantil", :style => :bold
+
+      table_creche_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],
+        ["Creche Benedita de Oliveira","Creche Elza Batiston","Creche Vilma Catan","Creche Amélia Tozzeto"],
+        ["CEMEI Lourdes Candida","Creche Sadamitu Omosako","Creche Maria José da Anunciação","Creche José Espinosa"],
+        ["CEMEI Wilma Foltran","Creche Prof. Silvia Ferreira Farhat","Creche Seraphina Bissolati","Creche Alha Elias Abib"],["CMEIEF Maria José Ferreira Ferraz","CEU Zilda Arns","CEMEIEF Maria Tarsilla","Creche Giuseppa"],["CEMEI Rubens Bandeira","Creche Alzira Silva","Creche Lar da Infância","CEMEI José Ermírio"],["CEMEI João de Farias","Creche Olga Camolesi","Creche Pedro Penov","CEMEI Mário Quintana"],["Creche Prof. Joaquina França","CEMEI Leonil Crê","Creche Moacyr Ayres","Creche Mercedes Correa"], ["CEMEI Fortunato Antiório","Creche Rosa Broseguini","Creche Hilda","Creche Dayse Ribeiro"],["CEMEI Mário Sebastião","Creche Ézio Melli","Creche Rosa Pereira Crê","Creche Sergio Zanardi"],["CEMEIEF Darcy Ribeiro","","Creche Lídia Thomaz","Cemei Zaira Colino"],
+        ["  ","  ","Creche João Correa","Creche Recanto Alegre"],["  ","  ","Creche Ida Belmonte","CEMEI Alberto Santos Dumont"],
+        ["  ","Creche Olímpia Maria de Jesus Carvalho","Creche Hermínia Lopes","Creche Inês Sanches Mendes"]]
+      table [["AGRUPAMENTO DE CRECHES"],[table_creche_groups]]
+      text "\n"
+
+      table_emei_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["EMEI Maria Bertoni Fiorita","EMEI Maria Alves Dória","EMEI Helena Coutinho","CEMEI Zaíra Collino"],["EMEI Omar Ogeda","EMEI Nair Bellacoza","EMEI Pedro Martino","EMEI Cristine"],["EMEI Japhet Fonte","EMEIEF Valter de Oliveira","EMEI Maria Madalena Freixeda","CEMEI Alberto Santos Dumont"],["CEMEI Lourdes Candida","CEU Zilda Arns","EMEI Alípio Pereira","EMEI Osvaldo Salles"],["CEMEI Wilma Foltran","EMEI Gertrudes de Rossi","EMEI Estevão Brett","EMEI Esmeralda"],["EMEI Osvaldo Gonçalves","CEMEI Leonil Crê","CEMEIEF Maria Tarcilla","EMEIEF Messias"],["EMEI Yolanda Botaro","EMEI Sonia Maria ","EMEI Dalva Mirian","EMEI Emir Macedo"], ["CEMEI Fortunato Antiório","EMEI Maria Ap. Damy","EMEI Fernando Buonaduce","EMEI Descio Mendes"],
+        ["CEMEI Mário Sebastião","  ","EMEI Fortunata","EMEI Zuleica"],["CEMEIEF Darcy Ribeiro","  ","EMEI Elide Alves","CEMEI José Emírio"],
+        ["EMEI Vivaldo","  ","EMEI Adhemar Pereira","CEMEI Mário Quintana"],["CEMEIEF Maria José Ferreira Ferraz","  ","EMEIF Etiene","EMEI Salvador Sacco"],
+        ["CEMEI Rubens Bandeira","  ","EMEI Providencia dos Anjos"," "],["CEMEI João de Farias"," ","EMEI Ignes Collino"," "],
+        ["EMEI José Flávio","  ","EMEI Antonio Paulino Ribeiro","  "],["EMEI Elio Aparecido da Silva","  ","EMEI Luzia Momi Sasso","  "],
+        ["","  ","EMEI Severino de Araujo Freire","  "],["","  ","EMEI Thereza Bianchi Collino","  "]]
+
+      start_new_page
+
+      table [["AGRUPAMENTO DE EMEIs"],[table_emei_groups]]
+
+      start_new_page
+      text "2.6.4. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB no caso do Ensino Fundamental", :style => :bold
 
       table_emef_groups = [
         ["GRUPO A", "GRUPO B","GRUPO C", "GRUPO D"],
@@ -590,43 +603,20 @@ class GeneralReport
         ["EMEF Saad Bechara", "CEU Dra. Zilda Arns Neumann", "EMEF Luiz Bortolosso", "EMEF Prof. Renato Fiuza Teles"],
         ["EMEF Prof. Alipio da Silva Lavoura", "CEMEIEF Prof. Darcy Ribeiro", "EMEF Osvaldo Quirino Simões", "EMEF Prof. Anezio Cabral"],
         ["EMEF Prof. Oneide Bortolote", "EMEF José Veríssimo de Matos", "EMEF General Antonio de Sampaio", "EMEF José Martiniano de Alencar"],
-        ["EMEF Prof. João Euclides Pereira", "", "EMEF Alice Rabechini Ferreira", "EMEF Prof. Max Zendron"],
-        ["EMEF Quintino Bocaiuva", "", "", "EMEF Escultor Victor Brecheret"]
+        ["EMEF Prof. João Euclides Pereira", "", "EMEF Alice Rabechini Ferreira", "EMEF Prof. Max Zendron"]
         ]
 
       table [["AGRUPAMENTO DE EMEFs"],[table_emef_groups]]
 
-      start_new_page
       table [
+        ["EMEF Quintino Bocaiuva", "", "", "EMEF Escultor Victor Brecheret"],
         ["EMEF Profa. Zuleica Gonçalves Mendes", "", "", "EMEF Padre José Grossi Dias"],
         ["", "                                                                 ", "                                                        ", "EMEF Prof. João Larizzatti"],
         ["", "                                                                 ", "                                                        ", "EMEF Benedito Alves Turibio"],
         ["", "                                                                 ", "                                                        ", "EMEF Manoel Tertuliano de Cerqueira"]]
-
-      start_new_page
-      text "2.6.4. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação Infantil", :style => :bold
-
-      table_creche_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],
-        ["Creche Benedita de Oliveira","Creche Elza Batiston","Creche Vilma Catan","Creche Amélia Tozzeto"],
-        ["CEMEI Lourdes Candida","Creche Sadamitu Omosako","Creche Maria José da Anunciação","Creche José Espinosa"],
-        ["CEMEI Wilma Foltran","Creche Prof. Silvia Ferreira Farhat","Creche Seraphina Bissolati","Creche Alha Elias Abib"],["CMEIEF Maria José Ferreira Ferraz","CEU Zilda Arns","CEMEIEF Maria Tarsilla","Creche Giuseppa"],["CEMEI Rubens Bandeira","Creche Alzira Silva","Creche Lar da Infância","CEMEI José Ermírio"],["CEMEI João de Farias","Creche Olga Camolesi","Creche Pedro Penov","CEMEI Mário Quintana"],["Creche Prof. Joaquina França","CEMEI Leonil Crê","Creche Moacyr Ayres","Creche Mercedes Correa"], ["CEMEI Fortunato Antiório","Creche Rosa Broseguini","Creche Hilda","Creche Dayse Ribeiro"],["CEMEI Mário Sebastião","Creche Ézio Melli","Creche Rosa Pereira Crê","Creche Sergio Zanardi"],["CEMEIEF Darcy Ribeiro","","Creche Lídia Thomaz","Cemei Zaira Colino"],
-        ["  ","  ","Creche João Correa","Creche Recanto Alegre"],["  ","  ","Creche Ida Belmonte","CEMEI Alberto Santos Dumont"],
-        ["  ","Creche Olímpia Maria de Jesus Carvalho","Creche Hermínia Lopes","Creche Inês Sanches Mendes"]]
-      table [["AGRUPAMENTO DE CRECHES"],[table_creche_groups]]
       text "\n"
 
-      table_emei_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["EMEI Maria Bertoni Fiorita","EMEI Maria Alves Dória","EMEI Helena Coutinho","CEMEI Zaíra Collino"],["EMEI Omar Ogeda","EMEI Nair Bellacoza","EMEI Pedro Martino","EMEI Cristine"],["EMEI Japhet Fonte","EMEIEF Valter de Oliveira","EMEI Maria Madalena Freixeda","CEMEI Alberto Santos Dumont"],["CEMEI Lourdes Candida","CEU Zilda Arns","EMEI Alípio Pereira","EMEI Osvaldo Salles"],["CEMEI Wilma Foltran","EMEI Gertrudes de Rossi","EMEI Estevão Brett","EMEI Esmeralda"],["EMEI Osvaldo Gonçalves","CEMEI Leonil Crê","CEMEIEF Maria Tarcilla","EMEIEF Messias"],["EMEI Yolanda Botaro","EMEI Sonia Maria ","EMEI Dalva Mirian","EMEI Emir Macedo"], ["CEMEI Fortunato Antiório","EMEI Maria Ap. Damy","EMEI Fernando Buonaduce","EMEI Descio Mendes"],
-        ["CEMEI Mário Sebastião","  ","EMEI Fortunata","EMEI Zuleica"],["CEMEIEF Darcy Ribeiro","  ","EMEI Elide Alves","CEMEI José Emírio"],
-        ["EMEI Vivaldo","  ","EMEI Adhemar Pereira","CEMEI Mário Quintana"],["CEMEIEF Maria José Ferreira Ferraz","  ","EMEIF Etiene","EMEI Salvador Sacco"],
-        ["CEMEI Rubens Bandeira","  ","EMEI Providencia dos Anjos"," "],["CEMEI João de Farias"," ","EMEI Ignes Collino"," "],
-        ["EMEI José Flávio","  ","EMEI Antonio Paulino Ribeiro","  "],["EMEI Elio Aparecido da Silva","  ","EMEI Luzia Momi Sasso","  "],
-        ["","  ","EMEI Severino de Araujo Freire","  "],["","  ","EMEI Thereza Bianchi Collino","  "]]
       start_new_page
-      table [["AGRUPAMENTO DE EMEIs"],[table_emei_groups]]
-
-      text "\n"
-      start_new_page
-
       text "\n 2.6.5. Análise do índice das unidades por dimensão", :style => :bold
       text "Com base nos dados obtidos pela totalidade de unidades educacionais, foi estabelecido um <b>índice para cada UE</b>, em cada dimensão, utilizando a seguinte metodologia: ", :indent_paragraphs => 30, :inline_format => true
       text "A soma das respostas dadas pelos segmentos, dividida pela máxima pontuação que a unidade educacional poderia atribuir a si mesma, isto é: a média 5 dentro de cada dimensão. Por exemplo: numa determinada dimensão, 8 pessoas expressaram sua opinião numérica para as 10 questões contidas nela. Se 5 era a máxima opinião numérica que se podia dar, para essa dimensão a máxima pontuação que a UE poderia receber é 400, ou seja, 8 vezes 10, que é igual a 80, vezes 5, que é igual a 400. Contudo, a soma obtida pela UE, a partir da opinião dessas oito pessoas a essas 10 questões, foi de 240. O índice obtido pela UE, nessa dimensão, é obtido dividindo 240 por 400, ou seja: 0,6. Quanto mais próximo do 1,0, melhor o índice obtido pela unidade.", :indent_paragraphs => 30
@@ -675,11 +665,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension1-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
 
       insert_graphics(%w(1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11), "infantil")
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
 
       text "1. Em que medida as ações do CTP podem contribuir para a elaboração dos princípios de convivência da UE com a participação de todos os segmentos?", :indent_paragraphs => 30
       text "2. O conhecimento que as unidades têm sobre o ECA, revelado pela avaliação de 2010, tem sido suficiente? Tem sido referência em todas as ações educativas da UE? O que o CTP pode fazer em relação a isso?", :indent_paragraphs => 30
@@ -692,11 +682,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension2-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(2.1 2.2 2.3 2.4), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. O que os resultados revelam sobre a percepção dos segmentos acerca desta dimensão e seus indicadores? Quais fatores podem influenciar estas percepções?", :indent_paragraphs => 30
       text "2. É possível formular hipóteses sobre a forma como o subsídio recebido pelas unidades tem sido utilizado? As unidades têm investido em melhorias? É possível observar alguma tendência na priorização de determinados itens? É possível avaliar se o subsídio tem sido suficiente ou bem gerido?", :indent_paragraphs => 30
       text "3. As iniciativas da Secretaria relacionadas à troca de mobília ou envio de materiais como livros e outros tiveram reflexo nas médias apresentadas?", :indent_paragraphs => 30
@@ -712,11 +702,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension3-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8 3.9), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. O que os resultados revelam acerca da implantação da RECEI e RECEF nas unidades? As ações promovidas pela Secretaria, como formações e encontros estão refletindo mudanças significativas?", :indent_paragraphs => 30
       text "2. O que os dados revelam sobre a participação e compreensão dos segmentos acerca do Projeto Eco-Político-Pedagógico? Ele vem sendo construído coletivamente? Que ações devem ser encabeçadas pela Secretaria para que isto seja assegurado?", :indent_paragraphs => 30
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
@@ -729,10 +719,10 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension4-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(4.1 4.2 4.3 4.4), "infantil")
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
 
       text "1. O que os dados revelam sobre a cultura de avaliação nas unidades?", :indent_paragraphs => 30
       text "2. Os dados sobre a avaliação dos educandos estão coerentes com a proposta da RECEI e RECEF? Que ações devem ser propostas pela Secretaria para assegurar esta coerência?", :indent_paragraphs => 30
@@ -747,11 +737,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension5-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(5.1 5.2 5.3), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Que ações o município desenvolve para garantir o acesso e permanência dos educandos na escola? Como estas políticas podem ser avaliadas tendo como base as médias obtidas nos diversos segmentos?", :indent_paragraphs => 30
       text "2. Os dados revelam ações no sentido de atender às necessidades educativas da comunidade? Que fatores podem influenciar a existência / inexistência destas ações?", :indent_paragraphs => 30
       text "3. Que ações o município tem realizado para garantir que os profissionais estejam bem preparados para atender os alunos com alguma defasagem de aprendizagem? De acordo com os resultados, é possível afirmar que estes esforços têm gerado os impactos desejados?", :indent_paragraphs => 30
@@ -766,11 +756,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension6-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(6.1 6.2 6.3 6.4), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Que ações a Secretaria da Educação desenvolve estão diretamente ligadas à promoção da saúde? Estas ações estão sendo eficazes e efetivas? Que novas ações precisam ser desenvolvidas para que estes resultados sejam melhorados?", :indent_paragraphs => 30
       text "2. As parcerias da Secretaria da Educação com outras secretarias (como saúde e abastecimento) e organizações estão se desenvolvendo de forma adequada? Como os dados revelam isso? É preciso buscar novas parcerias?", :indent_paragraphs => 30
       text "3. A Secretaria tem conhecimento do perfil epidemiológico de seus alunos e alunas para melhorar direcionar as políticas públicas voltadas para a promoção da saúde?", :indent_paragraphs => 30
@@ -783,11 +773,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension7-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(7.1 7.2), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Os resultados das avaliações das unidades revelam suficiência nas formações em torno dos temas da cidadania planetária e da sustentabilidade?", :indent_paragraphs => 30
       text "2. O que o CTP pode planejar para incentivar práticas educativas que garantam o conhecimento da realidade e a participação de toda comunidade escolar na construção de uma sociedade sustentável?", :indent_paragraphs => 30
       text "3. Tendo em vista que um dos princípios e objetivos do sistema municipal de educação de Osasco é o compromisso com a promoção e o incentivo à cultura da educação ambiental, nas instituições públicas e privadas, pró-recuperação e conservação dos recursos naturais, do desenvolvimento sustentável e da paz, como a rede educacional lida com a questão socioambiental? Temos conseguido desenvolver uma educação socioambiental e práticas ecopedagógicas consistentes?", :indent_paragraphs => 30
@@ -799,11 +789,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension8-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(8.1 8.2 8.3), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Quanto maior e mais positiva for a interação entre a escola e os familiares e a comunidade a que ela atende, maior é a probabilidade de a escola oferecer aos seus educandos um ensino de qualidade. Diante dessa afirmação, como estamos promovendo a cooperação e o envolvimento com as famílias de nossa comunidade? A as unidades da rede municipal procuram conhecer e trocar experiências com as famílias e com a comunidade?", :indent_paragraphs => 30
       text "2. A rede municipal tem propiciado às unidades momentos que favoreçam vínculos positivos de parceria com os familiares dos educandos? Quais? De que forma eles são percebidos pelos diferentes segmentos e de que forma impactam no aprendizado e interesse e prazer da criança pelos estudos?", :indent_paragraphs => 30
       text "3. A  Secretaria busca mapear e identificar os equipamentos sociais que existem no município que possam contribuir para a constituição de uma rede de proteção social dos direitos das crianças? Como estas informações são divulgadas para as unidades? Como estas informações são divulgadas pelas unidades para a comunidade escolar?", :indent_paragraphs => 30
@@ -820,11 +810,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension9-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(9.1 9.2 9.3), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. De acordo com o PME de Osasco, a participação da comunidade é imprescindível, sendo uma forma prática de formação para a cidadania, através da qual a população aprende a intervir no Estado. Nesse sentido, o que os dados obtidos no processo de avaliação nos revelam com relação à inclusão da população nos processos que dizem respeito aos assuntos da educação? A secretaria vem estimulando e criando condições para que as unidades envolvam a população em suas ações desde o início dos processos?", :indent_paragraphs => 30
       text "2. A Secretaria vem estimulando a sua rede a criar mecanismos permanentes de consulta como o CGC e a participação no processo de orçamento participativo?", :indent_paragraphs => 30
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
@@ -836,11 +826,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/infantil/general_average_dimension10-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(10.1 10.2 10.3), "infantil")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
       text "2. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?", :indent_paragraphs => 30
 
@@ -895,11 +885,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension1-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Em que medida as ações do CTP podem contribuir para a elaboração dos princípios de convivência da UE com a participação de todos os segmentos?"
       text "2. O conhecimento que as unidades têm sobre o ECA, revelado pela avaliação de 2010, tem sido suficiente? Tem sido referência em todas as ações educativas da UE? O que o CTP pode fazer em relação a isto?"
       text "3. Os resultados revelados pela avaliação de 2010 demonstram que há práticas suficientes nas UEs em relação à socialização e convivência? O que o CTP pode fazer para melhorar essa questão nas unidades?"
@@ -911,11 +901,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension2-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(2.1 2.2 2.3 2.4), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. O que os resultados revelam sobre a percepção dos segmentos acerca desta dimensão e seus indicadores? Quais fatores podem influenciar estas percepções?"
       text "2. É possível formular hipóteses sobre a forma como o subsídio recebido pelas unidades tem sido utilizado? As unidades têm investido em melhorias? É possível observar alguma tendência na priorização de determinados itens? É possível avaliar se o subsídio tem sido suficiente ou bem gerido?"
       text "3. As iniciativas da Secretaria relacionadas à troca de mobília ou envio de materiais como livros e outros tiveram reflexo nas médias apresentadas?"
@@ -931,11 +921,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension3-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. O que os resultados revelam acerca da implantação da RECEI e RECEF nas unidades? As ações promovidas pela Secretaria, como formações e encontros, estão refletindo mudanças significativas?"
       text "2. O que os dados revelam sobre a participação e compreensão dos segmentos acerca do Projeto Eco-Político-Pedagógico? Ele vem sendo construído coletivamente? Que ações devem ser encabeçadas pela Secretaria para que isto seja assegurado?"
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
@@ -948,10 +938,10 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension4-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(4.1 4.2 4.3 4.4 4.5), "fundamental")
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. O que os dados revelam sobre a cultura de avaliação nas unidades?"
       text "2. Os dados sobre a avaliação dos educandos estão coerentes com a proposta da RECEI e RECEF? Que ações devem ser propostas pela Secretaria para assegurar esta coerência?"
       text "3. Os dados revelam uma cultura de avaliação dos profissionais das escolas? Que ações a Secretaria pode propor a fim de promover/fomentar esta cultura? Que papel os supervisores devem exercer neste processo?"
@@ -965,11 +955,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension5-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(5.1 5.2 5.3 5.4), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Que ações o município desenvolve para garantir o acesso e permanência dos educandos na escola? Como estas políticas podem ser avaliadas, tendo como base as médias obtidas nos diversos segmentos?"
       text "2. Os dados revelam ações no sentido de atender às necessidades educativas da comunidade? Que fatores podem influenciar a existência / inexistência destas ações?"
       text "3. Que ações o município tem realizado no sentido de garantir que os profissionais estejam bem preparados para atender aos alunos com alguma defasagem de aprendizagem? De acordo com os resultados, é possível afirmar que estes esforços têm gerado os impactos desejados?"
@@ -984,11 +974,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension6-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(6.1 6.2 6.3 6.4), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Que ações a Secretaria da Educação desenvolve estão diretamente ligadas à promoção da saúde? Estas ações estão sendo eficazes e efetivas? Que novas ações precisam ser desenvolvidas para que estes resultados sejam melhorados?"
       text "2. As parcerias da Secretaria da Educação com outras secretarias (como saúde e abastecimento) e organizações estão se desenvolvendo de forma adequada? Como os dados revelam isso? É preciso buscar novas parcerias?"
       text "3. A Secretaria tem conhecimento do perfil epidemiológico de seus alunos e alunas para melhorar direcionar as políticas públicas voltadas para a promoção da saúde?"
@@ -1001,11 +991,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension7-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(7.1 7.2), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Os resultados das avaliações das unidades revelam suficiência nas formações em torno dos temas da cidadania planetária e da sustentabilidade?"
       text "2. O que o CTP pode planejar para incentivar práticas educativas que garantam o conhecimento da realidade e a participação de toda comunidade escolar na construção de uma sociedade sustentável? "
       text "3. Tendo em vista que um dos princípios e objetivos do sistema municipal de educação de Osasco é o compromisso com a promoção e o incentivo à cultura da educação ambiental, nas instituições públicas e privadas, pró-recuperação e conservação dos recursos naturais, do desenvolvimento sustentável e da paz, como a rede educacional lida com a questão socioambiental? Temos conseguido desenvolver uma educação socioambiental e práticas ecopedagógicas consistentes?"
@@ -1017,11 +1007,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension8-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(8.1 8.2 8.3), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. Quanto maior e mais positiva for a interação entre a escola e os familiares e a comunidade a que ela atende, maior é a probabilidade de a escola oferecer aos seus educandos um ensino de qualidade. Diante dessa afirmação, como estamos promovendo a cooperação e o envolvimento com as famílias de nossa comunidade? A as unidades da rede municipal procuram conhecer e trocar experiências  com as famílias e com a comunidade?"
       text "2. A rede municipal tem propiciado às unidades momentos que  favoreçam  vínculos positivos de parceria com os familiares dos educandos? Quais? De que forma eles são percebidos pelos diferentes segmentos e de que forma impactam no aprendizado e interesse e prazer da criança pelos estudos?"
       text "3. A Secretaria  busca mapear e identificar os equipamentos sociais  que existem no município  que possam  contribuir para a constituição de uma rede de proteção social dos direitos das crianças? Como estas informações são divulgadas para as unidades? Como estas informações são divulgadas pelas unidades para a comunidade escolar?"
@@ -1039,11 +1029,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension9-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(9.1 9.2 9.3 9.4), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. De acordo com o PME de Osasco, a participação da comunidade é imprescindível sendo uma forma prática de formação para a cidadania, através da qual a população aprende a intervir no Estado. Nesse sentido, o que os dados  obtidos no processo de avaliação nos revelam com relação à inclusão da população nos processos que dizem respeito aos assuntos da educação? A Secretaria vem  estimulando e criando condições para que as unidades envolvam a população em suas ações desde o início dos processos?"
       text "2. A Secretaria vem estimulando a sua rede a criar mecanismos permanentes de consulta como o CGC e a participação no processo de orçamento participativo?"
       text "3. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
@@ -1055,11 +1045,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension10-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(10.1 10.2 10.3), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
 
 
       text "1. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
@@ -1072,11 +1062,11 @@ class GeneralReport
       image "#{RAILS_ROOT}/public/relatorios/artifacts/graphs/fundamental/general_average_dimension11-graph.jpg", :scale => 1, :position => :center
 
       start_new_page
-      text "b) Gráficos gerais das percepções da rede sobre os indicadores"
+      text "b) gráficos gerais das percepções da rede sobre os indicadores"
       insert_graphics(%w(11.1 11.2 11.3 11.4 11.5), "fundamental")
 
       start_new_page
-      text "c) Questões problematizadoras:"
+      text "c) questões problematizadoras:"
       text "1. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?"
       text "2. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?"
       text "3. Que ações, por parte da Secretaria, podem ser previstas para que em 2011 as escolas da Rede  se envolvam cada vez mais  no exercício da função social da escrita pela criança?"
@@ -1122,7 +1112,7 @@ class GeneralReport
 
       start_new_page
       text "CAPÍTULO VI. CONSIDERAÇÕES FINAIS", :style => :bold
-      draw_text "116", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
+      draw_text "112", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
       number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
     end
   end

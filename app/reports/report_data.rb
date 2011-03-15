@@ -19,7 +19,7 @@ class ReportData
     begin
       first_user = @institution.users.first(:conditions => {:service_level_id => @service_level.id}, :include => :group)
       @group = first_user.group
-    rescue
+  rescue
       puts "#{@institution.name} does not have a user in service level #{@service_level.name}"
     end
   end
@@ -33,31 +33,33 @@ class ReportData
     segments =  segments_strings.map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
 
     psegment = segments.select { |s| s.name == "Professores" }.first
-    questions_party = QuestionsParty.find(questions_party, :include => {:questions => :indicator})
+    questions_party = QuestionsParty.find(questions_party.id, :include => {:questions => :indicator})
     display_question = questions_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", psegment.id])
     display_question ||= questions_party.questions.first(:conditions => "description is not null")
 
+    mean = []
     segments.each_with_index do |segment, i|
       question = questions_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", segment.id])
+      if !question.nil?
+      puts question.number
+      puts segment.name
+    end
       row = [segment.name]
       row << (question.nil? ? "-" : question.number)
 
       if question.present?
         answers = question.answers.with_institution(ue).by_service_level(service_level).min_participants(0).newer
-        current_answer = answers.map(&:mean).avg.to_f.round(2)
-        current_answer = current_answer > 0 ? current_answer : "NR"
+        current_answer = (answers.map(&:mean).first.nil?)? "NR": answers.map(&:mean).avg.to_f.round(2)
+        puts current_answer
+        puts answers.map(&:mean).inspect
         row << current_answer
-      else
+        mean << current_answer
+    else
         row << "-"
       end
 
       if i == 2
-        answers = questions_party.questions.map {|q| q.answers.with_institution(ue).by_service_level(service_level).min_participants(0).newer}.compact
-        mean = []
-        answers.each do |a|
-          mean << a.map(&:mean)
-        end
-        row << mean.collect{|i| i.avg}.avg.to_f.round(2)
+        row << 0
         if @group.present?
           row << questions_party.mean_by_group(@group).to_f.round(2) #Media do Grupo
         else
@@ -69,6 +71,8 @@ class ReportData
       end
       data << row
     end
+    puts data[3][3]
+    data[3][3] = mean.avg.to_f.round(2) # media da ue
     {
       :description => display_question.description.nil? ? display_question.description : display_question.description.gsub(/^[0-9]+\.[0-9]+\.[0-9]+/,''),
       :table => data
@@ -77,8 +81,8 @@ class ReportData
 
   def dimension_graph(dimension)
     graph_start_time = now = Time.now
-
-    data_sl = Institution.mean_dimension_by_sl(dimension, @service_level)
+    indicators = Indicator.all(:conditions => {:dimension_id => dimension.id, :service_level_id => @service_level.id})
+    data_sl = Institution.mean_dimension_by_sl(indicators, @service_level)
     #p data_sl
     sl_time = Time.now - now
     now = Time.now
@@ -124,31 +128,41 @@ class ReportData
   end
 
   def indicators_graph(dimension)
-    indicators_parties = dimension.indicators_parties.all(:conditions => {:service_level_id => @service_level.id})
-    filenames = indicators_parties.inject([]) do |list, indicators_party|
-      list << indicator_graph(indicators_party)
+    indicators_numbers = Indicator.find_by_sql("
+      SELECT DISTINCT number FROM indicators WHERE dimension_id = #{dimension.id}").collect(&:number)
+    type = (@service_level.id == 2)? 2 : 1
+
+    indicators_numbers.each do |indicator_number|
+      indicators = Indicator.find_by_sql("
+        SELECT i.* FROM indicators i
+        INNER JOIN equivalences e ON e.id = i.equivalences_id
+        WHERE e.indicator = '#{indicator_number}'
+        AND e.type = #{type}
+        AND i.service_level_id = #{@service_level.id}")
+      indicator_graph(dimension, indicators, indicator_number) if !indicators.first.nil?
     end
   end
 
-  def indicator_graph(indicators_party)
+  def indicator_graph(dimension, indicators, indicator_number)
     now = graph_start_time = Time.now
-    data_sl = Institution.mean_indicator_by_sl(indicators_party, @service_level)
+    data_sl = Institution.mean_indicator_by_sl(indicators, @service_level)
     #p data_sl
     sl_time = Time.now - now
     now = Time.now
 
-    data_group = Institution.mean_indicator_by_group(indicators_party,@service_level, @group)
+    data_group = Institution.mean_indicator_by_group(indicators,@service_level, @group)
     #p data_group
     group_time = Time.now - now
 
     now = Time.now
-    data = @institution.mean_indicator(indicators_party,@service_level)
+
+    data = @institution.mean_indicator(indicators,@service_level)
     #p data
-    indicators = {}
-    indicators_party.indicators.each do |i|
-      indicators[i.segment.name] = i.number
+    indicators_as_hash = {}
+    indicators.each do |i|
+      indicators_as_hash[i.segment.name] = indicator_number.to_s
     end
-    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
+    graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "#{dimension.number}.#{indicator_number}", :title => "#{indicators.first.name}", :indicators => indicators_as_hash)
     now2 = Time.now
 
     ReportData.p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
@@ -172,8 +186,8 @@ class ReportData
 
     dimensions.each do |dim|
       d = Dimension.find_by_number(dim)
-
-      data_sl = Institution.mean_dimension_by_sl(d,@service_level)
+      indicators = Indicator.all(:conditions => {:dimension_id => d.id, :service_level_id => @service_level.id})
+      data_sl = Institution.mean_dimension_by_sl(indicators,@service_level)
       means_sl[d.id] = data_sl
 
 
@@ -204,8 +218,8 @@ class ReportData
 
   def single_institution_dimension_graph(dimension)
     graph_start_time = now = Time.now
-
-    data_sl = Institution.mean_dimension_by_sl(dimension, @service_level)
+    indicators = Indicator.all(:conditions => {:dimension_id => dimension.id, :service_level_id => @service_level.id})
+    data_sl = Institution.mean_dimension_by_sl(indicators, @service_level)
     #p data_sl
     sl_time = Time.now - now
     now = Time.now
@@ -261,29 +275,26 @@ class ReportData
     graph
   end
 
-
   def self.service_level_indicators_graph(dimension,sls)
+    type = 1
     indicators_numbers = Indicator.find_by_sql("
       SELECT DISTINCT number FROM indicators WHERE dimension_id = #{dimension.id}").collect(&:number)
-    indicators_parties = IndicatorsParty.find(:all, :conditions => {
-        :service_level_id => sls.collect(&:id),
-        :dimension_id => dimension.id
-      }
-    )
+    sls.each do |sl|
+       type = 2 if sl.id == 2
+    end
+
     indicators_numbers.each do |indicator_number|
-      indicators = []
-      indicators_parties.each do |indicators_party|
-        if indicators_party.indicators.first.number == indicator_number
-          indicators_party.indicators.each do |indicator|
-            indicators << indicator if !indicators.include?(indicator)
-          end
-        end
-      end
-      service_level_indicator_graph(indicators, sls) if !indicators.first.nil?
+      indicators = Indicator.find_by_sql("
+        SELECT i.* FROM indicators i
+        INNER JOIN equivalences e ON e.id = i.equivalences_id
+        WHERE e.indicator = '#{indicator_number}'
+        AND e.type = #{type}")
+
+      service_level_indicator_graph(indicators, sls, indicator_number) if !indicators.first.nil?
     end
   end
 
-  def self.service_level_indicator_graph(indicators, sls)
+  def self.service_level_indicator_graph(indicators, sls, indicator_number)
     now = graph_start_time = Time.now
     # data_sl = {:mean=>0.0, :segments=>{"Professores"=>0.0, "Familiares"=>0.0, "Funcionarios"=>0.0, "Gestores"=>0.0}}
     blur={}
@@ -312,7 +323,7 @@ class ReportData
     puts "_" * 100
     puts indicators.inspect
     puts "_" * 100
-    graph = Institution.service_level_graph(blur, :id => "i#{indicators.first.number}", :title => "#{indicators.first.name}", :group => group)
+    graph = Institution.service_level_graph(blur, :id => "i#{indicator_number}", :title => "#{indicators.first.name}", :group => group)
     now2 = Time.now
     # p_times(graph, :sl => sl_time,:graph => now2 - now)
     #p "=============================================================================================================="
