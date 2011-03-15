@@ -55,7 +55,7 @@ namespace :reports do
     #   end
     # end
 
-    institution = Institution.find(65) #Maria José Ferreira Ferraz, Profª
+    institution = Institution.find(65)#93
     institution.service_levels.each do |service_level|
       puts "- #{service_level.name}"
       before = Time.now
@@ -85,7 +85,7 @@ namespace :reports do
 
   task :graphs_by_institution => :environment do
     dimensions = Dimension.all
-    inst = Institution.find(93)
+    inst = Institution.find(65)#93
     puts inst.name
     inst.service_levels.each do |sl|
       puts "- #{sl.name}"

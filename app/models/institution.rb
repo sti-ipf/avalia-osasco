@@ -356,10 +356,8 @@ class Institution < ActiveRecord::Base
               data[indicator.number][q.number][segment_name] = (a.mean.nil?) ? 0.0 : a.mean
             end
             if answers.size == 0 && q.present?
-              answers = q.answers.with_institution(self).by_service_level(service_level).valid.min_participants(0).newer
-              answers.each do |r|
-                data[indicator.number][q.number][r.segment_name] = 0 if !r.segment_name.nil?
-              end
+              segment_name = Survey.find(q.survey_id, :include => :segment).segment.name
+              data[indicator.number][q.number][segment_name] = 0
             end
           end
           segments_names << segment_name if !segments_names.include?(segment_name) && !segment_name.nil?
@@ -452,7 +450,8 @@ class Institution < ActiveRecord::Base
       graph_labels[graph_labels.length] = indicators.present? ? "#{seg.name}\n(#{indicators[seg.name]})" : seg.name
       hash
     end
-
+    divisor = indicators.length if indicators.present?
+    divisor ||=  graph_labels.length
     graph_data["Media da UE"] << mean[:mean]
     graph_data["Media do Grupo"] << mean_group[:mean]
     graph_data["Media das #{service_level.name}s"] << mean_sl[:mean]
@@ -466,7 +465,7 @@ class Institution < ActiveRecord::Base
     :labels => graph_labels,
     :title => options[:title]
     )
-    graph_data.each do |name, data|
+    graph_data.each { |i| i }.collect.sort {|u,v| v[0].split(' ')[2] <=> u[0].split(' ')[2] }.each do |name, data|
       graph.data(name, data)
     end
     graph.data(" ", Array.new(segments.length, 0))
