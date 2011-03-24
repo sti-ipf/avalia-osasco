@@ -28,9 +28,9 @@ class ReportData
     data = [["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média Geral da Questão"]]
 
     segments_strings = %W(Familiares Funcionários Gestores)
-
+    
     segments =  segments_strings.map { |sname| Segment.first(:conditions => {:name => sname}) }.compact
-
+   
     psegment = segments.select { |s| s.name == "Gestores" }.first
     questions_party = QuestionsParty.find(questions_party, :include => {:questions => :indicator})
     display_question = questions_party.questions.first(:include => [:survey], :conditions => ["surveys.segment_id = ?", psegment.id])
@@ -43,7 +43,8 @@ class ReportData
 
       if question.present?
         answers = question.answers.with_institution(@institution).by_service_level(service_level).min_participants(0).newer
-        current_answer = (answers.map(&:mean).first.nil?)? "NR": answers.map(&:mean).avg.to_f.round(2)
+        current_answer = answers.map(&:mean).avg.to_f.round(2)
+        current_answer = current_answer > 0 ? current_answer : "NR"
         row << current_answer
       else
         row << "-"
@@ -65,7 +66,7 @@ class ReportData
     description ||= ""
     description =  description.gsub(/^[0-9]+\.[0-9]+\.[0-9]+/,'')
     {
-      :description => description,
+      :description => description, 
       :table => data
     }
   end
@@ -78,7 +79,7 @@ class ReportData
     sl_time = Time.now - now
     now = Time.now
     # p data_sl
-
+    
     p "Graph Dimension: #{dimension.number}. #{dimension.name}"
 
     group = @institution.users.first(:conditions => {:service_level_id => @service_level.id}, :include => :group).group
@@ -86,7 +87,7 @@ class ReportData
     #p data_group
     group_time = Time.now - now
     now = Time.now
-
+    
     data = @institution.mean_dimension(dimension, @service_level)
     #p data
     dimension_time = Time.now - now
@@ -105,11 +106,11 @@ class ReportData
       data_service_level[service_level.name] = service_level_average_data.reject{|k,v| k == :mean}
     end
     service_level_time = Time.now - now
-
+    
     now = Time.now
     p "Graph Service Level Dimension: #{dimension.number}. #{dimension.name}"
     dimension_time = Time.now - now
-
+    
     now = Time.now
     graph = @institution.service_level_graph(data_service_level, @service_level, :id => dimension.number)
     graph_time = Time.now - now
@@ -134,7 +135,7 @@ class ReportData
     data_group = Institution.mean_indicator_by_group(indicators_party,@service_level, @group)
     #p data_group
     group_time = Time.now - now
-
+    
     now = Time.now
     data = @institution.mean_indicator(indicators_party,@service_level)
     #p data
@@ -144,7 +145,7 @@ class ReportData
     end
     graph = @institution.graph(data, data_group, data_sl, @service_level, :id => "i#{indicators_party.id}", :title => "#{indicators_party.indicators.first.name}", :indicators => indicators)
     now2 = Time.now
-
+    
     p_times(graph, :sl => sl_time, :group => group_time, :graph => now2 - now, :total => now2 - graph_start_time)
     #p "=============================================================================================================="
     graph
@@ -161,15 +162,14 @@ class ReportData
   def index_table_burjato
     means = {}
     dimensions = @service_level.id == 2 ? (1..11) : (1..10)
-
+    
     dimensions.each do |dim|
-      d = Dimension.find_by_number(dim)
+      d = Dimension.find_by_number(dim)   
 
       data = @institution.mean_dimension(d,@service_level)
       means[d.id] = data
     end
-    # Fabrício - inserindo dados da dimensão 11 para o Burjato, que não é respondida
-    means[12] = {:mean=>0, :segments=>{"Familiares"=>0, "Funcionarios"=>0, "Gestores"=>0}} if @service_level.id == 5
+    
     @institution.grade_to_table_burjato(means,@service_level)
   end
 
@@ -187,13 +187,13 @@ class ReportData
 
   def single_institution_dimension_graph(dimension)
     graph_start_time = now = Time.now
-
+    
     #data_sl = Institution.mean_dimension_by_sl(dimension, @service_level)
     #p data_sl
     sl_time = Time.now - now
     now = Time.now
     # p data_sl
-
+    
     p "Single Institution Dimension Graph : #{dimension.number}. #{dimension.name}"
 
     #group = @institution.users.first(:conditions => {:service_level_id => @service_level.id}, :include => :group).group
@@ -201,7 +201,7 @@ class ReportData
     #p data_group
     #group_time = Time.now - now
     #now = Time.now
-
+    
     data = @institution.mean_dimension(dimension, @service_level)
     #p data
     dimension_time = Time.now - now
@@ -230,7 +230,7 @@ class ReportData
     #data_group = Institution.mean_indicator_by_group(indicators_party,@service_level, @group)
     #p data_group
     #group_time = Time.now - now
-
+    
     now = Time.now
     data = @institution.mean_indicator(indicators_party,@service_level)
     #p data
@@ -238,10 +238,10 @@ class ReportData
     indicators_party.indicators.each do |i|
       indicators[i.segment.name] = i.number
     end
-    title = indicators_party.indicators.first.name ||  indicators_party.indicators.first.number
+    title = indicators_party.indicators.first.name || indicators_party.indicators.first.number
     graph = @institution.single_institution_graph(data, @service_level, :id => "i#{indicators_party.id}", :title => "#{title}", :indicators => indicators)
     now2 = Time.now
-
+    
     p_times(graph,  :graph => now2 - now, :total => now2 - graph_start_time)
     graph
   end

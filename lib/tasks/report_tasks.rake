@@ -1,41 +1,36 @@
 namespace :reports do
-  desc "Generate general report"
-  task :general => :environment do
-    GeneralReport.to_pdf
-  end
-
   desc "Generate graphs for all institutions, in all service levels"
   task :graphs => :environment do
-    abort "TYPE parameter is mandatody (infantil or fundamental)" if ENV['TYPE'].nil?
     dimensions = Dimension.all
-    type = ENV['TYPE']
+    start_letter = ENV["START"] || "A"
+    end_letter = ENV["END"] || ENV["START"] || "Z"
 
-    case type
-      when 'infantil'
-        sl_names = %w(Creche EMEI)
-      when 'fundamental'
-        sl_names = 'EMEF'
-    end
+    # (start_letter.upcase..end_letter.upcase).each do |letter|
+    #   Institution.all(:conditions => ["UPPER(name) LIKE ?", "#{letter.upcase}%"], :order => "name").each do |inst|
+    #     puts inst.name
+    #     inst.service_levels.each do |sl|
+    #       puts "- #{sl.name}"
+    #       rdata = ReportData.new(inst, sl)
+    #       dimensions.each do |dimension|
+    #         puts rdata.dimension_graph(dimension.number)
+    #         puts rdata.indicators_graph(dimension.number)
+    #       end
+    #     end
+    #   end
+    # end
 
-    dimensions.each do |dimension|
-      sls = ServiceLevel.all(:conditions => {:name => sl_names})
-      ReportData.service_level_graph(dimension, sls)
-      ReportData.service_level_indicators_graph(dimension, sls)
-    end
-  end
-
-  desc "indicators by service_level"
-  task :indicator_by_service_level => :environment do
-    dimensions = Dimension.all
-
-    not_generated = true
-    sls = ServiceLevel.find(:all, :conditions => {:name => ['Creche','EMEI']})
-    dimensions.each do |dimension|
-      # rdata.service_level_graph(dimension, sls) if not_generated
-      ReportData.service_level_indicators_graph(dimension, sls)
-      # rdata.dimension_graph(dimension)
-      # rdata.indicators_graph(dimension)
-      not_generated = false
+    inst = Institution.find(173)
+    puts inst.name
+    inst.service_levels.each do |sl|
+      puts "- #{sl.name}"
+      rdata = ReportData.new(inst, sl)
+      #not_generated = true
+      dimensions.each do |dimension|
+        #rdata.service_level_graph(dimension) if not_generated
+        rdata.single_institution_dimension_graph(dimension)
+        rdata.single_institution_indicators_graph(dimension)
+        #not_generated = false
+      end
     end
   end
 
@@ -55,11 +50,11 @@ namespace :reports do
     #   end
     # end
 
-    institution = Institution.find(32)#30#65#93
+    institution = Institution.find(173)
     institution.service_levels.each do |service_level|
       puts "- #{service_level.name}"
       before = Time.now
-      ri = ReportIndividual.new
+      ri = ReportBurjato.new
       ri.to_pdf(institution, service_level, ReportData.new(institution, service_level))
 
       system "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/printer -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -sOutputFile=#{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}-final.pdf #{RAILS_ROOT}/public/relatorios/artifacts/capa_avalia.pdf #{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf #{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}.pdf"
@@ -67,34 +62,6 @@ namespace :reports do
       after = Time.now
 
       p "pdf generated in #{after - before}"
-    end
-  end
-
-  desc "Generate tables for all service_levels (EMEF, EMEI and Creche)"
-  task :tables => :environment do
-    [2, 3, 4].each do |service_level_id|
-      service_level = ServiceLevel.find(service_level_id)
-      start_time = Time.now
-      puts "Generating #{service_level.name} table"
-      UniFreire::Tables::Generator.generate(service_level)
-      end_time = Time.now
-      duration = (end_time - start_time).to_i/60
-      puts "#{service_level.name.capitalize} table generated, duration was #{duration} minutes"
-    end
-  end
-
-  task :graphs_by_institution => :environment do
-    dimensions = Dimension.all
-    inst = Institution.find(32)#30#65#93
-    puts inst.name
-    inst.service_levels.each do |sl|
-      puts "- #{sl.name}"
-      rdata = ReportData.new(inst, sl)
-      not_generated = true
-      dimensions.each do |dimension|
-        rdata.dimension_graph(dimension)
-        rdata.indicators_graph(dimension)
-      end
     end
   end
 

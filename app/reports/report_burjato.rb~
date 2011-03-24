@@ -1,12 +1,10 @@
 # encoding: UTF-8
 require "open-uri"
 
-class ReportBrujato
+class ReportBurjato
 
   def to_pdf(ue, service_level, report_data)
-    # Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/#{ue.name}_#{service_level.name}.pdf", :margin => [30, 30, 30, 30]) do
     Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/final/#{ue.id}_#{service_level.id}.pdf", :margin => [30, 30, 30, 30]) do
-      #    Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/report.pdf", :margin => [30, 30, 30, 30]) do
 
       # font
       font_families.update(
@@ -30,149 +28,141 @@ class ReportBrujato
         end
       end
 
-  def default_table(data, options={})
-    options = {
-      :header => ["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE"]
-    }.merge(options)
-    table data, options do #, :column_widths => { 0 => 8 } do
+      def default_table(data, options={})
+        options = {
+          :header => ["Segmento", "Nº da questão do segmento", " Média por Segmento", "Média da UE"]
+        }.merge(options)
+        table data, options do #, :column_widths => { 0 => 8 } do
+  
+        
+          # column(0).width = 90
+          
+          cells[1,0].borders = [:left, :bottom, :right, :top]
+          cells[1,1].borders = [:left, :bottom, :right, :top]
+          cells[1,2].borders = [:left, :bottom, :right, :top]
+          cells[1,3].borders = [:left]
+          cells[1,4].borders = [:left]
+          cells[1,5].borders = [:left, :right]
 
-        # column(0).width = 90
-
-        cells[1,0].borders = [:left, :bottom, :right, :top]
-        cells[1,1].borders = [:left, :bottom, :right, :top]
-        cells[1,2].borders = [:left, :bottom, :right, :top]
-        cells[1,3].borders = [:left]
-        cells[1,4].borders = [:left]
-        cells[1,5].borders = [:left, :right]
-
-        cells[2,0].borders = [:left, :bottom, :right, :top]
-        cells[2,1].borders = [:left, :bottom, :right, :top]
-        cells[2,2].borders = [:left, :bottom, :right, :top]
-        cells[2,3].borders = [:left]
-        cells[2,4].borders = [:left]
-        cells[2,5].borders = [:left, :right]
-
-        cells[3,0].borders = [:left, :bottom, :right, :top]
-        cells[3,1].borders = [:left, :bottom, :right, :top]
-        cells[3,2].borders = [:left, :bottom, :right, :top]
-        cells[3,3].borders = [:left]
-        cells[3,4].borders = [:left]
-        cells[3,5].borders = [:left, :right]
-
-        cells[4,0].borders = [:left, :bottom, :right, :top]
-        cells[4,1].borders = [:left, :bottom, :right, :top]
-        cells[4,2].borders = [:left, :bottom, :right, :top]
-        cells[4,3].borders = [:left]
-        cells[4,4].borders = [:left]
-        cells[4,5].borders = [:left, :right]
-
-        cells[5,0].borders = [:left, :bottom, :right, :top]
-        cells[5,1].borders = [:left, :bottom, :right, :top]
-        cells[5,2].borders = [:left, :bottom, :right, :top]
-        cells[5,3].borders = [:bottom, :right]
-        cells[5,4].borders = [:bottom, :right]
-        cells[5,5].borders = [:bottom, :right]
-
+          cells[2,0].borders = [:left, :bottom, :right, :top]
+          cells[2,1].borders = [:left, :bottom, :right, :top]
+          cells[2,2].borders = [:left, :bottom, :right, :top]
+          cells[2,3].borders = [:left]
+          cells[2,4].borders = [:left]
+          cells[2,5].borders = [:left, :right]
+          
+          cells[3,0].borders = [:left, :bottom, :right, :top]
+          cells[3,1].borders = [:left, :bottom, :right, :top]
+          cells[3,2].borders = [:left, :bottom, :right, :top]
+          cells[3,3].borders = [:left]
+          cells[3,4].borders = [:left]
+          cells[3,5].borders = [:left, :right]
+          
+          cells[4,0].borders = [:left, :bottom, :right, :top]
+          cells[4,1].borders = [:left, :bottom, :right, :top]
+          cells[4,2].borders = [:left, :bottom, :right, :top]
+          cells[4,3].borders = [:left]
+          cells[4,4].borders = [:left]
+          cells[4,5].borders = [:left, :right]
+          
+          cells[5,0].borders = [:left, :bottom, :right, :top]
+          cells[5,1].borders = [:left, :bottom, :right, :top]
+          cells[5,2].borders = [:left, :bottom, :right, :top]
+          cells[5,3].borders = [:bottom, :right]
+          cells[5,4].borders = [:bottom, :right]
+          cells[5,5].borders = [:bottom, :right]
+          
+        end
       end
-  end
 
-  def draw_indicator_tables(indicator, questions_party, service_level)
-    invalid_segments = ["Alcir", "Alessandra", "Juliana Fonseca"]
-    segments = Rails.cache.fetch("report-segments") { service_level.segments }.sort
-    segments = segments.reject { |s| s.name == "Educandos" } if service_level != 2
-    
-    segments.each_with_index do |segment, i|
-      row = [segment.name, "numero-questao", "media-questao"]
-      if i == 2
-        row += ["media-ue"]
-      else
-        row += ["", "", ""]
+      def draw_indicator_tables(indicator, questions_party, service_level)
+        invalid_segments = ["Alcir", "Alessandra", "Juliana Fonseca"]
+        segments = Rails.cache.fetch("report-segments") { service_level.segments }.sort
+        segments = segments.reject { |s| s.name == "Educandos" } if service_level != 2
+        
+        segments.each_with_index do |segment, i|
+          row = [segment.name, "numero-questao", "media-questao"]
+          if i == 2
+            row += ["media-ue"]
+          else
+            row += ["", "", ""]
+          end
+        end
       end
-    end
-  end
-
- def get_graph_path(institution, service_level, dimension_number)
-   "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/#{dimension_number}-graph.jpg"
- end
+      
+      def get_graph_path(institution, service_level, dimension_number)
+        "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/#{dimension_number}-graph.jpg"
+      end
+      
+      def indicators_graphs_by_dimension(institution, service_level, dimension_number)
+        indicators_parties = Dimension.find_by_number(dimension_number).indicators_parties.find(:all, :conditions => {:service_level_id => service_level.id})
+        
+        indicators_parties.each do |indicators_party|
+          image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
+          text "Os números entre parênteses correspondem à numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
+          text "O cálculo da média não considerou a questão quando a unidade inseriu \"0\" (zero) no sistema. Quando a UE não atribuiu resposta no sistema tal questão foi considerada na média."
+          
+          first_time = true  
+          indicators_party.questions_parties.each do |qp|
+            if first_time
+              text "\n Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
+              text "Observação1: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado"
+              text "Observação2: o cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros."
+            end
+            first_time = false
+            question_table(institution,qp)
+            move_down(2)
+            text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
+            text "Obs: O 'NR' indica que a unidade não inseriu resposta no sistema. No entanto, a questão foi considerada no cálculo da média.", :size => 10
+            
+          end
+        end
+      end
  
- def indicators_graphs_by_dimension(institution, service_level, dimension_number)
-   indicators_parties = Dimension.find_by_number(dimension_number).indicators_parties.find(:all, :conditions => {:service_level_id => service_level.id})
-   
-   indicators_parties.each do |indicators_party|
-     image "#{RAILS_ROOT}/tmp/graphs/#{institution.id}/#{service_level.id}/i#{indicators_party.id}-graph.jpg"
-     text "Os números entre parênteses correspondem à numeração do indicador no instrumental da avaliação para cada um dos segmentos."    
-     text "O cálculo da média não considerou a questão quando a unidade inseriu \"0\" (zero) no sistema. Quando a UE não atribuiu resposta no sistema tal questão foi considerada na média."
+      def question_table(ue,question_party)
+        p "qp => #{question_party.inspect}"
+        data = @report_data.questions_party_table_burjato(question_party)
+        questions_party_table = data[:table]
+        
+        start_new_page if y < 400
+        
+        text "\n #{data[:description]}"
+        table questions_party_table, :column_widths => { 0 => 4 } do
+          column(0).width = 90
+          
+          cells[1,0].borders = [:left, :bottom, :right, :top]
+          cells[1,1].borders = [:left, :bottom, :right, :top]
+          cells[1,2].borders = [:left, :bottom, :right, :top]
+          cells[1,3].borders = [:left, :right]
+          
+          cells[2,0].borders = [:left, :bottom, :right, :top]
+          cells[2,1].borders = [:left, :bottom, :right, :top]
+          cells[2,2].borders = [:left, :bottom, :right, :top]
+          cells[2,3].borders = [:left, :right]
+          
+          cells[3,0].borders = [:left, :bottom, :right, :top]
+          cells[3,1].borders = [:left, :bottom, :right, :top]
+          cells[3,2].borders = [:left, :bottom, :right, :top]
+          cells[3,3].borders = [:left, :bottom, :right]
+          
+#          cells[4,0].borders = [:left, :bottom, :right, :top]
+#          cells[4,1].borders = [:left, :bottom, :right, :top]
+#          cells[4,2].borders = [:left, :bottom, :right, :top]
+#          cells[4,3].borders = [:left]
 
-     first_time = true  
-     indicators_party.questions_parties.each do |qp|
-       if first_time
-         text "\n Médias das respostas atribuídas a cada questão que compõe o indicador.", :style => :bold
-         text "Observação1: o texto referente à questão não está necessariamente idêntico ao texto do instrumental respondido, no entanto, mantém o mesmo significado"
-         text "Observação2: o cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros."
-       end
-       first_time = false
-       question_table(institution,qp)
-       move_down(2)
-       text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
-       text "Obs: O 'NR' indica que a unidade não inseriu resposta no sistema. No entanto, a questão foi considerada no cálculo da média.", :size => 10
+#          cells[5,0].borders = [:left, :bottom, :right, :top]
+#          cells[5,1].borders = [:left, :bottom, :right, :top]
+#          cells[5,2].borders = [:left, :bottom, :right, :top]
+#          cells[5,3].borders = [:bottom, :right]
+        end
+      end
 
-     end
-   end
- end
- 
- def question_table(ue,question_party)
-   p "qp => #{question_party.inspect}"
-   data = @report_data.questions_party_table_burjato(ue,question_party)
-   questions_party_table = data[:table]
-   
-   start_new_page if y < 400
-   
-   text "\n #{data[:description]}"
-   table questions_party_table, :column_widths => { 0 => 8 } do
-     column(0).width = 90
-
-     cells[1,0].borders = [:left, :bottom, :right, :top]
-     cells[1,1].borders = [:left, :bottom, :right, :top]
-     cells[1,2].borders = [:left, :bottom, :right, :top]
-     cells[1,3].borders = [:left]
-     cells[1,4].borders = [:left]
-     cells[1,5].borders = [:left, :right]
-
-     cells[2,0].borders = [:left, :bottom, :right, :top]
-     cells[2,1].borders = [:left, :bottom, :right, :top]
-     cells[2,2].borders = [:left, :bottom, :right, :top]
-     cells[2,3].borders = [:left]
-     cells[2,4].borders = [:left]
-     cells[2,5].borders = [:left, :right]
-
-     cells[3,0].borders = [:left, :bottom, :right, :top]
-     cells[3,1].borders = [:left, :bottom, :right, :top]
-     cells[3,2].borders = [:left, :bottom, :right, :top]
-     cells[3,3].borders = [:left]
-     cells[3,4].borders = [:left]
-     cells[3,5].borders = [:left, :right]
-
-     cells[4,0].borders = [:left, :bottom, :right, :top]
-     cells[4,1].borders = [:left, :bottom, :right, :top]
-     cells[4,2].borders = [:left, :bottom, :right, :top]
-     cells[4,3].borders = [:left]
-     cells[4,4].borders = [:left]
-     cells[4,5].borders = [:left, :right]
-
-     cells[5,0].borders = [:left, :bottom, :right, :top]
-     cells[5,1].borders = [:left, :bottom, :right, :top]
-     cells[5,2].borders = [:left, :bottom, :right, :top]
-     cells[5,3].borders = [:bottom, :right]
-     cells[5,4].borders = [:bottom, :right]
-     cells[5,5].borders = [:bottom, :right]
-   end
- end
  
 # inicio do texto
   text "\n RESULTADOS DA AVALIAÇÃO EDUCACIONAL 2010", :align => :center, :size => 16, :style => :bold
       text "\n Unidade Educacional da Rede Municipal de Osasco: 
 UNIDADE EDUCACIONAL", :align => :center, :size => 15, :style => :bold
-# text "#{service_level.name}", :align => :center, :size => 15, :style => :bold
+text "#{ue.name}", :align => :center, :size => 15, :style => :bold
   text "\n Sumário", :align => :center, :size => 13
   fill_color "4e0d0d"
   text "\n 1 ORIENTAÇÕES GERAIS", :style => :bold
@@ -313,10 +303,8 @@ escolar à dimensão analisada (exemplo: média das respostas dos familiares da 
 
 
   text "\n Percepção da UE sobre cada indicador de qualidade", :style => :bold
-  text "Gráficos que apresentam as médias de cada indicador de qualidade por segmento. A organização dos
-gráficos em colunas de cada segmento é a mesma dos gráficos das dimensões.
-Cabe destacar que em virtude de alguns indicadores de qualidade terem sido suprimidos para alguns
-segmentos, a numeração dos mesmos não segue a mesma sequência para todos.", :indent_paragraphs => 40
+  text "Gráficos que apresentam as médias de cada indicador de qualidade por segmento. A organização dos gráficos em colunas de cada segmento é a mesma dos gráficos das dimensões.", :indent_paragraphs => 40
+  text "Cabe destacar que em virtude de alguns indicadores de qualidade terem sido suprimidos para alguns segmentos, a numeração dos mesmos não segue a mesma sequência para todos.", :indent_paragraphs => 40
 
   text "\n Médias das respostas atribuídas a cada questão que compõe os indicadodres da dimensão, por segmento escolar", :style => :bold
   text "Quadro que apresenta a média das opiniões numéricas atribuídas a cada questão pelos segmentos escolares participantes da avaliação. É importante ressaltar que a quantidade de questões formuladas a cada segmento foi diferente. Por essa razão, os quadros das questões serão apresentados tomando como referência o instrumental respondido pelos professores, por ser o mais abrangente.", :indent_paragraphs => 40
@@ -1224,6 +1212,6 @@ start_new_page
 
  number_pages "<page>",[(bounds.left + bounds.right), 18, 2]
 
-end
-end
+    end
+  end
 end
