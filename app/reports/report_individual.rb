@@ -5,7 +5,8 @@ class ReportIndividual
 
   def to_pdf(ue, service_level, report_data)
     # Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/#{ue.name}_#{service_level.name}.pdf", :margin => [30, 30, 30, 30]) do
-    Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/final/#{ue.id}_#{service_level.id}.pdf", :margin => [30, 30, 30, 30]) do
+    Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/final/#{ue.id}_#{service_level.id}.pdf", :margin => [30, 30, 30, 30],
+      :template => "#{RAILS_ROOT}/public/relatorios/artifacts/capa_avaliação.pdf") do
       #    Prawn::Document.generate("#{RAILS_ROOT}/public/relatorios/report.pdf", :margin => [30, 30, 30, 30]) do
 
       # font
@@ -24,7 +25,7 @@ class ReportIndividual
         page_count.times do |i|
           unless(i < 3)
             go_to_page(i+1)
-            str = string.gsub("<page>","#{i+2}").gsub("<total>","#{page_count}")
+            str = string.gsub("<page>","#{i+1}").gsub("<total>","#{page_count}")
             draw_text str, :at => position, :size => 14, :style => :italic
           end
         end
@@ -116,7 +117,7 @@ class ReportIndividual
          text "Observação2: o cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros."
        end
        first_time = false
-       question_table(institution,qp)
+       question_table(institution,qp) if qp.questions.size > 0
        move_down(2)
        text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
        text "Obs: O 'NR' indica que a unidade não inseriu resposta no sistema. No entanto, a questão foi considerada no cálculo da média.", :size => 10
@@ -175,7 +176,9 @@ class ReportIndividual
 
 
 # inicio do texto
-# inicio do texto
+  start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf", :template_page => 1)
+  start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf", :template_page => 2)
+  start_new_page
   text "\n RESULTADOS DA AVALIAÇÃO EDUCACIONAL 2010", :align => :center, :size => 16, :style => :bold
   text "\n Unidade Educacional da Rede Municipal de Osasco:\n#{ue.name}", :align => :center, :size => 15, :style => :bold
 text "#{service_level.name}", :align => :center, :size => 15, :style => :bold
@@ -356,9 +359,7 @@ Assim sendo, a título de comparação, nas colunas aparecerão não só o segme
 
   text "A sua Unidade Educacional está inserida no seguinte grupo, tendo por base o quadro abaixo:", :indent_paragraphs => 40
 
- # start_new_page
-
-  text "\n\n"
+  start_new_page
   text "AGRUPAMENTO DE #{report_data.service_level_group_table(service_level)[:title]}", :align => :center, :size => 16, :style => :bold
   stroke_horizontal_rule
 

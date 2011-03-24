@@ -7,29 +7,31 @@ class GeneralReport
 
   def self.get_group_data(type)
     hash = {:group_1 => {}, :group_2 => {}, :group_3 => {}, :group_4 => {},}
-    if type == "infantil"
-      Dimension.infantil.each do |dimension|
-        dimension_values = []
-        ServiceLevel.infantil.each do |service_level|
-          dimension_values << calc_media_by_group_and_service_level(dimension, service_level)
+    case type
+      when "infantil"
+        Dimension.infantil.each do |dimension|
+          dimension_values = calc_media_by_group_and_service_level(dimension, ServiceLevel.find(3))
+          hash[:group_1][dimension.number] = dimension_values[0]
+          hash[:group_2][dimension.number] = dimension_values[1]
+          hash[:group_3][dimension.number] = dimension_values[2]
+          hash[:group_4][dimension.number] = dimension_values[3]
         end
-        group_1_value = (dimension_values[0][0] + dimension_values[1][0])/2
-        group_2_value = (dimension_values[0][1] + dimension_values[1][1])/2
-        group_3_value = (dimension_values[0][2] + dimension_values[1][2])/2
-        group_4_value = (dimension_values[0][3] + dimension_values[1][3])/2
-        hash[:group_1][dimension.number] = group_1_value
-        hash[:group_2][dimension.number] = group_2_value
-        hash[:group_3][dimension.number] = group_3_value
-        hash[:group_4][dimension.number] = group_4_value
-      end
-  else
-      Dimension.fundamental.each do |dimension|
-        dimension_values = calc_media_by_group_and_service_level(dimension, ServiceLevel.fundamental.first)
-        hash[:group_1][dimension.number] = dimension_values[0]
-        hash[:group_2][dimension.number] = dimension_values[1]
-        hash[:group_3][dimension.number] = dimension_values[2]
-        hash[:group_4][dimension.number] = dimension_values[3]
-      end
+      when "creche"
+        Dimension.infantil.each do |dimension|
+          dimension_values = calc_media_by_group_and_service_level(dimension, ServiceLevel.find(4))
+          hash[:group_1][dimension.number] = dimension_values[0]
+          hash[:group_2][dimension.number] = dimension_values[1]
+          hash[:group_3][dimension.number] = dimension_values[2]
+          hash[:group_4][dimension.number] = dimension_values[3]
+        end
+      when "fundamental"
+        Dimension.fundamental.each do |dimension|
+          dimension_values = calc_media_by_group_and_service_level(dimension, ServiceLevel.find(2))
+          hash[:group_1][dimension.number] = dimension_values[0]
+          hash[:group_2][dimension.number] = dimension_values[1]
+          hash[:group_3][dimension.number] = dimension_values[2]
+          hash[:group_4][dimension.number] = dimension_values[3]
+        end
     end
     hash
   end
@@ -566,18 +568,26 @@ class GeneralReport
       table_creche_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],
         ["Creche Benedita de Oliveira","Creche Elza Batiston","Creche Vilma Catan","Creche Amélia Tozzeto"],
         ["CEMEI Lourdes Candida","Creche Sadamitu Omosako","Creche Maria José da Anunciação","Creche José Espinosa"],
-        ["CEMEI Wilma Foltran","Creche Prof. Silvia Ferreira Farhat","Creche Seraphina Bissolati","Creche Alha Elias Abib"],["CMEIEF Maria José Ferreira Ferraz","CEU Zilda Arns","CEMEIEF Maria Tarsilla","Creche Giuseppa"],["CEMEI Rubens Bandeira","Creche Alzira Silva","Creche Lar da Infância","CEMEI José Ermírio"],["CEMEI João de Farias","Creche Olga Camolesi","Creche Pedro Penov","CEMEI Mário Quintana"],["Creche Prof. Joaquina França","CEMEI Leonil Crê","Creche Moacyr Ayres","Creche Mercedes Correa"], ["CEMEI Fortunato Antiório","Creche Rosa Broseguini","Creche Hilda","Creche Dayse Ribeiro"],["CEMEI Mário Sebastião","Creche Ézio Melli","Creche Rosa Pereira Crê","Creche Sergio Zanardi"],["CEMEIEF Darcy Ribeiro","","Creche Lídia Thomaz","Cemei Zaira Colino"],
-        ["  ","  ","Creche João Correa","Creche Recanto Alegre"],["  ","  ","Creche Ida Belmonte","CEMEI Alberto Santos Dumont"],
-        ["  ","Creche Olímpia Maria de Jesus Carvalho","Creche Hermínia Lopes","Creche Inês Sanches Mendes"]]
+        ["CEMEI Wilma Foltran","Creche Prof. Silvia Ferreira Farhat","Creche Seraphina Bissolati","Creche Alha Elias Abib"],["CMEIEF Maria José Ferreira Ferraz","CEU Zilda Arns","CEMEIEF Maria Tarsilla","Creche Giuseppa"],["CEMEI Rubens Bandeira","Creche Alzira Silva","Creche Lar da Infância","CEMEI José Ermírio"],["CEMEI João de Farias","Creche Olga Camolesi","Creche Pedro Penov","CEMEI Mário Quintana"],
+        ["Creche Prof. Joaquina França","CEMEI Leonil Crê","Creche Hilda","Creche Mercedes Correa"],
+        ["CEMEI Fortunato Antiório","Creche Rosa Broseguini","Creche Rosa Pereira Crê","Creche Dayse Ribeiro"],
+        ["CEMEI Mário Sebastião","Creche Ézio Melli","Creche Lídia Thomaz","Creche Sergio Zanardi"],
+        ["CEMEIEF Darcy Ribeiro","Creche Olímpia Maria de Jesus Carvalho","Creche Ida Belmonte","Cemei Zaira Colino"],
+        ["  ","","Creche João Correa","Creche Recanto Alegre"],
+        ["  ","  ","Creche Hermínia Lopes","CEMEI Alberto Santos Dumont"],
+        ["  ","","","Creche Inês Sanches Mendes"],
+        ["  ","  ","","Creche Moacyr Ayres"]]
       table [["AGRUPAMENTO DE CRECHES"],[table_creche_groups]]
       text "\n"
 
-      table_emei_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["EMEI Maria Bertoni Fiorita","EMEI Maria Alves Dória","EMEI Helena Coutinho","CEMEI Zaíra Collino"],["EMEI Omar Ogeda","EMEI Nair Bellacoza","EMEI Pedro Martino","EMEI Cristine"],["EMEI Japhet Fonte","EMEIEF Valter de Oliveira","EMEI Maria Madalena Freixeda","CEMEI Alberto Santos Dumont"],["CEMEI Lourdes Candida","CEU Zilda Arns","EMEI Alípio Pereira","EMEI Osvaldo Salles"],["CEMEI Wilma Foltran","EMEI Gertrudes de Rossi","EMEI Estevão Brett","EMEI Esmeralda"],["EMEI Osvaldo Gonçalves","CEMEI Leonil Crê","CEMEIEF Maria Tarcilla","EMEIEF Messias"],["EMEI Yolanda Botaro","EMEI Sonia Maria ","EMEI Dalva Mirian","EMEI Emir Macedo"], ["CEMEI Fortunato Antiório","EMEI Maria Ap. Damy","EMEI Fernando Buonaduce","EMEI Descio Mendes"],
-        ["CEMEI Mário Sebastião","  ","EMEI Fortunata","EMEI Zuleica"],["CEMEIEF Darcy Ribeiro","  ","EMEI Elide Alves","CEMEI José Emírio"],
+      table_emei_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],["EMEI Maria Bertoni Fiorita","EMEI Maria Alves Dória","EMEI Helena Coutinho","CEMEI Zaíra Collino"],["EMEI Omar Ogeda","EMEI Nair Bellacoza","EMEI Pedro Martino","EMEI Cristine"],["EMEI Japhet Fonte","EMEIEF Valter de Oliveira","EMEI Maria Madalena Freixeda","CEMEI Alberto Santos Dumont"],["CEMEI Lourdes Candida","CEU Zilda Arns","EMEI Alípio Pereira","EMEI Osvaldo Salles"],["CEMEI Wilma Foltran","EMEI Gertrudes de Rossi","EMEI Estevão Brett","EMEI Esmeralda"],["EMEI Osvaldo Gonçalves","CEMEI Leonil Crê","CEMEIEF Maria Tarcilla","EMEIEF Messias"],["EMEI Yolanda Botaro","EMEI Sonia Maria ","EMEI Dalva Mirian","EMEI Emir Macedo"],
+        ["CEMEI Fortunato Antiório","EMEI Maria Ap. Damy","EMEI Fernando Buonaduce","EMEI Descio Mendes"],
+        ["CEMEI Mário Sebastião","EMEI Colinas D'oeste","EMEI Fortunata","EMEI Zuleica"],["CEMEIEF Darcy Ribeiro","  ","EMEI Elide Alves","CEMEI José Emírio"],
         ["EMEI Vivaldo","  ","EMEI Adhemar Pereira","CEMEI Mário Quintana"],["CEMEIEF Maria José Ferreira Ferraz","  ","EMEIF Etiene","EMEI Salvador Sacco"],
-        ["CEMEI Rubens Bandeira","  ","EMEI Providencia dos Anjos"," "],["CEMEI João de Farias"," ","EMEI Ignes Collino"," "],
+        ["CEMEI Rubens Bandeira","  ","EMEI Providencia dos Anjos","EMEI Adelaide Dias"],["CEMEI João de Farias"," ","EMEI Ignes Collino"," "],
         ["EMEI José Flávio","  ","EMEI Antonio Paulino Ribeiro","  "],["EMEI Elio Aparecido da Silva","  ","EMEI Luzia Momi Sasso","  "],
-        ["","  ","EMEI Severino de Araujo Freire","  "],["","  ","EMEI Thereza Bianchi Collino","  "]]
+        ["","  ","EMEI Severino de Araujo Freire","  "],["","  ","EMEI Thereza Bianchi Collino","  "],
+        ["","  ","EMEI Alice Manholer Piteri","  "]]
 
       start_new_page
 
@@ -841,8 +851,8 @@ class GeneralReport
       start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 1)
       start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 2)
       start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_table.pdf")
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_legend.pdf")
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/creche_table.pdf")
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_legend.pdf")
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_table.pdf")
       start_new_page
 
       text "Questões para dialogar:"
@@ -855,14 +865,27 @@ class GeneralReport
       text "Nesse sentido, foi analisada a correlação entre os resultados da avaliação por dimensões e por conglomerados de escolas de Educação Infantil por regiões geográficas do município.", :indent_paragraphs => 30
       text "Neste quadro, podemos analisar o resultado da média de cada dimensão por agrupamentos, tendo como referência as regiões geográficas do município. O que podemos observar? Existe alguma correlação entre os resultados obtidos e as escolas localizadas em determinada região? Que elementos podem ter contribuído para este resultado?", :indent_paragraphs => 30
 
+      text " \nEMEI", :style => :bold
       infantil_group = GeneralReport.get_group_data("infantil")
       image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
-      y_positions = [414,394,365,339,306,282,254,218,190,160]
+      y_positions = [382,364,338,306,281,253,219,189,160,130]
       (0..9).each do |i|
         draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
         draw_text "#{infantil_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
         draw_text "#{infantil_group[:group_3][i+1].round(2)}", :at => [411,y_positions[i]]
         draw_text "#{infantil_group[:group_4][i+1].round(2)}", :at => [490,y_positions[i]]
+      end
+
+      start_new_page
+      text " Creche", :style => :bold
+      creche_group = GeneralReport.get_group_data("creche")
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
+      y_positions = [710,691,664,634,608,578,547,516,487,458]
+      (0..9).each do |i|
+        draw_text "#{creche_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
+        draw_text "#{creche_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
+        draw_text "#{creche_group[:group_3][i+1].round(2)}", :at => [411,y_positions[i]]
+        draw_text "#{creche_group[:group_4][i+1].round(2)}", :at => [490,y_positions[i]]
       end
 
       start_new_page
@@ -1112,8 +1135,9 @@ class GeneralReport
 
       start_new_page
       text "CAPÍTULO VI. CONSIDERAÇÕES FINAIS", :style => :bold
-      draw_text "112", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
+      draw_text "113", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
       number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
+
     end
   end
 

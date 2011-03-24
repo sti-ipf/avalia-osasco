@@ -53,7 +53,7 @@ class ReportData
         puts current_answer
         puts answers.map(&:mean).inspect
         row << current_answer
-        mean << current_answer
+        mean << current_answer if current_answer != 0.0
     else
         row << "-"
       end

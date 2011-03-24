@@ -38,6 +38,7 @@ class Institution < ActiveRecord::Base
   def self.mean_dimension_by_sl(indicators,service_level)
     dimension_mean = { :mean => 0 }
     indicators_means = []
+    surveys_ids = Survey.all(:conditions => "service_level_id = #{service_level.id}").collect(&:id)
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
       questions_parties = indicator.questions_parties
@@ -45,6 +46,7 @@ class Institution < ActiveRecord::Base
       questions_means = []
       questions_parties.each do |qp|
         qp.questions.each do |q|
+          next if question_is_in_an_invalid_survey?(q, surveys_ids)
           @curr_answers = {}
           segment_id = Segment.find_by_sql("
             SELECT seg.* FROM segments seg
@@ -77,6 +79,7 @@ class Institution < ActiveRecord::Base
   def self.mean_indicator_by_sl(indicators,service_level)
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
+    surveys_ids = Survey.all(:conditions => "service_level_id = #{service_level.id}").collect(&:id)
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
       questions_parties = indicator.questions_parties
@@ -84,6 +87,7 @@ class Institution < ActiveRecord::Base
       questions_means = []
       questions_parties.each do |qp|
         qp.questions.each do |q|
+          next if question_is_in_an_invalid_survey?(q, surveys_ids)
           @curr_answers = {}
           answers       = q.answers.valid.by_service_level(service_level).min_participants(0).newer
           answers.each do |a|
@@ -109,8 +113,10 @@ class Institution < ActiveRecord::Base
 
   def self.mean_indicator_by_sl2(indicators,sls)
     sls_id = sls.collect(&:id).join(',')
+    puts sls_id
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
+    surveys_ids = Survey.all(:conditions => "service_level_id IN (#{sls_id})").collect(&:id)
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
       questions_parties = indicator.questions_parties
@@ -118,6 +124,7 @@ class Institution < ActiveRecord::Base
       questions_means = []
       questions_parties.each do |qp|
         qp.questions.each do |q|
+          next if question_is_in_an_invalid_survey?(q, surveys_ids)
           @curr_answers = {}
 #q.answers.with_institution(self).by_service_level(service_level).min_participants(0).newer
 #          answers = q.answers.valid.by_service_levels(sls).min_participants(0).newer
@@ -179,6 +186,7 @@ class Institution < ActiveRecord::Base
   def self.mean_indicator_by_group(indicators,service_level,group)
     indicator_mean = { :mean => 0 }
     indicators_party_means = []
+    surveys_ids = Survey.all(:conditions => "service_level_id = #{service_level.id}").collect(&:id)
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
       questions_parties = indicator.questions_parties
@@ -186,6 +194,7 @@ class Institution < ActiveRecord::Base
       questions_means = []
       questions_parties.each do |qp|
         qp.questions.each do |q|
+          next if question_is_in_an_invalid_survey?(q, surveys_ids)
           @curr_answers = {}
           answers = q.answers
           answers = q.answers.by_group(group).valid.min_participants(0).newer
@@ -239,6 +248,7 @@ class Institution < ActiveRecord::Base
     indicators = dimension.indicators.all(:conditions => {:service_level_id => service_level})
     dimension_mean = { :mean => 0 }
     indicators_means = []
+    surveys_ids = Survey.all(:conditions => "service_level_id = #{service_level.id}").collect(&:id)
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
       questions_parties = indicator.questions_parties
@@ -246,6 +256,7 @@ class Institution < ActiveRecord::Base
       questions_means = []
       questions_parties.each do |qp|
         qp.questions.each do |q|
+          next if question_is_in_an_invalid_survey?(q, surveys_ids)
           @curr_answers = {}
           answers = q.answers.by_group(group).valid.min_participants(0).newer
           answers.each do |a|
@@ -302,6 +313,7 @@ class Institution < ActiveRecord::Base
     indicators = dimension.indicators.select { |i| i.service_level == service_level }
     dimension_mean = { :mean => 0 }
     indicators_means = []
+    surveys_ids = Survey.all(:conditions => "service_level_id = #{service_level.id}").collect(&:id)
     @users_data = Hash.new { |h, k| h[k] = Hash.new }
     indicators.each do |indicator|
       questions_parties = indicator.questions_parties
@@ -309,6 +321,7 @@ class Institution < ActiveRecord::Base
       questions_means = []
       questions_parties.each do |qp|
         qp.questions.each do |q|
+          next if Institution.question_is_in_an_invalid_survey?(q, surveys_ids)
           @curr_answers = {}
           answers = q.answers.with_institution(self).by_service_level(service_level).valid.min_participants(0).newer
           answers.each do |a|
@@ -329,6 +342,9 @@ class Institution < ActiveRecord::Base
     end
     dimension_mean[:segments] = Institution.mean_by_segments(@users_data)
     dimension_mean[:mean] = dimension_mean[:segments].avg
+    puts "|" * 100
+    puts dimension_mean.inspect
+    puts "|" * 100
     dimension_mean
   end
 
@@ -336,17 +352,17 @@ class Institution < ActiveRecord::Base
     indicators_numbers = []
     questions_numbers = []
     segments_names = []
+    puts "-" * 100
+    puts indicators.collect(&:id).inspect
+    puts "-" * 100
+    surveys_ids = Survey.all(:conditions => "service_level_id = #{service_level.id}").collect(&:id)
     data = Hash.new { |h, k| h[k] = Hash.new{ |h, k| h[k] = Hash.new } }
     indicators.each do |indicator|
       indicators_numbers << indicator.number if !indicators_numbers.include?(indicator.number)
       questions_parties = indicator.questions_parties
       questions_parties.each do |qp|
         qp.questions.each do |q|
-          pass = true
-          [11,12,13,14].each do |i|
-            pass = false if q.survey_id == i
-          end
-          next if pass
+          next if Institution.question_is_in_an_invalid_survey?(q, surveys_ids)
           questions_numbers << q.number if !questions_numbers.include?(q.number)
           segment_name = nil
           answers = q.answers.with_institution(self).by_service_level(service_level).min_participants(0).newer
@@ -375,7 +391,6 @@ class Institution < ActiveRecord::Base
   def calc_mean_indicator(data, indicators, questions_numbers, segments_names)
     hash = Hash.new
     hash[:segments] = Hash.new
-    puts questions_numbers.inspect
     segments_names.each do |sn|
       array_temp = []
       indicators.each do |i|
@@ -507,16 +522,32 @@ class Institution < ActiveRecord::Base
   def self.mean_by_segments(users_data)
     mean = {}
     data = {}
+    service_level_id = 0
     users_data.each do |u_id,answers|
       u_mean = answers.values.map(&:mean).avg.round(2)
       u = User.find(u_id, :include => :segment)
+      service_level_id = u.service_level_id
       data[u.segment.name] ||= []
       data[u.segment.name] << u_mean
     end
     data.each do |seg,values|
       mean[seg] = values.avg
     end
+    include_segment_if_segment_not_exist(mean, service_level_id)
     mean
+  end
+
+  def self.include_segment_if_segment_not_exist(mean, service_level_id)
+    segments = if service_level_id == 2
+                 %w(Familiares Funcionarios Educandos Gestores Professores)
+               else
+                 %w(Familiares Funcionarios Gestores Professores)
+               end
+    segments.each do |s|
+      if !mean.has_key?(s)
+        mean[s] = 0
+      end
+    end
   end
 
   def self.service_level_graph(sl_average_by_dimension, options = {})
@@ -587,6 +618,14 @@ class Institution < ActiveRecord::Base
     end
     # graph.data(" ", Array.new(segments.length, 0))
     graph.save_temporary("#{Rails.root}/tmp/graphs/#{id}/#{service_level.id}", "single_institution_#{options[:id]}-")
+  end
+
+  def self.question_is_in_an_invalid_survey?(question, surveys_ids)
+    result = true
+    surveys_ids.each do |s_id|
+      result = false if question.survey_id == s_id
+    end
+    result
   end
 end
 
