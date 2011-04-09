@@ -111,168 +111,11 @@ class GeneralReport
 
       # inicio do texto
       start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf", :template_page => 1)
-      start_new_page
-      text "\n Relatório Geral da Avaliação Educacional de Osasco de 2010", :align => :center, :size => 16, :style => :bold
-      text "\n Sumário", :align => :center, :size => 13
-      text "\n APRESENTAÇÃO", :style => :bold, :size => 14
-      text "Apresentando o Programa Escola Cidadã e Inclusiva
-        Apresentando o Processo de Avaliação e seu Histórico
-        Linha do Tempo", :indent_paragraphs => 20
-
-      text "CAPÍTULO I – QUEM SOMOS ", :style => :bold
-      text "1. Apresentando o lugar e os sujeitos protagonistas", :indent_paragraphs => 20
-      text "1.1. O município
-        1.2. As Unidades Educacionais
-        1.3. A composição da Rede
-        1.4. A Supervisão de Ensino
-        1.5. O Corpo Técnico Pedagógico (CTP)", :indent_paragraphs => 30
-
-      text "CAPÍTULO II. METODOLOGIA", :style => :bold
-      text "2.1. Foco da Avaliação
-        2.2. Dimensões e Indicadores de Avaliação
-        2.3. Instrumentos
-        2.4. Definição de Amostragem
-        2.5. Estratégias de Coleta de Dados
-        2.6. Análise e Interpretação dos Dados", :indent_paragraphs => 30
-      text "2.6.1. Análise estatística e descritiva dos dados da rede de ensino por nível de atendimento
-        2.6.2. Organização, sistematização e análise de conteúdo de dados qualitativos
-        2.6.3. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação", :indent_paragraphs => 40
-      text "Infantil
-        2.6.4. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB", :indent_paragraphs => 40
-
-      text " no caso do Ensino Fundamental
-        2.6.5. Análise dos índices das unidades escolares por dimensão
-        2.6.6. Reflexão e aprendizagem compartilhada", :indent_paragraphs => 40
-
-      text "CAPÍTULO III. RESULTADOS DA AVALIAÇÃO DO PEC- OSASCO 2010 - EDUCAÇÃO INFANTIL", :style => :bold
-      text "3. Análise dos resultados da Educação Infantil", :style => :bold, :indent_paragraphs => 20
-      text "3.1. Análise dos dados, por dimensões e indicadores", :style => :bold, :indent_paragraphs => 30
-      text "3.1.1. Dimensão 1. Ambiente Educativo", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.2. Dimensão 2. Ambiente Físico Escolar e Materiais", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.3. Dimensão 3. Planejamento Institucional e Prática Pedagógica", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.4. Dimensão 4. Avaliação", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.5. Dimensão 5. Acesso e Permanência dos Educandos na Escola", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.6 Dimensão 6. Promoção da Saúde", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.8 Dimensão 8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.9. Dimensão 9. Gestão Escolar Democrática", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-          b) gráficos gerais das percepções da rede sobre os indicadores
-          c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "3.2. Quadro dos índices das unidades por dimensões: Educação Infantil
-        3.3. Resultados dos agrupamentos a partir das regiões geográficas, por dimensões: Educação", :style => :bold, :indent_paragraphs => 30
-      text "Infantil", :style => :bold, :indent_paragraphs => 30
-
-      text "CAPÍTULO IV. RESULTADOS DA AVALIAÇÃO DO PEC- OSASCO 2010 - EDUCAÇÃO FUNDAMENTAL", :style => :bold
-      text "4. Análise dos resultados do Ensino Fundamental", :style => :bold, :indent_paragraphs => 20
-      text "4.1. Análise dos dados por dimensões e indicadores", :style => :bold, :indent_paragraphs => 30
-
-      text "4.1.1. Dimensão 1. Ambiente Educativo", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.2. Dimensão 2. Ambiente Físico Escolar e Materiais", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.3. Dimensão 3. Planejamento Institucional e Prática Pedagógica", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.4. Dimensão 4. Avaliação", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.5. Dimensão 5. Acesso e Permanência dos Educandos na Escola", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.6. Dimensão 6. Promoção da Saúde", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.7. Dimensão 7. Educação Socioambiental e Práticas Ecopedagógicas", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.8. Dimensão  8. Envolvimento com as Famílias e Participação na Rede de Proteção Social", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.9. Dimensão 9. Gestão Escolar Democrática", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.10. Dimensão 10. Formação e Condições de Trabalho dos Profissionais da Escola", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.1.11. Dimensão 11. Processos de Alfabetização e Letramento", :indent_paragraphs => 40
-      text "a) gráfico geral da rede sobre a dimensão
-        b) gráficos gerais das percepções da rede sobre os indicadores
-        c) questões problematizadoras", :indent_paragraphs => 50
-
-      text "4.2. Quadro dos índices das unidades de Ensino Fundamental
-        4.3. Resultados dos agrupamentos a partir das notas obtidas no IDEB, por dimensões: Ensino ", :style => :bold, :indent_paragraphs => 30
-      text "Fundamental", :style => :bold, :indent_paragraphs => 30
-
-      text "CAPÍTULO V. META-AVALIAÇÃO", :style => :bold, :indent_paragraphs => 20
-      text "a) Mobilização
-        b) Participação
-        c) Metodologia
-        d) Condições Físicas e Materiais
-        e) Período de Aplicação e Inserção dos dados no on-line
-        f) Análise Coletiva", :indent_paragraphs => 30
-
-      text "CAPÍTULO VI. CONSIDERAÇÕES FINAIS", :style => :bold, :indent_paragraphs => 20
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/summary.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/summary.pdf", :template_page => 2)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/summary.pdf", :template_page => 3)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/summary.pdf", :template_page => 4)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/summary.pdf", :template_page => 5)
 
       start_new_page
       text "APRESENTAÇÃO
@@ -481,14 +324,6 @@ class GeneralReport
           ["5","Sempre ou Ótimo"]
         ]
       table table_with_scales
-      text " \n"
-      text "Ao final de cada dimensão foi reservado um espaço para que o mediador registrasse a síntese dos apontamentos do grupo em relação às práticas consolidadas e as que precisavam avançar, considerando as questões e os indicadores da dimensão avaliada, como no exemplo a seguir:", :indent_paragraphs => 30
-      start_new_page
-      table4 = [
-          ["Práticas Consolidadas","Práticas que precisam avançar"],
-          ["                                       \n\n\n\n\n\n\n\n\n\n\n\n","                                                                                                            "]
-        ]
-      table([["Descrição da síntese dos apontamentos do grupo a partir das questões e indicadores desta dimensão"],[table4]])
 
       text " \n Cabe destacar que  os instrumentais foram submetidos à apreciação do Corpo Técnico Pedagógico que compõe a Rede Municipal de Ensino de Osasco, o qual contribuiu para o aperfeiçoamento e fez adaptações consideradas necessárias.", :indent_paragraphs => 30
       text "Os instrumentais foram elaborados diferentemente para a Educação Infantil, para o Ensino Fundamental e para a Educação Especial (EMEE Prof. Edmundo Campanha Burjato), distribuídos da seguinte forma:", :indent_paragraphs => 30
@@ -537,15 +372,11 @@ class GeneralReport
       text "Ao final do preenchimento do gabarito de respostas coube a cada unidade de ensino a responsabilidade pela inserção dos resultados e lista de presença no sistema on-line. Uma vez que estes questionários foram aplicados no espaço institucional das Unidades de Ensino, estas foram as responsáveis pelo envolvimento e mobilização, especialmente das crianças e dos familiares, visando garantir o maior número possível de respondentes.", :indent_paragraphs => 30
 
       text "\n 2.6. Análise e interpretação dos dados", :style => :bold
-      text "A técnica utilizada na análise foi a de triangulação dos dados quantitativos (advindos da análise estatística), dos dados qualitativos (resultantes das discussões sintetizadas ao final de cada dimensão) e das reflexões e aprendizagens com os principais interessados no processo de avaliação. A proposta de análise baseada na triangulação de dados caracteriza, atualmente, as pesquisas na área de ciências humanas, da saúde, e da educação, inclusive aquelas aplicadas à área do desenvolvimento de projetos e programas sociais. De acordo com Patton<font size='6'>4</font>(1987), a triangulação é considerada fundamental para verificar a propriedade das interpretações apoiadas em dados quantitativos e qualitativos, e permite observar a realidade a partir de diferentes ângulos, o que possibilita uma discussão interativa dos dados. Nesse sentido, a avaliação por triangulação de dados se constitui como uma contribuição positiva e inovadora no avanço de políticas públicas e sociais no Brasil.", :indent_paragraphs => 30, :inline_format => true
-
-      image "#{RAILS_ROOT}/public/relatorios/artifacts/triangle_image.jpg", :scale => 0.5, :position => :center
 
       text "\n As apresentações e análises dos resultados seguem as seguintes etapas
         \n 2.6.1. Análise estatística e descritiva dos dados da rede de ensino por nível de atendimento", :style => :bold
       text "A primeira etapa contemplou a geração de dados estatísticos a partir das informações inseridas no sistema on-line. Essa primeira análise foi elaborada pela equipe do Instituto Paulo Freire e comunicada através de gráficos e mapas aos interessados no processo de avaliação, isto é: as unidades educacionais, aos membros da Secretaria de Educação de Osasco e   ao Corpo Técnico Pedagógico.", :indent_paragraphs => 30
       text "A análise estatística apresentada  segue a mesma organização do instrumental das questões que as unidades responderam, isto é, em dimensões e indicadores. Os resultados e análises apresentadas seguem a estrutura detalhada a seguir:", :indent_paragraphs => 30
-      text " \n <font size='10'><font size='6'>4</font> Patton MQ. Qualitative evaluation methods. London: Sage Publications, 1987.</font>", :inline_format => true
 
       text "\n Educação Infantil e Ensino Fundamental", :style => :bold
       table_with_structure = [
@@ -557,13 +388,8 @@ class GeneralReport
 
       table table_with_structure
 
-      text "\n 2.6.2. Organização, sistematização e análise de conteúdo de dados qualitativos", :style => :bold
-      text "Essa etapa contempla a organização, a sistematização e análise de conteúdo dos dados qualitativos gerados ao final de cada dimensão.", :indent_paragraphs => 30
-
-      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_about_practices.jpg", :scale => 0.8, :position => :center
-
       start_new_page
-      text " \n2.6.3. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação Infantil", :style => :bold
+      text " \n2.6.2. Análise dos resultados das dimensões por agrupamentos regionais, no caso da Educação Infantil", :style => :bold
 
       table_creche_groups = [["grupo 1","grupo 2","grupo 3","grupo 4"],
         ["Creche Benedita de Oliveira","Creche Elza Batiston","Creche Vilma Catan","Creche Amélia Tozzeto"],
@@ -594,7 +420,7 @@ class GeneralReport
       table [["AGRUPAMENTO DE EMEIs"],[table_emei_groups]]
 
       start_new_page
-      text "2.6.4. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB no caso do Ensino Fundamental", :style => :bold
+      text "2.6.3. Análise dos resultados das dimensões por agrupamentos, segundo estratos do IDEB no caso do Ensino Fundamental", :style => :bold
 
       table_emef_groups = [
         ["GRUPO A", "GRUPO B","GRUPO C", "GRUPO D"],
@@ -627,7 +453,7 @@ class GeneralReport
       text "\n"
 
       start_new_page
-      text "\n 2.6.5. Análise do índice das unidades por dimensão", :style => :bold
+      text "\n 2.6.4. Análise do índice das unidades por dimensão", :style => :bold
       text "Com base nos dados obtidos pela totalidade de unidades educacionais, foi estabelecido um <b>índice para cada UE</b>, em cada dimensão, utilizando a seguinte metodologia: ", :indent_paragraphs => 30, :inline_format => true
       text "A soma das respostas dadas pelos segmentos, dividida pela máxima pontuação que a unidade educacional poderia atribuir a si mesma, isto é: a média 5 dentro de cada dimensão. Por exemplo: numa determinada dimensão, 8 pessoas expressaram sua opinião numérica para as 10 questões contidas nela. Se 5 era a máxima opinião numérica que se podia dar, para essa dimensão a máxima pontuação que a UE poderia receber é 400, ou seja, 8 vezes 10, que é igual a 80, vezes 5, que é igual a 400. Contudo, a soma obtida pela UE, a partir da opinião dessas oito pessoas a essas 10 questões, foi de 240. O índice obtido pela UE, nessa dimensão, é obtido dividindo 240 por 400, ou seja: 0,6. Quanto mais próximo do 1,0, melhor o índice obtido pela unidade.", :indent_paragraphs => 30
 
@@ -638,11 +464,11 @@ class GeneralReport
 
       show_table_with_index_by_unit
 
-      text "\n 2.6.6. Reflexão e aprendizagem compartilhada", :style => :bold
+      text "\n 2.6.5. Reflexão e aprendizagem compartilhada", :style => :bold
       text "Esta etapa apresenta a sistematização das reflexões advindas dos encontros com os principais envolvidos no processo de avaliação, isto é, supervisores de ensino, membros do Corpo Técnico Pedagógico e membros do Observatório, sobre os resultados e análises dos dados. Nesse momento, com base nos gráficos e mapas, foram produzidas as reflexões, conclusões e recomendações para a atualização do PTA da Secretaria de Educação e para a construção do PME de 2011.", :indent_paragraphs => 30
 
       start_new_page
-      text "CAPÍTULO III. RESULTADOS DA AVALIAÇÃO DO PEC-OSASCO 2010 - ENSINO INFANTIL", :style => :bold
+      text "CAPÍTULO III. RESULTADOS DA AVALIAÇÃO DO PEC-OSASCO 2010", :style => :bold
       data = get_total_number_of_people_that_answered_the_surveys
 
       table13 = [

@@ -504,18 +504,28 @@ class Institution < ActiveRecord::Base
 
       segments_dimension      = mean[dimension.id][:segments]
       grade_segments          = names.inject([]) {|array, name| array << (segments_dimension[name].to_f/5).round(2); array}
-
+#        # tratamento para a situação da inconsistência com os dados do familiar no fundamental
+#      array_tmp = []
+#      segments_dimension.each do |v|
+#        if v[1].to_f == 0.0 && v[0] == "Educandos"
+#        if v[1].to_f == 0.0 && sl.id == 2 && dimension.number == 11 && v[0] == "Familiares"
+#          next
+#        else
+#          array_tmp << v[1].to_f
+#        end
+#      end
       average_dimension       = (((segments_dimension.sum_values.to_f)/names.length)/5).round(2)
       average_group_dimension = ((mean_group[dimension.id][:segments].sum_values.to_f/names.length)/5).round(2)
       average_sl_dimension       = ((mean_sl[dimension.id][:segments].sum_values.to_f/names.length)/5).round(2)
 
       value_row               = [average_dimension, average_group_dimension, average_sl_dimension]
 
-      sum                     = sum + (((segments_dimension.sum_values.to_f)/names.length)/5)
+      sum                     = sum + ((array_tmp.sum_values.to_f/array_tmp.length)/5).round(2)
 
       table << [col0[index]].concat(grade_segments).concat(value_row)
     end
-
+    puts sum
+    puts col0.size
     {:table => table, :institution_main_index => (sum.to_f/col0.size).round(2)}
   end
 

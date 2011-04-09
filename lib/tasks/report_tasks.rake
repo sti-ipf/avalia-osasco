@@ -1,4 +1,26 @@
 namespace :reports do
+
+  task :csv => :environment do
+    i = Institution.find_by_sql("select * from institutions i INNER JOIN institutions_service_levels isl ON i.id = isl.institution_id where isl.service_level_id = 2")
+    i.each do |i|
+    ActiveRecord::Base.connection.execute(
+      "
+select seg.name, q.number, a.zero, a.one, a.two, a.three, a.four, a.five, a.participants_number, a.created_at
+INTO OUTFILE '/tmp/result_#{i.name}_#{i.id}.csv'
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"'
+LINES TERMINATED BY '\n'
+from answers a
+INNER JOIN questions q ON q.id = a.question_id
+INNER JOIN surveys s ON s.id = a.survey_id
+INNER JOIN segments seg ON s.segment_id = seg.id
+WHERE a.user_id IN (select id from users where institution_id = #{i.id}) AND
+s.service_level_id = 2
+      "
+      )
+      puts i.id
+    end
+  end
+
   desc "Generate general report"
   task :general => :environment do
     GeneralReport.to_pdf
@@ -55,17 +77,14 @@ namespace :reports do
     #   end
     # end
 
-    institution = Institution.find(32)#30#65#93
+    institution = Institution.find(10)#30#65#93
     institution.service_levels.each do |service_level|
       puts "- #{service_level.name}"
       before = Time.now
       ri = ReportIndividual.new
       ri.to_pdf(institution, service_level, ReportData.new(institution, service_level))
-
       system "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/printer -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -sOutputFile=#{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}-final.pdf #{RAILS_ROOT}/public/relatorios/artifacts/capa_avalia.pdf #{RAILS_ROOT}/public/relatorios/artifacts/expediente.pdf #{RAILS_ROOT}/public/relatorios/final/#{institution.id}_#{service_level.id}.pdf"
-
       after = Time.now
-
       p "pdf generated in #{after - before}"
     end
   end
@@ -85,7 +104,8 @@ namespace :reports do
 
   task :graphs_by_institution => :environment do
     dimensions = Dimension.all
-    inst = Institution.find(32)#30#65#93
+
+    inst = Institution.find(4)#30#65#93
     puts inst.name
     inst.service_levels.each do |sl|
       puts "- #{sl.name}"

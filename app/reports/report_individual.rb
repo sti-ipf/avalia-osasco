@@ -117,10 +117,12 @@ class ReportIndividual
          text "Observação2: o cálculo da média indicada no bloco de colunas denominado no gráfico como 'GERAL' compõe-se das colunas 'média geral da questão', 'média do grupo' e da 'média da rede' dos quadros."
        end
        first_time = false
-       question_table(institution,qp) if qp.questions.size > 0
-       move_down(2)
-       text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
-       text "Obs: O 'NR' indica que a unidade não inseriu resposta no sistema. No entanto, a questão foi considerada no cálculo da média.", :size => 10
+       if qp.questions.size > 0
+         question_table(institution,qp)
+         move_down(2)
+         text "* Corresponde à média da rede a qual a sua escola pertence (creche, ou EMEI, ou EMEF).", :size => 10
+         text "Obs: O 'NR' indica que a unidade não inseriu resposta no sistema. No entanto, a questão foi considerada no cálculo da média.", :size => 10
+       end
 
      end
    end
@@ -727,8 +729,8 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   text "\n 4 ENCAMINHAMENTOS PARA O PLANO DE TRABALHO ANUAL DE 2011", :style => :bold, :align => :center
   fill_color "000000"
 
- table26 = [["Nome da Unidade Educacional:                                                                                                                   "],["Nome da Dimensão:                                                "],["Nome dos envolvidos:\n\n\n\n\n\n\n                                                "]]
- table table26
+  table26 = [["Nome da Unidade Educacional:                                                                                                                   "],["Nome da Dimensão:                                                "],["Nome dos envolvidos:\n\n\n\n\n\n\n                                                "]]
+  table table26
 
   text "\n"
 
@@ -736,7 +738,7 @@ text "\n 2.4.4 Questões problematizadoras da dimensão 4", :style => :bold
   table table27
 
 
- number_pages "<page>",[(bounds.left + bounds.right), 18, 2]
+  number_pages "<page>",[(bounds.left + bounds.right), 18, 2]
 
 end
 end
