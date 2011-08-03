@@ -91,11 +91,16 @@ s.service_level_id = 2
 
   desc "Generate tables for all service_levels (EMEF, EMEI and Creche)"
   task :tables => :environment do
+    type = ENV['TYPE']
     [2, 3, 4].each do |service_level_id|
       service_level = ServiceLevel.find(service_level_id)
       start_time = Time.now
       puts "Generating #{service_level.name} table"
-      UniFreire::Tables::Generator.generate(service_level)
+      if type == "with_grades"
+        UniFreire::Tables::Generator.generate(service_level, true)
+      else
+        UniFreire::Tables::Generator.generate(service_level)
+      end
       end_time = Time.now
       duration = (end_time - start_time).to_i/60
       puts "#{service_level.name.capitalize} table generated, duration was #{duration} minutes"

@@ -670,23 +670,8 @@ class GeneralReport
       text "1. O que os dados revelam sobre os compromissos assumidos com as diretrizes estabelecidas pelo Plano de Desenvolvimento da Educação (decreto nº 6.094, 24 de abril de 2007), denominadas “Compromisso Todos pela Educação”?", :indent_paragraphs => 30
       text "2. O que os dados revelam sobre os objetivos e metas traçados no PME relativos a esta dimensão?", :indent_paragraphs => 30
 
-      text " \n 3.2. Quadro dos índices das unidades, por dimensões: Educação Infantil", :style => :bold
-
-      show_table_with_index_by_unit
-
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 1)
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 2)
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_table.pdf")
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_legend.pdf")
-      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_table.pdf")
       start_new_page
-
-      text "Questões para dialogar:"
-      text "1. De acordo com os índices, quais dimensões precisam ser priorizadas no planejamento das ações da Secretaria?", :indent_paragraphs => 30
-      text "2. Os índices das unidades mantiveram um padrão para todas as dimensões ou pode-se perceber discrepâncias? Exemplo: uma unidade consegue um índice bastante favorável em uma dimensão e outra já não consegue o mesmo feito. Quais razões contribuíram para esse evento?", :indent_paragraphs => 30
-      text "3.Quais as unidades tiveram índices aquém do esperado e em quais dimensões? Quais são os fatores que contribuíram para este resultado?", :indent_paragraphs => 30
-
-      text "\n 3.3. Resultados dos agrupamentos a partir das regiões geográficas, por dimensões", :style => :bold
+      text "\n 3.2. Resultados dos agrupamentos a partir das regiões geográficas, por dimensões", :style => :bold
       text "Há autores que refletem sobre a questão da qualidade nas escolas dizem que, para compreender uma escola, deve-se começar por conhecer sua realidade geográfica. Os recursos humanos e materiais tendem a refletir a localização da escola. Muitas vezes, a localização da escola determina, em última instância, o tipo de aluno que será atendido.", :indent_paragraphs => 30
       text "Nesse sentido, foi analisada a correlação entre os resultados da avaliação por dimensões e por conglomerados de escolas de Educação Infantil por regiões geográficas do município.", :indent_paragraphs => 30
       text "Neste quadro, podemos analisar o resultado da média de cada dimensão por agrupamentos, tendo como referência as regiões geográficas do município. O que podemos observar? Existe alguma correlação entre os resultados obtidos e as escolas localizadas em determinada região? Que elementos podem ter contribuído para este resultado?", :indent_paragraphs => 30
@@ -694,7 +679,7 @@ class GeneralReport
       text " \nEMEI", :style => :bold
       infantil_group = GeneralReport.get_group_data("infantil")
       image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups.jpg", :scale => 0.6, :position => :center
-      y_positions = [382,364,338,306,281,253,219,189,160,130]
+      y_positions = [505,487,461,429,404,376,342,312,283,253]
       (0..9).each do |i|
         draw_text "#{infantil_group[:group_1][i+1].round(2)}", :at => [250,y_positions[i]]
         draw_text "#{infantil_group[:group_2][i+1].round(2)}", :at => [335,y_positions[i]]
@@ -715,8 +700,24 @@ class GeneralReport
       end
 
       start_new_page
-      text "CAPÍTULO IV. RESULTADOS DA AVALIAÇÃO DO PEC-OSASCO 2010 - ENSINO FUNDAMENTAL", :style => :bold
 
+      text " \n 3.3. Quadro dos índices das unidades, por dimensões: Educação Infantil", :style => :bold
+
+      show_table_with_index_by_unit
+
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend.pdf", :template_page => 2)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_table.pdf")
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_legend.pdf")
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_table.pdf")
+      start_new_page
+
+      text "Questões para dialogar:"
+      text "1. De acordo com os índices, quais dimensões precisam ser priorizadas no planejamento das ações da Secretaria?", :indent_paragraphs => 30
+      text "2. Os índices das unidades mantiveram um padrão para todas as dimensões ou pode-se perceber discrepâncias? Exemplo: uma unidade consegue um índice bastante favorável em uma dimensão e outra já não consegue o mesmo feito. Quais razões contribuíram para esse evento?", :indent_paragraphs => 30
+      text "3.Quais as unidades tiveram índices aquém do esperado e em quais dimensões? Quais são os fatores que contribuíram para este resultado?", :indent_paragraphs => 30
+
+      start_new_page
       text " \n 4. Análise dos Resultados do Ensino Fundamental", :style => :bold, :size => 13
       text " \n 4.1. Análise dos dados, por dimensões e indicadores", :style => :bold
       text "A seguir apresentamos os gráficos e mapas dos resultados obtidos, por dimensão. Sugerimos as seguintes questões para todas as dimensões:", :indent_paragraphs => 30
@@ -921,7 +922,25 @@ class GeneralReport
       text "3. Que ações, por parte da Secretaria, podem ser previstas para que em 2011 as escolas da Rede  se envolvam cada vez mais  no exercício da função social da escrita pela criança?"
       text "4. Que ações podem ser previstas para que os educandos e membros da comunidade tenham acesso e possam emprestar os livros e demais textos disponíveis na escola?"
 
-      text " \n4.2. Quadro dos índices das unidades, por dimensões: Ensino Fundamental", :style => :bold
+      start_new_page
+      text " \n 4.2. Resultados dos agrupamentos a partir dos estratos do IDEB, por dimensões: Ensino Fundamental", :style => :bold
+      text "Neste quadro, podemos analisar o resultado da média de cada dimensão por agrupamento,  tendo como referência  os estratos de escolas do IDEB. A partir dele, o que podemos observar?   Que elementos podem ter contribuído para este resultado em cada estrato? De que forma os indicadores favoreceram este resultado?
+        Olhando para as unidades que compõem os agrupamentos, podemos observar alguns padrões entre elas que contribuiu para o desempenho no IDEB? Quais são esses padrões?", :indent_paragraphs => 30
+      text "É possível afirmar que o grupo de escolas que conseguiu médias melhores nas dimensões também conseguiu uma pontuação favorável no IDEB? Existe correlação entre esses resultados?", :indent_paragraphs => 30
+
+      fundamental_group = GeneralReport.get_group_data("fundamental")
+      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
+      y_positions = [566,548,527,497,465,442,411,377,354,324,290]
+      (0..10).each do |i|
+        draw_text "#{fundamental_group[:group_1][i+1].round(2)}", :at => [252,y_positions[i]]
+        draw_text "#{fundamental_group[:group_2][i+1].round(2)}", :at => [323,y_positions[i]]
+        draw_text "#{fundamental_group[:group_3][i+1].round(2)}", :at => [392,y_positions[i]]
+        draw_text "#{fundamental_group[:group_4][i+1].round(2)}", :at => [463,y_positions[i]]
+      end
+
+
+      start_new_page
+      text " \n4.3. Quadro dos índices das unidades, por dimensões: Ensino Fundamental", :style => :bold
 
       show_table_with_index_by_unit
 
@@ -935,23 +954,8 @@ class GeneralReport
       text "2. Os índices das unidades mantiveram um padrão para todas as dimensões ou  pode-se perceber discrepâncias? Exemplo: uma unidade consegue um índice bastante favorável em uma dimensão e outra já não consegue o mesmo feito. Quais razões contribuíram para esse evento?"
       text "3. Quais as unidades tiveram índices aquém do esperado e em quais dimensões? Quais são os fatores que contribuíram para este resultado?"
 
-      text " \n 4.3. Resultados dos agrupamentos a partir dos estratos do IDEB, por dimensões: Ensino Fundamental", :style => :bold
-      text "Neste quadro, podemos analisar o resultado da média de cada dimensão por agrupamento,  tendo como referência  os estratos de escolas do IDEB. A partir dele, o que podemos observar?   Que elementos podem ter contribuído para este resultado em cada estrato? De que forma os indicadores favoreceram este resultado?
-        Olhando para as unidades que compõem os agrupamentos, podemos observar alguns padrões entre elas que contribuiu para o desempenho no IDEB? Quais são esses padrões?", :indent_paragraphs => 30
-      text "É possível afirmar que o grupo de escolas que conseguiu médias melhores nas dimensões também conseguiu uma pontuação favorável no IDEB? Existe correlação entre esses resultados?", :indent_paragraphs => 30
-
-      fundamental_group = GeneralReport.get_group_data("fundamental")
-      image "#{RAILS_ROOT}/public/relatorios/artifacts/table_with_dimensions_and_groups_fundamental.jpg", :scale => 0.6, :position => :center
-      y_positions = [445,426,406,379,348,320,292,257,231,203,170]
-      (0..10).each do |i|
-        draw_text "#{fundamental_group[:group_1][i+1].round(2)}", :at => [252,y_positions[i]]
-        draw_text "#{fundamental_group[:group_2][i+1].round(2)}", :at => [323,y_positions[i]]
-        draw_text "#{fundamental_group[:group_3][i+1].round(2)}", :at => [392,y_positions[i]]
-        draw_text "#{fundamental_group[:group_4][i+1].round(2)}", :at => [463,y_positions[i]]
-      end
-
       start_new_page
-      text "CAPÍTULO V. META-AVALIAÇÃO", :style => :bold
+      text "CAPÍTULO IV. META-AVALIAÇÃO", :style => :bold
       text " \na) Mobilização"
       text "b) Participação"
       text "c) Metodologia"
@@ -960,8 +964,17 @@ class GeneralReport
       text "f) Análise Coletiva"
 
       start_new_page
-      text "CAPÍTULO VI. CONSIDERAÇÕES FINAIS", :style => :bold
-      draw_text "113", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
+      text "CAPÍTULO V. CONSIDERAÇÕES FINAIS", :style => :bold
+
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend_wm.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_legend_wm.pdf", :template_page => 2)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEI_table_wm.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_legend_wm.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/Creche_table_wm.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEF_legend_wm.pdf", :template_page => 1)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEF_legend_wm.pdf", :template_page => 2)
+      start_new_page(:template => "#{RAILS_ROOT}/public/relatorios/artifacts/EMEF_table_wm.pdf", :template_page => 1)
+      draw_text "125", :at => [(bounds.left + bounds.right), 1, 2], :size => 14, :style => :italic
       number_pages "<page>",[(bounds.left + bounds.right), 1, 2]
 
     end

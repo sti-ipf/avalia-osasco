@@ -17,23 +17,37 @@ module UniFreire
                   12 => "Índice geral da unidade"
                   }
 
-      def self.generate(service_level)
+      def self.generate(service_level, with_grades=false)
         legend_file_name = "#{service_level.name}_legend"
         table_file_name = "#{service_level.name}_table"
-        data = get_data(service_level)
+       data = get_data(service_level)
         institutions = get_institutions(data)
         dimensions = get_dimensions(data)
-        build_legends(institutions, "Unidades Escolares #{service_level.name}", legend_file_name)
-        build_html(data,institutions, dimensions, table_file_name)
-        table_file = File.new(File.join(TEMP_DIRECTORY,"#{table_file_name}.html"))
+        if with_grades
+          case service_level.id
+            when 2
+              title = "<div><h5>ANEXO 2 - Quadro dos índices das unidades por dimensões com os índices: Educação Fundamental</h5></div>
+                <div>Unidades Escolares #{service_level.name}</div>"
+            when 3
+              title = "<div><h5>ANEXO 1 - Quadro dos índices das unidades por dimensões com os índices: Educação Infantil</h5></div>
+                <div>Unidades Escolares #{service_level.name}</div>"
+            when 4
+              title = "Unidades Escolares #{service_level.name}"
+            end
+        else
+          title = "Unidades Escolares #{service_level.name}"
+        end
+        build_legends(institutions, title, legend_file_name)
+#        build_html(data,institutions, dimensions, table_file_name, with_grades)
+#        table_file = File.new(File.join(TEMP_DIRECTORY,"#{table_file_name}.html"))
         legend_file = File.new(File.join(TEMP_DIRECTORY,"#{legend_file_name}.html"))
-        convert_html_to_pdf(table_file, table_file_name)
+#        convert_html_to_pdf(table_file, table_file_name)
         convert_html_to_pdf(legend_file, legend_file_name)
       end
 
       def self.build_legends(institutions, title, file_name)
         html_code = get_initial_html
-        html_code << "<h5>#{title}</h5>
+        html_code << "#{title}
                       <table>"
         break_control = 0
         institutions_size = institutions.size
@@ -53,7 +67,7 @@ module UniFreire
         create_html_file(html_code, "#{file_name}.html")
       end
 
-      def self.build_html(data,institutions, dimensions, file_name)
+      def self.build_html(data,institutions, dimensions, file_name, with_grades)
         html_code = get_initial_html
         html_code << '<table>'
         header = ''
@@ -83,7 +97,7 @@ HEREDOC
         institutions.each do |institution|
           html_code << "<tr> <td> #{institution[1]} </td>"
           dimensions.each do |dimension|
-            html_code = add_data_in_table(data, institution[0], dimension, html_code)
+            html_code = add_data_in_table(data, institution[0], dimension, html_code, with_grades)
           end
           html_code << "</tr>"
         end
@@ -142,13 +156,17 @@ HEREDOC
         index = (index == 0)? index : index.round(2)
       end
 
-      def self.add_data_in_table(data, institution, dimension, table)
+      def self.add_data_in_table(data, institution, dimension, table, with_grades)
         number_filled = false
         begin
           value = data[institution][dimension]
           if !value.nil?
-            css_class = get_css_class(value)
-            table << "<td class = \"#{css_class}\"> </td>"
+            if !with_grades
+              css_class = get_css_class(value)
+              table << "<td class = \"#{css_class}\"> </td>"
+            else
+              table << "<td> #{value} </td>"
+            end
             number_filled = true
           end
         rescue
@@ -199,7 +217,7 @@ HEREDOC
             font-weight: italic;
           }
 
-          body {font-family: PTSans;}
+          body {font-family: PTSans;font-size:12px;}
           table{border:1px solid black; border-collapse: collapse;}
           tr{border:1px solid black;}
           td{border:1px solid black;
