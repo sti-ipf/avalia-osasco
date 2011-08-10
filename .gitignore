@@ -1,3 +1,5 @@
+.redcar
+.redcar/*
 data/*
 config/database.yml
 db/schema.rb
