@@ -8,7 +8,7 @@ class FlowController < ApplicationController
     if(params[:password] == '123456' && @institution == "EMEF ALFREDO FARHAT, DEPUTADO")
       @segment = "Familiares"
       render "confirm"
-    elsif(params[:password] == '1qa0pç' && @institution == "EMEF ALICE RABECHINI FERREIRA")
+    elsif(params[:password] == '1qa0pk' && @institution == "EMEF ALICE RABECHINI FERREIRA")
       @segment = "Professores e Gestores"
       render "confirm"
     elsif(params[:password] == '2ws9om' && @institution == "EMEF ALÍPIO DA SILVA LAVOURA, PROF.")
