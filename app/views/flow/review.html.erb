@@ -1,0 +1,80 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Respostas para a dimensão y</h2> 
+  <div class="action_items">
+        Olá <strong><%= "#{@name}"%></strong>, Segmento: <strong><%= "#{@segment}"%></strong>, Instituição: <strong><%= "#{@institution}"%></strong>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+      <h3>Responda cada uma das questões abaixo</h3>
+      <div class="panel_contents">
+        <% form_tag "/checkreview", :id => "answers" do  %>
+        <table>
+          <% @questions.each_index do |id| %>
+            <% @questions[id].each_index do |ii| %>
+              <tr>
+                <td class="indicador" colspan="9">Indicador <%= "#{id+1}.#{ii+1}" %></td>
+              </tr>
+              <% @questions[id][ii].each_pair do |ks, vs| %>
+                <% if(ks == @segment) %>
+                  <% vs.each_index do |q| %>
+                    <tr>
+                      <td><%= "#{id+1}.#{ii+1}.#{@questions[id][ii][ks][q]}" %></td>
+                      <td>
+                        não sabe - 0
+                      </td>
+                      <td>
+                        1 - 0
+                      </td>
+                      <td>
+                        2 - 0
+                      </td>
+                      <td>
+                        3 - 0
+                      </td>
+                      <td>
+                        4 - 0
+                      </td>
+                      <td>
+                        5 - 0
+                      </td>
+                      <td>
+                        nao respondeu - 0
+                      </td>
+                      <td>
+                        quantidade de pessoas - 0 
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <tr>
+            <td class="indicador" colspan="9">
+              Práticas consolidadas 
+              <textarea id="praticas"  cols="200" rows="5"> </textarea>
+            
+            </td>
+          </tr>
+        </table>
+          </p>
+            <%= hidden_field_tag :institution, @institution %>
+            <%= hidden_field_tag :segment, @segment %>
+            <%= hidden_field_tag :name, @name %>
+            <%= submit_tag 'modificar' %>
+            <%= submit_tag 'salvar' %>
+          </p>
+        <% end %>
+      </div> 
+    </div> 
+  </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "steps" %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

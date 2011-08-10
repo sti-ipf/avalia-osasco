@@ -1,0 +1,30 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Confirmação segmento</h2> 
+  <div class="action_items">
+        Olá <strong><%= "#{@name}"%></strong>, Segmento: <strong><%= "#{@segment}"%></strong>, Instituição: <strong><%= "#{@institution}"%></strong>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <h3>Respostas salvas</h3>
+        <div class="panel_contents"> 
+          <% form_tag "/identify" do  %>
+          <p><h4>Respostas salvas referentes a instituição <strong><%= @institution %></strong>, dimensão <strong>1</strong> e segmento <strong><%= @segment %></strong></h4>
+              <br>
+              <%= hidden_field_tag :institution, @institution %>
+              <%= hidden_field_tag :segment, @segment %>
+              <%= submit_tag 'ir para próxima dimensão' %>
+            </p>
+          <% end %>
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "steps" %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

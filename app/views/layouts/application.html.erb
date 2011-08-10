@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html> 
+  <head> 
+    <title>Compreender - Sistema de avaliação 2011</title>
+    <%= stylesheet_link_tag :all %>
+    <%= javascript_include_tag :defaults %>
+    <%= csrf_meta_tag %>
+  </head> 
+  <body> 
+    <div id="wrapper"> 
+      <div id="header">
+        <div class="right"><img alt="Lateral" src="/images/lateral.jpg?1312923745"></div>
+        <h1 id="site_title">Sistema Paulo Freire de Avaliação do ensino de Osasco 2011</h1>
+        <p id="utility_nav"></p>
+      </div> 
+      <%= yield %>
+      <div id="footer"> 
+      </div> 
+    </div> 
+  </body> 
+</html> 

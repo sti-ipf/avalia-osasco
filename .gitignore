@@ -1,0 +1,9 @@
+data/*
+config/database.yml
+db/schema.rb
+log/*.log
+tmp
+public/system
+public/stylesheets/all.css
+**.orig
+.rvmrc

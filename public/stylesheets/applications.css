@@ -1,0 +1,13 @@
+#header {
+    height: 120px;
+    width: 100%;
+    background-image: url('../images/marca.jpg');
+    background-repeat:no-repeat;
+    background-position: left top;
+    text-align: center;
+}
+
+.right {
+ position: relative;
+ float: right;
+}

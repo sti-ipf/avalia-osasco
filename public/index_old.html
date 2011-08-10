@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html> 
+  <head> 
+    <title>Sistema Paulo Freire de Avaliação do ensino de Osasco 2011</title> 
+    <link type="text/css" href="activeadmin.css" media="screen" rel="stylesheet"></link> 
+    <script type="text/javascript" src="/javascripts/active_admin_vendor.js?1306844965"></script> 
+    <script type="text/javascript" src="/javascripts/active_admin.js?1306844965"></script> 
+    <meta name="csrf-param" content="authenticity_token"/> 
+    <meta name="csrf-token" content="Ld5Cv4xDdDNXjU4u40CL75uscZQSPV5dYSvITVt27tU="/>
+  </head> 
+  <body> 
+    <div id="wrapper"> 
+      <div id="header">
+        <h1 id="site_title">Sistema Paulo Freire de Avaliação do ensino de Osasco 2011</h1>
+        <p id="utility_nav"></p>
+      </div> 
+      <div id="title_bar"> 
+        <h2 id="page_title">Autenticação</h2> 
+        <div class="action_items"></div> 
+      </div> 
+      <div class="without_sidebar" id="content"> 
+        <div id="main_content_wrapper"> 
+          <div id="main_content"> 
+            <div class="panel dashboard_section"> 
+              <h3>Selecione a escola e digite sua senha</h3> 
+              <div class="panel_contents"> 
+                <% form_tag "/authenticate" do %>
+                  <p>Unidade<br />
+                    <%= select_tag "institution", options_for_select(@institutions), {:size => 5, :style => 'width: 20em;'} %></p>
+                  <p>Senha<br />
+                    <%= password_field_tag "password" %></p>
+                  <p><%= submit_tag 'entrar' %></p>
+                <% end %>
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+      <div id="footer"> 
+      </div> 
+    </div> 
+  </body> 
+</html> 
