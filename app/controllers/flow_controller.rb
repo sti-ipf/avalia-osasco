@@ -12,7 +12,7 @@ class FlowController < ApplicationController
       @segment = "Professores e Gestores"
       render "confirm"
     elsif(params[:password] == '2ws9om' && @institution == "EMEF ALIPIO DA SILVA LAVOURA, PROF.")
-      @segment = "Funcionários"
+      @segment = "Funcionarios"
       render "confirm"
     elsif(params[:password] == '3ed8ik' && @institution == "EMEF ANEZIO CABRAL, PROF.")
       @segment = "Educando"
@@ -24,7 +24,7 @@ class FlowController < ApplicationController
       @segment = "Professores e Gestores"
       render "confirm"
     elsif(params[:password] == 'zxcmnb' && @institution == "CRECHE AMELIA TOZZETO VIVIANE")
-      @segment = "Funcionários"
+      @segment = "Funcionarios"
       render "confirm"
     elsif(params[:password] == 'zxc098' && @institution == "CRECHE BENEDITA DE OLIVEIRA")
       @segment = "Educando"
@@ -171,9 +171,9 @@ private
     @questions[0][0]["Familiares"] = []
     @questions[0][0]["Familiares"] << 1
     @questions[0][0]["Familiares"] << 2
-    @questions[0][0]["Funcionários"] = []
-    @questions[0][0]["Funcionários"] << 1
-    @questions[0][0]["Funcionários"] << 2
+    @questions[0][0]["Funcionarios"] = []
+    @questions[0][0]["Funcionarios"] << 1
+    @questions[0][0]["Funcionarios"] << 2
     @questions[0][0]["Professores e Gestores"] = []
     @questions[0][0]["Professores e Gestores"] << 1
     @questions[0][0]["Professores e Gestores"] << 2
@@ -183,10 +183,10 @@ private
     @questions[0][1]["Familiares"] << 1
     @questions[0][1]["Familiares"] << 2
     @questions[0][1]["Familiares"] << 3
-    @questions[0][1]["Funcionários"] = []
-    @questions[0][1]["Funcionários"] << 1
-    @questions[0][1]["Funcionários"] << 2
-    @questions[0][1]["Funcionários"] << 3
+    @questions[0][1]["Funcionarios"] = []
+    @questions[0][1]["Funcionarios"] << 1
+    @questions[0][1]["Funcionarios"] << 2
+    @questions[0][1]["Funcionarios"] << 3
     @questions[0][1]["Professores e Gestores"] = []
     @questions[0][1]["Professores e Gestores"] << 1
     @questions[0][1]["Professores e Gestores"] << 2
@@ -200,10 +200,10 @@ private
     @questions[0][2]["Familiares"] << 1
     @questions[0][2]["Familiares"] << 2
     @questions[0][2]["Familiares"] << 3
-    @questions[0][2]["Funcionários"] = []
-    @questions[0][2]["Funcionários"] << 1
-    @questions[0][2]["Funcionários"] << 2
-    @questions[0][2]["Funcionários"] << 3
+    @questions[0][2]["Funcionarios"] = []
+    @questions[0][2]["Funcionarios"] << 1
+    @questions[0][2]["Funcionarios"] << 2
+    @questions[0][2]["Funcionarios"] << 3
     @questions[0][2]["Professores e Gestores"] = []
     @questions[0][2]["Professores e Gestores"] << 1
     @questions[0][2]["Professores e Gestores"] << 2
@@ -214,10 +214,10 @@ private
     @questions[0][3]["Familiares"] = []
     @questions[0][3]["Familiares"] << 1
     @questions[0][3]["Familiares"] << 2
-    @questions[0][3]["Funcionários"] = []
-    @questions[0][3]["Funcionários"] << 1
-    @questions[0][3]["Funcionários"] << 2
-    @questions[0][3]["Funcionários"] << 3
+    @questions[0][3]["Funcionarios"] = []
+    @questions[0][3]["Funcionarios"] << 1
+    @questions[0][3]["Funcionarios"] << 2
+    @questions[0][3]["Funcionarios"] << 3
     @questions[0][3]["Professores e Gestores"] = []
     @questions[0][3]["Professores e Gestores"] << 1
     @questions[0][3]["Professores e Gestores"] << 2
@@ -230,11 +230,11 @@ private
     @questions[0][4]["Familiares"] << 2
     @questions[0][4]["Familiares"] << 3
     @questions[0][4]["Familiares"] << 4
-    @questions[0][4]["Funcionários"] = []
-    @questions[0][4]["Funcionários"] << 1
-    @questions[0][4]["Funcionários"] << 2
-    @questions[0][4]["Funcionários"] << 3
-    @questions[0][4]["Funcionários"] << 4
+    @questions[0][4]["Funcionarios"] = []
+    @questions[0][4]["Funcionarios"] << 1
+    @questions[0][4]["Funcionarios"] << 2
+    @questions[0][4]["Funcionarios"] << 3
+    @questions[0][4]["Funcionarios"] << 4
     @questions[0][4]["Professores e Gestores"] = []
     @questions[0][4]["Professores e Gestores"] << 1
     @questions[0][4]["Professores e Gestores"] << 2
@@ -246,9 +246,9 @@ private
     @questions[0][5]["Familiares"] = []
     @questions[0][5]["Familiares"] << 1
     @questions[0][5]["Familiares"] << 2
-    @questions[0][5]["Funcionários"] = []
-    @questions[0][5]["Funcionários"] << 1
-    @questions[0][5]["Funcionários"] << 2
+    @questions[0][5]["Funcionarios"] = []
+    @questions[0][5]["Funcionarios"] << 1
+    @questions[0][5]["Funcionarios"] << 2
     @questions[0][5]["Professores e Gestores"] = []
     @questions[0][5]["Professores e Gestores"] << 1
     @questions[0][5]["Professores e Gestores"] << 2
@@ -258,9 +258,9 @@ private
     @questions[0][6]["Familiares"] = []
     @questions[0][6]["Familiares"] << 1
     @questions[0][6]["Familiares"] << 2
-    @questions[0][6]["Funcionários"] = []
-    @questions[0][6]["Funcionários"] << 1
-    @questions[0][6]["Funcionários"] << 2
+    @questions[0][6]["Funcionarios"] = []
+    @questions[0][6]["Funcionarios"] << 1
+    @questions[0][6]["Funcionarios"] << 2
     @questions[0][6]["Professores e Gestores"] = []
     @questions[0][6]["Professores e Gestores"] << 1
     @questions[0][6]["Professores e Gestores"] << 2
@@ -272,10 +272,10 @@ private
     @questions[0][7]["Familiares"] << 1
     @questions[0][7]["Familiares"] << 2
     @questions[0][7]["Familiares"] << 3
-    @questions[0][7]["Funcionários"] = []
-    @questions[0][7]["Funcionários"] << 1
-    @questions[0][7]["Funcionários"] << 2
-    @questions[0][7]["Funcionários"] << 3
+    @questions[0][7]["Funcionarios"] = []
+    @questions[0][7]["Funcionarios"] << 1
+    @questions[0][7]["Funcionarios"] << 2
+    @questions[0][7]["Funcionarios"] << 3
     @questions[0][7]["Professores e Gestores"] = []
     @questions[0][7]["Professores e Gestores"] << 1
     @questions[0][7]["Professores e Gestores"] << 2
@@ -287,9 +287,9 @@ private
     @questions[0][8]["Familiares"] = []
     @questions[0][8]["Familiares"] << 1
     @questions[0][8]["Familiares"] << 3
-    @questions[0][8]["Funcionários"] = []
-    @questions[0][8]["Funcionários"] << 2
-    @questions[0][8]["Funcionários"] << 3
+    @questions[0][8]["Funcionarios"] = []
+    @questions[0][8]["Funcionarios"] << 2
+    @questions[0][8]["Funcionarios"] << 3
     @questions[0][8]["Professores e Gestores"] = []
     @questions[0][8]["Professores e Gestores"] << 1
     @questions[0][8]["Professores e Gestores"] << 2
@@ -297,8 +297,8 @@ private
     @questions[0][9]["Educandos"] = []
     @questions[0][9]["Familiares"] = []
     @questions[0][9]["Familiares"] << 1
-    @questions[0][9]["Funcionários"] = []
-    @questions[0][9]["Funcionários"] << 1
+    @questions[0][9]["Funcionarios"] = []
+    @questions[0][9]["Funcionarios"] << 1
     @questions[0][9]["Professores e Gestores"] = []
     @questions[0][9]["Professores e Gestores"] << 1
   end
