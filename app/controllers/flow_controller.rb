@@ -191,7 +191,7 @@ private
     @steps << ["Envolvimento com as familias e participacao na rede de protecao social", "Dimensao 8"]
     @steps << ["Gestao escolar democratica", "Dimensao 9"]
     @steps << ["Formacao e condicoes de trabalho dos profissionais da escola", "Dimensao 10"]
-    @steps << ["Processos de alfabetização e letramento", "Dimensao 11"]
+    @steps << ["Processos de alfabetizacao e letramento", "Dimensao 11"]
 
     @dimensions = []
     @dimensions << "Ambiente educativo"
