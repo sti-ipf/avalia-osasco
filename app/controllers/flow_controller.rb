@@ -196,7 +196,7 @@ private
     @dimensions = []
     @dimensions << "Ambiente educativo"
     @dimensions << "Ambiente fisico escolar e materiais"
-    @dimensions << "Planejamento institucional e pratica pedagógica"
+    @dimensions << "Planejamento institucional e pratica pedagogica"
     @dimensions << "Avaliacao"
     @dimensions << "Acesso e permanencia dos educandos na escola"
     @dimensions << "Promoção da saude"
