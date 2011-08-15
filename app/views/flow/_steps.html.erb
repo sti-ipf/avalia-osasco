@@ -3,21 +3,18 @@
   <div class="panel_contents">
     <div id="steps">
       <ul id="tabs">
-        <li class="past" id="dashboard"><a href="index.html">Autenticação</a></li>
-        <li class="current" id="customers"><a href="confirmacao-segmento.html">Confirmação segmento</a></li>
-        <li class="next" id="orders"><a href="identificacao-pessoa.html">Identificação</a></li>
-        <li class="next" id="products"><a href="instrucoes.html">Instruções básicas</a></li>
-        <li class="next" id="products"><a href="resposta-indicador-y.html">Resposta dimensão x</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão y</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão z</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão a</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão b</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão c</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão f</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão g</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão h</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão j</a></li>
-        <li class="next" id="products"><a href="/admin/products">Resposta dimensão k</a></li>
+        <% @steps.each_index do |i|
+          step = @steps[i]
+          style = ""
+          if current_step.to_i == i
+            style = "current"
+          elsif current_step.to_i > i
+            style = "past"
+          else
+            style = "next"
+          end %>
+          <li class="<%= style %>" id="dashboard"><a href="#" alt="<%= step[0]%>"><%= step[1]%></a></li>
+        <% end %>
       </ul>
     </div>
   </div>

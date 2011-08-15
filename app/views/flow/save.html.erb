@@ -1,7 +1,7 @@
 <div id="title_bar"> 
-  <h2 id="page_title">Confirmação segmento</h2> 
+  <h2 id="page_title">Respostas para a dimensão <%= @dimension.to_i + 1 %></h2> <%=@dimensions[@dimension.to_i]%>
   <div class="action_items">
-        Olá <strong><%= "#{@name}"%></strong>, Segmento: <strong><%= "#{@segment}"%></strong>, Instituição: <strong><%= "#{@institution}"%></strong>
+    Olá <strong><%= "#{@name}"%></strong><br>Segmento: <strong><%= "#{@segment}"%></strong>, Instituição: <strong><%= "#{@institution}"%></strong>
   </div> 
 </div> 
 <div class="with_sidebar" id="content"> 
@@ -10,11 +10,14 @@
       <div class="panel dashboard_section"> 
         <h3>Respostas salvas</h3>
         <div class="panel_contents"> 
-          <% form_tag "/identify" do  %>
-          <p><h4>Respostas salvas referentes a instituição <strong><%= @institution %></strong>, dimensão <strong>1</strong> e segmento <strong><%= @segment %></strong></h4>
+          <% form_tag "/answerdimension" do  %>
+          <p><h4>Respostas salvas referentes a instituição <strong><%= @institution %></strong>, dimensão <strong><%= @dimension.to_i + 1 %></strong> e segmento <strong><%= @segment %></strong></h4>
               <br>
               <%= hidden_field_tag :institution, @institution %>
+              <%= hidden_field_tag :institution_type, @institution_type %>
               <%= hidden_field_tag :segment, @segment %>
+              <%= hidden_field_tag :name, @name %>
+              <%= hidden_field_tag :dimension, @dimension.to_i + 1 %>
               <%= submit_tag 'ir para próxima dimensão' %>
             </p>
           <% end %>
@@ -23,7 +26,7 @@
     </div> 
   </div> 
   <div id="sidebar">
-    <%= render :partial => "steps" %>
+    <%= render :partial => "steps", :locals => {:current_step => @dimension.to_i + 4} %>
   </div>
 </div> 
 <div id="footer"> 

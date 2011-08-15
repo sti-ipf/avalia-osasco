@@ -13,6 +13,7 @@
               <br>Esta informação está correta?</h4>
               <br>
               <%= hidden_field_tag :institution, @institution %>
+              <%= hidden_field_tag :institution_type, @institution_type %>
               <%= hidden_field_tag :segment, @segment %>
               <%= submit_tag 'sim' %>&nbsp;
               <%= submit_tag 'não' %>
@@ -23,7 +24,7 @@
     </div> 
   </div> 
   <div id="sidebar">
-    <%= render :partial => "steps" %>
+    <%= render :partial => "steps", :locals => {:current_step => 1} %>
   </div>
 </div> 
 <div id="footer"> 
