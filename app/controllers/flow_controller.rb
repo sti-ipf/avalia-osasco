@@ -185,7 +185,7 @@ private
     @steps << ["Ambiente fisico escolar e materiais", "Dimensao 2"]
     @steps << ["Planejamento institucional e pratica pedagogica", "Dimensao 3"]
     @steps << ["Avaliacao", "Dimensao 4"]
-    @steps << ["Acesso e permanência dos educandos na escola", "Dimensao 5"]
+    @steps << ["Acesso e permanencia dos educandos na escola", "Dimensao 5"]
     @steps << ["Promocao da saude", "Dimensao 6"]
     @steps << ["Educacao socioambiental e praticas ecopedagogicas", "Dimensao 7"]
     @steps << ["Envolvimento com as familias e participacao na rede de protecao social", "Dimensao 8"]
@@ -196,15 +196,15 @@ private
     @dimensions = []
     @dimensions << "Ambiente educativo"
     @dimensions << "Ambiente fisico escolar e materiais"
-    @dimensions << "Planejamento institucional e prática pedagógica"
-    @dimensions << "Avaliação"
-    @dimensions << "Acesso e permanência dos educandos na escola"
-    @dimensions << "Promoção da saúde"
-    @dimensions << "Educação socioambiental e práticas ecopedagógicas"
-    @dimensions << "Envolvimento com as famílias e participação na rede de proteção social"
-    @dimensions << "Gestão escolar democrática" 
-    @dimensions << "Formação e condições de trabalho dos profissionais da escola"
-    @dimensions << "Processos de alfabetização e letramento"
+    @dimensions << "Planejamento institucional e pratica pedagógica"
+    @dimensions << "Avaliacao"
+    @dimensions << "Acesso e permanencia dos educandos na escola"
+    @dimensions << "Promoção da saude"
+    @dimensions << "Educacao socioambiental e práticas ecopedagogicas"
+    @dimensions << "Envolvimento com as familias e participacao na rede de protecao social"
+    @dimensions << "Gestao escolar democratica" 
+    @dimensions << "Formacao e condicoes de trabalho dos profissionais da escola"
+    @dimensions << "Processos de alfabetizacao e letramento"
     
     if params[:institution_type] == "EMEF"
       generate_emef_questions
