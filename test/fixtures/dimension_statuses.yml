@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  status: 1
+  dimension_id: 1
+  school_id: 1
+  segment_id: 1
+
+two:
+  status: 1
+  dimension_id: 1
+  school_id: 1
+  segment_id: 1

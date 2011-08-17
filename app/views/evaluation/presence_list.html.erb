@@ -1,0 +1,58 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Lista de presença</h2>
+  <div class="action_items">
+    Olá <strong><%= "#{@name}"%></strong><br>Segmento: <strong><%= "#{@segment.name}"%></strong>, Instituição: <strong><%= "#{@school.name}"%></strong>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+      <h3>Preencha a lista de presença</h3>
+      <div class="panel_contents">
+        <% form_tag "/save_presence_list", :multipart => true, :method => 'POST' do  %>
+          <table id="presence_list">
+            <tbody>
+              <tr>
+                <td>Pessoas que responderam a avaliação</td>
+              </tr>
+              <% @presence.each do |p|%>
+              <tr>
+                  <td><%= p.name %></td>
+                </tr>
+              <% end %>
+              <% 20.times do |i|%>
+              <tr>
+                  <td><%= i + 1 %> - <%= text_field_tag "new_presence[#{i}]", "", :size => 150 %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <p><input type="button" value="Mais pessoas" onClick="addRows()"></p>
+          <%= hidden_field_tag :school, @school.id %>
+          <%= hidden_field_tag :service_level, @service_level.id %>
+          <%= hidden_field_tag :segment, @segment.id %>
+          <%= hidden_field_tag :name, @name %>
+          <%= hidden_field_tag :last_presence_idx, 20 %>
+          <%= submit_tag 'salvar' %>
+        <% end %>
+      </div> 
+    </div> 
+  </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "flow/steps", :locals => {:current_step => @steps.size - 1} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 
+
+<script type="text/javascript" charset="utf-8"> 
+  function addRows(){
+    last = $("#last_presence_idx").val()
+    for(i = 0; i < 20 ; i++){
+      $('#presence_list > tbody:last').append('<tr><td>' + (parseInt(last) + i + 1) + '- <input id="new_presence_' + (parseInt(last) + i) + '" name="new_presence[' + last + i + ']" size="150" type="text" value=""></td></tr>');    
+    }
+    $("#last_presence_idx").val(parseInt(last) + 20);
+  }
+</script> 

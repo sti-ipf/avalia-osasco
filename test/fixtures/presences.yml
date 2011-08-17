@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  school_id: 1
+  segment_id: 1
+
+two:
+  name: MyString
+  school_id: 1
+  segment_id: 1

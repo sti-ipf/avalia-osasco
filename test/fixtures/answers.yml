@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  do_not_know: 1
+  do_not_answer: 1
+  one: 1
+  two: 1
+  three: 1
+  four: 1
+  five: 1
+  quantity_of_people: 1
+  question_text_id: 1
+  school_id: 1
+  segment_id: 1
+
+two:
+  do_not_know: 1
+  do_not_answer: 1
+  one: 1
+  two: 1
+  three: 1
+  four: 1
+  five: 1
+  quantity_of_people: 1
+  question_text_id: 1
+  school_id: 1
+  segment_id: 1

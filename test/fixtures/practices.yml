@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  consolidated: MyString
+  to_be_improved: MyString
+  dimension_id: 1
+  school_id: 1
+  segment_id: 1
+
+two:
+  consolidated: MyString
+  to_be_improved: MyString
+  dimension_id: 1
+  school_id: 1
+  segment_id: 1
