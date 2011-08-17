@@ -1,0 +1,76 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Respostas para a dimensão <%= @dimension.to_i + 1 %></h2> <%=@dimensions[@dimension.to_i]%>
+  <div class="action_items">
+    Olá <strong><%= "#{@name}"%></strong><br>Segmento: <strong><%= "#{@segment}"%></strong>, Instituição: <strong><%= "#{@institution}"%></strong>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+      <h3>Responda cada uma das questões abaixo</h3>
+      <div class="panel_contents">
+        <% form_tag "/review", :id => "answers" do  %>
+        <table>
+            <% @questions[@dimension.to_i].each_index do |ii| %>
+              <%if @questions[@dimension.to_i][ii][@segment].size > 0%>
+                <tr>
+                  <td class="indicador" colspan="9">Indicador <%= "#{@dimension.to_i+1}.#{ii+1}" %></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>Não sabe</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>Não Respondeu</td>
+                  <td>Quantidade de pessoas</td>
+                </tr>
+              <% end %>
+              <% @questions[@dimension.to_i][ii].each_pair do |ks, vs| %>
+                <% if(ks == @segment) %>
+                  <% vs.each_index do |q| %>
+                    <tr>
+                      <td><%= "#{@dimension.to_i+1}.#{ii+1}.#{@questions[@dimension.to_i][ii][ks][q]}" %></td>
+                      <td><%= text_field_tag :naosabe, "0", :size => 2 %></td>
+                      <td><%= text_field_tag :one, "0", :size => 2 %></td>
+                      <td><%= text_field_tag :two, "0", :size => 2 %></td>
+                      <td><%= text_field_tag :three, "0", :size => 2 %></td>
+                      <td><%= text_field_tag :four, "0", :size => 2 %></td>
+                      <td><%= text_field_tag :five, "0", :size => 2 %></td>
+                      <td><%= text_field_tag :naorespondeu, "0", :size => 2 %></td>
+                      <td><%= text_field_tag :qtdpessoas, "0", :size => 2 %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <tr>
+            <td class="indicador" colspan="9">
+              Práticas consolidadas 
+              <textarea id="praticas"  cols="200" rows="5"> </textarea>
+            
+            </td>
+          </tr>
+        </table>
+          </p>
+            <%= hidden_field_tag :institution, @institution %>
+            <%= hidden_field_tag :institution_type, @institution_type %>
+            <%= hidden_field_tag :segment, @segment %>
+            <%= hidden_field_tag :name, @name %>
+            <%= hidden_field_tag :dimension, @dimension %>
+            <%= submit_tag 'revisar' %>
+          </p>
+        <% end %>
+      </div> 
+    </div> 
+  </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "steps", :locals => {:current_step => @dimension.to_i + 4} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

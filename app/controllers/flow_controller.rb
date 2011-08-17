@@ -181,7 +181,7 @@ private
     @steps << ["Confirmacao segmento", "Confirmacao segmento"]
     @steps << ["Identificacao","Identificacao"]
     @steps << ["Instrucoes basicas", "Instrucoes basicas"]
-    @steps << ["Ambiente ducativo", "Dimensao 1"]
+    @steps << ["Ambiente educativo", "Dimensao 1"]
     @steps << ["Ambiente fisico escolar e materiais", "Dimensao 2"]
     @steps << ["Planejamento institucional e pratica pedagogica", "Dimensao 3"]
     @steps << ["Avaliacao", "Dimensao 4"]

@@ -1,0 +1,36 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Instruções sobre o processo de avaliação</h2> 
+  <div class="action_items">
+    Olá <strong><%= "#{@name}"%></strong><br>Segmento: <strong><%= "#{@segment}"%></strong>, Instituição: <strong><%= "#{@institution}"%></strong>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <h3>Digite seu nome</h3>
+        <div class="panel_contents">
+          <% form_tag "/answerdimension" do  %>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <iframe width="425" height="349" src="http://www.youtube.com/embed/FrOlFMZs6NA" frameborder="0" allowfullscreen></iframe>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <p>
+              <%= hidden_field_tag :school, @school.id %>
+              <%= hidden_field_tag :service_level, @service_level.id %>
+              <%= hidden_field_tag :segment, @segment.id %>
+              <%= hidden_field_tag :name, @name %>
+              <%= hidden_field_tag :dimension, 0 %>
+
+              <%= submit_tag 'iniciar respostas' %>&nbsp;
+            </p>
+          <% end %>
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "flow/steps", :locals => {:current_step => 3} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

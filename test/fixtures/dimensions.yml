@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: 1
+  description: MyString
+  number: 1
+  service_level_id: 1
+
+two:
+  name: 1
+  description: MyString
+  number: 1
+  service_level_id: 1
