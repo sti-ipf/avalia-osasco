@@ -110,6 +110,8 @@ class EvaluationController < ApplicationController
   def checkreview
     load_params
     generate_steps
+    load_questions
+    @practices = Practice.find_by_segment_id_and_school_id_and_dimension_id(@segment.id, @school.id, @dimension.id)
     if(params[:commit] == 'modificar')
       render "answer"
     else
