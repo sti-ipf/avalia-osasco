@@ -7,4 +7,7 @@ IpfOsascoAvaliacao2011::Application.routes.draw do |map|
   map.answerdimension "answerdimension", :controller => 'evaluation', :action => 'answerdimension'
   map.review "review", :controller => 'evaluation', :action => 'review'
   map.save "checkreview", :controller => 'evaluation', :action => 'checkreview'
+  map.save "save", :controller => 'evaluation', :action => 'save'
+  map.save "presence_list", :controller => 'evaluation', :action => 'presence_list'
+  map.save "save_presence_list", :controller => 'evaluation', :action => 'save_presence_list'
 end
