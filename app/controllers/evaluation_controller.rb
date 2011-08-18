@@ -189,6 +189,6 @@ private
     @service_level = ServiceLevel.find(params[:service_level])
     @segment = Segment.find(params[:segment])
     @name = params[:name]
-    @dimension = Dimension.find_by_number(params[:dimension])
+    @dimension = Dimension.find_by_number_and_service_level_id(params[:dimension], @service_level.id)
   end
 end
