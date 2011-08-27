@@ -1,5 +1,7 @@
 class School < ActiveRecord::Base
-  belongs_to :service_level
+  #has_many :service_level_schools
+  #has_many :service_levels, :through => :service_level_schools
+  has_and_belongs_to_many :service_levels
   has_many :passwords
   has_many :answers
   has_many :practices
@@ -7,3 +9,4 @@ class School < ActiveRecord::Base
   has_many :presence
 
 end
+

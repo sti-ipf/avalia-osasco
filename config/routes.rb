@@ -1,4 +1,8 @@
 IpfOsascoAvaliacao2011::Application.routes.draw do |map|
+  ActiveAdmin.routes(self)
+
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
   map.root :controller => 'evaluation', :action => 'index'
   map.authenticate "authenticate", :controller => 'evaluation', :action => 'authenticate'
   map.confirm "confirm", :controller => 'evaluation', :action => 'confirm'

@@ -4,6 +4,7 @@ class CreatePasswords < ActiveRecord::Migration
       t.string :password
       t.integer :school_id
       t.integer :segment_id
+      t.integer :service_level_id
 
       t.timestamps
     end
@@ -13,3 +14,4 @@ class CreatePasswords < ActiveRecord::Migration
     drop_table :passwords
   end
 end
+

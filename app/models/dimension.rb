@@ -3,4 +3,9 @@ class Dimension < ActiveRecord::Base
   has_many :indicators
   has_many :practices
   has_many :dimension_statuses
+
+  #ServiceLevel.all.each do |sl|
+  #  scope sl.name, where(:service_level_id => sl.id)
+  #end
 end
+

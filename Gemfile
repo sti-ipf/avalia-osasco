@@ -10,6 +10,12 @@ gem 'mysql2', '~> 0.2.6'
 gem 'flash_render', '1.0.1'
 gem 'jquery-rails', '>= 1.0.12'
 
+gem 'activeadmin'
+
+gem 'acts_as_audited', '2.0.0.rc7'
+
+gem 'pdfkit'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -32,3 +38,4 @@ gem 'jquery-rails', '>= 1.0.12'
 # group :development, :test do
 #   gem 'webrat'
 # end
+
