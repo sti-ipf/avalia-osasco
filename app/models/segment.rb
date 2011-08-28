@@ -7,4 +7,12 @@ class Segment < ActiveRecord::Base
   has_many :dimension_statuses
   has_many :presence
 
+  begin
+    ServiceLevel.all.each do |sl|
+      scope sl.name, where("service_level_id = ?", sl.id)
+    end
+  rescue
+  end
+
 end
+

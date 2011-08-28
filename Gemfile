@@ -10,11 +10,13 @@ gem 'mysql2', '~> 0.2.6'
 gem 'flash_render', '1.0.1'
 gem 'jquery-rails', '>= 1.0.12'
 
-gem 'activeadmin'
+gem 'activeadmin', '0.3.0'
 
 gem 'acts_as_audited', '2.0.0.rc7'
 
-gem 'pdfkit'
+gem 'wicked_pdf'
+
+gem 'rails-i18n'
 
 # Use unicorn as the web server
 # gem 'unicorn'

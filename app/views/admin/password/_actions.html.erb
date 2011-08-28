@@ -1,0 +1,9 @@
+<ul>
+  <li>
+    <%= link_to "Gerar pdf com todas as cartas", passwords_generate_all_letters_path(:format => :pdf), :target => :blank %>
+  </li>
+  <li>
+    <%= link_to "Regerar as senhas", passwords_generate_all_passwords_path, :confirm => "Você tem certeza que deseja regerar as senhas? Todas as senhas serão apagadas e geradas novamente com outras valores" %>
+  </li>
+</ul>
+

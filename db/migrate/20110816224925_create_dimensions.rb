@@ -2,7 +2,6 @@ class CreateDimensions < ActiveRecord::Migration
   def self.up
     create_table :dimensions do |t|
       t.string :name
-      t.string :description
       t.integer :number
       t.integer :service_level_id
 
@@ -14,3 +13,4 @@ class CreateDimensions < ActiveRecord::Migration
     drop_table :dimensions
   end
 end
+

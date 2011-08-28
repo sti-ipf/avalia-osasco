@@ -1,0 +1,93 @@
+"pt-BR":
+  activerecord:
+    models:
+      admin_user: "Usuários"
+      dimension: "Dimensões"
+      indicator: "Indicadores"
+      school: "Escolas"
+      service_level: "Níveis de serviço"
+      segment: "Seguimentos"
+      password: "Senhas"
+    attributes:
+      admin_user:
+        email: "Email"
+        sign_in_count: "Contagem de logins"
+        current_sign_in_at: "Momento do login atual"
+        current_sign_in_ip: "IP do login atual"
+        last_sign_in_at: "Momento do último login"
+        last_sign_in_ip: "IP do último login"
+      dimension:
+        name: "Nome"
+        number: "Número"
+        service_level: "Nível de serviço"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      indicator:
+        name: "Nome"
+        number: "Número"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      password:
+        password: "Senha"
+        school: "Escola"
+        segment: "Seguimento"
+        service_level: "Nível de serviço"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      school:
+        name: "Nome"
+        service_levels: "Níveis de serviço"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      service_level:
+        name: "Nome"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      segment:
+        name: "Nome"
+        service_level: "Nível de serviço"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+
+
+  errors:
+    messages:
+      not_found: "não encontrado"
+      already_confirmed: "já foi confirmado"
+      not_locked: "não foi bloqueado"
+  devise:
+    failure:
+      unauthenticated: 'Para continuar, faça login ou registre-se.'
+      unconfirmed: 'Antes de continuar, confirme a sua conta.'
+      locked: 'A sua conta está bloqueada.'
+      invalid: 'Email ou senha inválidos.'
+      invalid_token: 'O token de autenticação não é válido.'
+      timeout: 'A sua sessão expirou, por favor faça login novamente para poder continuar.'
+      inactive: 'A sua conta ainda não foi ativada.'
+    sessions:
+      signed_in: 'Conectado com sucesso.'
+      signed_out: 'Desconectado com sucesso.'
+      admin_user:
+        signed_in: 'Conectado com sucesso.'
+        signed_out: 'Desconectado com sucesso.'
+    passwords:
+      send_instructions: 'Dentro de minutos, receberá um email com as instruções de reinicialização da senha.'
+      updated: 'A sua senha foi alterada com sucesso. Agora está conectado.'
+    confirmations:
+      send_instructions: 'Dentro de minutos, receberá um email com as instruções de confirmação da sua conta.'
+      confirmed: 'A sua conta foi confirmada com sucesso. Agora está conectado.'
+    registrations:
+      signed_up: 'Conectado com sucesso. Se não autorizado, a confirmação foi enviada por email.'
+      updated: 'A sua conta foi atualizada com sucesso.'
+      destroyed: 'Adeus! A sua conta foi cancelada com sucesso. Esperamos vê-lo novamente em breve.'
+    unlocks:
+      send_instructions: 'Dentro de minutos, receberá um email com as instruções como desbloquear a sua conta.'
+      unlocked: 'A sua conta foi desbloqueada com sucesso. Agora está conectado.'
+    mailer:
+      confirmation_instructions:
+        subject: 'Instruções de confirmação'
+      reset_password_instructions:
+        subject: 'Instruções de reinicialização de senha'
+      unlock_instructions:
+        subject: 'Instruções de desbloqueio'
+

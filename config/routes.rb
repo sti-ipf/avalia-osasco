@@ -1,17 +1,21 @@
-IpfOsascoAvaliacao2011::Application.routes.draw do |map|
+IpfOsascoAvaliacao2011::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   devise_for :admin_users, ActiveAdmin::Devise.config
 
-  map.root :controller => 'evaluation', :action => 'index'
-  map.authenticate "authenticate", :controller => 'evaluation', :action => 'authenticate'
-  map.confirm "confirm", :controller => 'evaluation', :action => 'confirm'
-  map.identify "identify", :controller => 'evaluation', :action => 'identify'
-  map.instructions "instructions", :controller => 'evaluation', :action => 'instructions'
-  map.answerdimension "answerdimension", :controller => 'evaluation', :action => 'answerdimension'
-  map.review "review", :controller => 'evaluation', :action => 'review'
-  map.save "checkreview", :controller => 'evaluation', :action => 'checkreview'
-  map.save "save", :controller => 'evaluation', :action => 'save'
-  map.save "presence_list", :controller => 'evaluation', :action => 'presence_list'
-  map.save "save_presence_list", :controller => 'evaluation', :action => 'save_presence_list'
+  root :to => 'evaluation#index'
+  match "authenticate", :to => 'evaluation#authenticate'
+  match "confirm", :to => 'evaluation#confirm'
+  match "identify", :to => 'evaluation#identify'
+  match "instructions", :to => 'evaluation#instructions'
+  match "answerdimension", :to => 'evaluation#answerdimension'
+  match "review", :to => 'evaluation#review'
+  match "checkreview", :to => 'evaluation#checkreview'
+  match "save", :to => 'evaluation#save'
+  match "presence_list", :to => 'evaluation#presence_list'
+  match "save_presence_list", :to => 'evaluation#save_presence_list'
+
+  match "passwords/generate_all_letters", :to => 'passwords#generate_all_letters'
+  match "passwords/generate_all_passwords", :to => 'passwords#generate_all_passwords'
 end
+
