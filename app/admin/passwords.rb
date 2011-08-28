@@ -15,12 +15,6 @@ ActiveAdmin.register Password do
   actions :all, :except => [:edit, :update]
   member_action :download_letter, :method => :get, :format => :pdf do
     redirect_to passwords_generate_all_letters_path :id => params[:id], :format => :pdf
-#    @passwords = []
-#    @passwords << Password.find(params[:id])
-#    respond_to do |format|
-#      format.html {render "/passwords/generate_all_letters", :layout => false}
-#      format.pdf {render "/passwords/generate_all_letters", :layout => false, :pdf => "password_letter"}
-#    end
   end
 
   index do
@@ -31,6 +25,7 @@ ActiveAdmin.register Password do
   end
 
   sidebar "Ações" do
+    @passwords = Password.all
     render('/admin/password/actions')
   end
 end

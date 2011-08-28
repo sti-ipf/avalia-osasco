@@ -7,7 +7,12 @@ class PasswordsController < ApplicationController
     end
     respond_to do |format|
       format.html {render :layout => false}
-      format.pdf {render :layout => false, :pdf => "password_letters"}
+      format.pdf do
+        headless = Headless.new
+        headless.start
+        render :layout => false, :pdf => "password_letters"
+        headless.destroy
+      end
     end
   end
 

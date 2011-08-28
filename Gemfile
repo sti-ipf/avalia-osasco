@@ -18,6 +18,8 @@ gem 'wicked_pdf'
 
 gem 'rails-i18n'
 
+gem 'headless'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
