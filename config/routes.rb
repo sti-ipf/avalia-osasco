@@ -17,5 +17,7 @@ IpfOsascoAvaliacao2011::Application.routes.draw do
 
   match "passwords/generate_all_letters", :to => 'passwords#generate_all_letters'
   match "passwords/generate_all_passwords", :to => 'passwords#generate_all_passwords'
+  match "admin/passwords/:id/download_letter", :to => 'admin_passwords#download_letter'
+
 end
 

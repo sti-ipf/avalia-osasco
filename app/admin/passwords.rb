@@ -12,22 +12,22 @@ ActiveAdmin.register Password do
   rescue
   end
 
+  actions :all, :except => [:edit, :update]
   member_action :download_letter, :method => :get, :format => :pdf do
-    @passwords = []
-    @passwords << Password.find(params[:id])
-    puts @passwords.class
-    puts @passwords.size
-    respond_to do |format|
-      format.html {render "/passwords/generate_all", :layout => false}
-      format.pdf {render "/passwords/generate_all", :layout => false, :pdf => "password_letter"}
-    end
+    redirect_to passwords_generate_all_letters_path :id => params[:id], :format => :pdf
+#    @passwords = []
+#    @passwords << Password.find(params[:id])
+#    respond_to do |format|
+#      format.html {render "/passwords/generate_all_letters", :layout => false}
+#      format.pdf {render "/passwords/generate_all_letters", :layout => false, :pdf => "password_letter"}
+#    end
   end
 
   index do
     column :school
     column :segment
     column :password
-    actions :all, :except => [:edit, :destroy]
+    column() {|password| link_to 'Baixar carta', download_letter_admin_password_path(password, :format => :pdf), :target => :blank }
   end
 
   sidebar "Ações" do

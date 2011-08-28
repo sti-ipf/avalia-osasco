@@ -1,6 +1,10 @@
 class PasswordsController < ApplicationController
   def generate_all_letters
-    @passwords = Password.all
+    if params[:id].nil?
+      @passwords = Password.all
+    else
+      @passwords = [Password.find(params[:id])]
+    end
     respond_to do |format|
       format.html {render :layout => false}
       format.pdf {render :layout => false, :pdf => "password_letters"}
