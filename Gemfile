@@ -10,7 +10,7 @@ gem 'mysql2', '~> 0.2.6'
 gem 'flash_render', '1.0.1'
 gem 'jquery-rails', '>= 1.0.12'
 
-gem 'activeadmin', '0.3.0', :git => "git://github.com/gregbell/active_admin.git", :branch => "master"
+gem 'activeadmin', '0.3.0'
 
 gem 'acts_as_audited', '2.0.0.rc7'
 
