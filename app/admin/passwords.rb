@@ -2,7 +2,7 @@ ActiveAdmin.register Password do
   menu :parent => "Avaliação", :priority => 6
   actions :index, :show
   filter :school
-  filter :segment
+  #filter :segment
 
   scope :all, :default => true
   begin

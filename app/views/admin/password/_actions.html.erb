@@ -2,6 +2,9 @@
   <li>
     <%= link_to "Gerar pdf com todas as cartas", passwords_generate_all_letters_path(:format => :pdf), :target => :blank %>
   </li>
+  <li>
+    <%= link_to "Gerar pdf com todas as cartas das Creches Conveniadase um Nível de serviço específico:", passwords_generate_creche_conveniadas_letters_path(:format => :pdf), :target => :blank %>
+  </li>
   <% if @passwords.size == 0 %>
     <li>
       <%= link_to "Gerar as senhas", passwords_generate_all_passwords_path %>

@@ -7,7 +7,7 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 admin = AdminUser.create(:email => 'admin@example.com', :password => 'password', :password_confirmation => 'password')
 
-levels = ServiceLevel.create([{:name => "CRECHE"}, {:name => "EMEI"}, {:name => "EMEF"}, {:name => "EJA"}, {:name => "BURJATO"}])
+levels = ServiceLevel.create([{:name => "CRECHE"}, {:name => "EMEI"}, {:name => "EMEF"}, {:name => "EJA"}, {:name => "BURJATO"}, {:name => "CRECHE CONVENIADA"}])
 
 
 # Criação das Creches
@@ -158,6 +158,35 @@ schools_cemeief = School.create([{:name => "CEU ZONA NORTE (ZILDA ARNS, Drª)", 
 # Criação das BURJATO
 schools_burjato = School.create([{:name => "DR. EDMUNDO CAMPANHA BURJATO", :service_levels => [levels[4]]}])
 
+# Criação das CRECHES Conveniadas
+schools_creches_conveniadas = School.create([{:name => "Centro de Participação Popular do Jardim Veloso".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação União de Mães do Jardim das Flores".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação Faça uma Criança Sorrir de Osasco e Região – Núcleo I".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação Faça uma Criança Sorrir de Osasco e Região – Núcleo II Alfacriso".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mães do Jardim Veloso".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Entidade: Associação das Mães Unidas do Novo Osasco – AMUNO I".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mães Unidas do Novo Osasco – AMUNO II".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação Beneficente Gotas de Amor".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação Quintal Mágico".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Centro Social Santo Antonio".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação Padre Domingos Barbé".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres pela Educação – Núcleo Aventura do Aprender".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres pela Educação – Núcleo Brilho do Aprender".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres pela Educação – Núcleo Casa do Aprender".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres pela Educação – Núcleo Cecília Meireles".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres pela Educação – Núcleo Começando Aprender".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres pela Educação – Núcleo Menino Jesus".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres pela Educação – Núcleo Recanto do Aprender".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres em Defesa à Criança Helena Maria".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação das Mulheres em Defesa à Criança – Tarcila do Amaral".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação de Proteção à Maternidade e à Adolescência (ASPROMATINA) – Padre Domingos Tonini".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação de Proteção à Maternidade e à Adolescência (ASPROMATINA) – Padre Guerrino".upcase, :service_levels => [levels[5]]},
+                                                {:name => "ASCC – Associação Solidária Crescendo Cidadã I - Açucará".upcase, :service_levels => [levels[5]]},
+                                                {:name => "ASCC – Associação Solidária Crescendo Cidadã II – Bela Vista".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação de Educação Popular Pixote I".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Associação de Educação Popular Pixote II".upcase, :service_levels => [levels[5]]},
+                                                {:name => "Lar da Criança Emmanuel Núcleo Kardecista 21 de Abril".upcase, :service_levels => [levels[5]]}])
+
 
 segments_creche = Segment.create([{:name => "Familiares", :service_level => levels[0]},
                                 {:name => "Funcionários", :service_level => levels[0]},
@@ -184,6 +213,12 @@ segments_burjato = Segment.create([{:name => 'Trabalhadores', :service_level => 
                                 {:name => 'Gestores', :service_level => levels[4]},
                                 {:name => 'Familiares', :service_level => levels[4]}])
 
+
+segments_creches_conveniadas = Segment.create([{:name => 'Gestores', :service_level => levels[5]},
+                                {:name => 'Coordenadores pedagógicos', :service_level => levels[5]},
+                                {:name => 'Professores', :service_level => levels[5]},
+                                {:name => 'Funcionários de apoio', :service_level => levels[5]},
+                                {:name => 'Familiares', :service_level => levels[5]}])
 
 dimensions_creche = Dimension.create([{:name => 'Ambiente educativo', :number => 1, :service_level => levels[0]},
                                     {:name => 'Ambiente físico escolar e materiais', :number => 2, :service_level => levels[0]},
