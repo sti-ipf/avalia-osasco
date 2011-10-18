@@ -1,5 +1,5 @@
 module IPF
-  class ImportInstruments
+  class ImportInstrumentsOld
     def emei filename
       File.open(filename, "r") do |infile|
         service_level = ServiceLevel.find_by_name("EMEI/CRECHE")

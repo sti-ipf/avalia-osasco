@@ -1,15 +1,15 @@
 class EvaluationController < ApplicationController
+
   def index
     @schools = School.all.collect{ |school| [school.name, school.id] }
   end
 
   def authenticate
-    
     @password = Password.find_by_password_and_school_id(params[:password], params[:school])
     if !@password.nil?    
       @segment = @password.segment
       @school = @password.school
-      @service_level = @school.service_level
+      @service_level = @password.service_level
       generate_steps
       render "confirm"
     else

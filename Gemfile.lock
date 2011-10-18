@@ -120,6 +120,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin (= 0.3.0)
   acts_as_audited (= 2.0.0.rc7)
+  fastercsv
   flash_render (= 1.0.1)
   headless
   jquery-rails (>= 1.0.12)

@@ -11,3 +11,8 @@
  position: relative;
  float: right;
 }
+
+
+input[type="submit"] {
+  margin: 10px 0 !important;
+}
