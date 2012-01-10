@@ -1,0 +1,68 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Respostas para a dimensão <%= @dimension.number %></h2><div id="subtitle"><%=@dimension.name%></div>
+  <div class="action_items">
+    <%= render :partial => "salutation" %>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+      <h3>Responda cada uma das questões abaixo</h3>
+      <div class="panel_contents">
+        <% form_tag validar_revisao_path, :id => "answers" do  %>
+        <table>
+          <% current_indicator = -1%>
+          <% @questions.each do |question| %>
+            <% if question.question.indicator.number != current_indicator %>
+              <% current_indicator = question.question.indicator.number%>
+              <tr>
+                <td class="indicador" colspan="9">Indicador <%= "#{@dimension.number}.#{question.question.indicator.number} - #{question.question.indicator.name}" %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td rowspan="2"><%= "#{@dimension.number}.#{question.question.indicator.number}.#{question.question.number}" %></td>
+              <td colspan="8"><%= "#{question.text}" %></td>
+            </tr>
+            <tr>
+            <td>0 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].do_not_know.nil? ? @answers[question.id].do_not_know : "0" : "0" %></strong></td>
+              <td>1 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].one.nil? ? @answers[question.id].one : "0" : "0"%></strong></td>
+              <td>2 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].two.nil? ? @answers[question.id].two : "0" : "0"%></strong></td>
+              <td>3 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].three.nil? ? @answers[question.id].three : "0" : "0"%></strong></td>
+              <td>4 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].four.nil? ? @answers[question.id].four : "0" : "0"%></strong></td>
+              <td>5 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].five.nil? ? @answers[question.id].five : "0" : "0"%></strong></td>
+              <td>ø - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].do_not_answer.nil? ? @answers[question.id].do_not_answer : "0" : "0"%></strong></td>
+                <td>Quantidade de pessoas - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].quantity_of_people.nil? ? @answers[question.id].quantity_of_people : "0" : "0"%></strong></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td>Práticas consolidadas</td>
+            <td colspan="8">
+              <strong><%= !@practice.nil? ? !@practice.consolidated.nil? ? simple_format(@practice.consolidated) : "0" : "0"%></strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Práticas que precisam avançar</td>
+            <td colspan="8">
+              <strong><%= !@practice.nil? ? !@practice.to_be_improved.nil? ? simple_format(@practice.to_be_improved) : "0" : "0"%></strong>
+            </td>
+          </tr>
+        </table>
+            <%= hidden_field_tag :school, @school.id %>
+            <%= hidden_field_tag :service_level, @service_level.id %>
+            <%= hidden_field_tag :segment, @segment.id %>
+            <%= hidden_field_tag :name, @name %>
+            <%= hidden_field_tag :dimension, @dimension.number %>
+            <%= submit_tag 'modificar' %>
+            <%= submit_tag 'salvar' %>
+        <% end %>
+      </div> 
+    </div> 
+  </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "flow/steps", :locals => {:current_step => @dimension.number + 3} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

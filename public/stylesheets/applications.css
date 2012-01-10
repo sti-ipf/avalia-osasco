@@ -1,0 +1,112 @@
+#header {
+    height: 120px;
+    width: 100%;
+    background-image: url('../images/marca.png');
+    background-repeat:no-repeat;
+    background-position: left top;
+    text-align: center;
+}
+
+.right {
+ position: relative;
+ float: right;
+}
+
+
+input[type="submit"] {
+  margin: 10px 0 !important;
+}
+
+.ui-autocomplete {
+  background-color:white;
+  width:300px;
+}
+
+a#export{
+  box-shadow: 0 1px 2px #aaaaaa;
+  -moz-box-shadow: 0 1px 2px #aaaaaa;
+  -webkit-box-shadow:#AAAAAA 0 1px 2px;
+  background: #838a90;
+  background: -webkit-gradient(linear, left top, left bottom, from(#838a90), to(#414549));
+  background: -moz-linear-gradient(-90deg, #838a90, #414549);
+  border-bottom-left-radius:200px 200px;
+  border-bottom-right-radius:200px 200px;
+  border-bottom-style:none;
+  border-color:initial;
+  border-left-style:none;
+  border-right-style:none;
+  border-top-left-radius:200px 200px;
+  border-top-right-radius:200px 200px;
+  border-top-style:none;
+  border-width:initial;
+  box-shadow:#AAAAAA 0 1px 2px;
+  color:#EFEFEF;
+  cursor:pointer;
+  font-size:1em;
+  font-weight:bold;
+  margin-right:3px;
+  padding-bottom:0.5em;
+  padding-left:1.3em;
+  padding-right:1.4em;
+  padding-top:0.6em;
+  text-decoration:none;
+  text-shadow:black 0 1px 0;
+}
+
+#jGrowl .jGrowl-close{display:none; height:0; text-align:right;}
+
+#jGrowl .jGrowl-notification{
+  padding:5px !important;
+  border-radius: 0px !important;
+}
+
+.message,#jGrowl .notice,#jGrowl .alert{
+  border:medium none;
+  font-size:30px;
+  text-align:center;
+  color:white;
+  width:100%;
+  height:auto;
+  padding:0;
+}
+
+#jGrowl .notice{
+  background:none repeat scroll 0 0 green;
+  bottom:0;
+  color:white;
+  float:left;
+  font-size:35px;
+  height:auto;
+  opacity:0.9;
+  position:fixed;
+  width:100%;
+}
+
+#jGrowl .alert{
+  background:none repeat scroll 0 0 red;
+  bottom:0;
+  color:white;
+  float:left;
+  font-size:35px !important;
+  height:auto;
+  opacity:0.9;
+  position:fixed;
+  width:100%;
+}
+
+#jGrowl{
+  bottom:0;
+  color:white;
+  float:left;
+  font-size:35px !important;
+  height:auto;
+  opacity:0.8;
+  position:fixed;
+  width:100%;
+  text-align: center;
+}
+
+
+#consolidated_practices, #to_be_improved_practices{
+  width:100%;
+}

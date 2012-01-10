@@ -1,0 +1,26 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Relatórios</h2> 
+  <div class="action_items"></div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <div class="panel_contents"> 
+          Relatório(s) da escola:
+          <% school_name = @school.name.gsub(/[^a-z0-9çâãáàêẽéèîĩíìõôóòũûúù' ']+/i, '').gsub(' ', '_').downcase %>
+          <% @school.service_levels.each do |sl| %>
+            </br>
+            <%= link_to sl.name, "reports/#{sl.name.downcase}/#{school_name}_#{sl.name.upcase}.pdf" %>
+          <% end %>
+
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  
+</div> 
+<div id="footer"> 
+</div> 
+
+

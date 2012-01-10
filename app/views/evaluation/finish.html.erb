@@ -1,0 +1,23 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Certificado de finalização do preenchimento online da avaliação</h2>
+</div> <div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+      <h3>Imprima o certificado de finalização do preenchimento online da avaliação</h3>
+      <div class="panel_contents">
+        <p>Certificamos que o segmento gestores da unidade educacional  <%= @school.name %> concluiu com êxito o preenchimento online da Avaliação da Rede Municipal de Osasco 2011.</p>
+        <p>Nível de ensino: <%= @service_level.name%></p>
+        <p>Escola: <%= @school.name%></p>
+        <p>Segmento: <%= @segment.name%></p>
+        <p>Data início da resposta: <%= @evaluation_status.started_at.try(:strftime, "%d/%m/%Y %H:%M") %></p>
+        <p>Data fim da resposta: <%= @evaluation_status.finished_at.try(:strftime, "%d/%m/%Y %H:%M") %></p>
+        <input type="submit" value="imprimir" onClick="window.print();">
+        <%= link_to 'salvar em PDF', salvar_lista_presenca_path(:school => params["school"], :service_level => params["service_level"], :segment => params["segment"], :format => 'pdf'), :id => 'export' %>       
+        <input type="submit" value="sair" onClick="window.location = 'http://www.avaliaosasco.paulofreire.org/';">
+        
+      </div> 
+    </div> 
+  </div> 
+  </div> 
+</div> 

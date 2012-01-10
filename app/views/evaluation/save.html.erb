@@ -1,0 +1,38 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Respostas para a dimensão <%= @dimension.number %></h2><div id="subtitle"><%=@dimension.name%></div>
+  <div class="action_items">
+    <%= render :partial => "salutation" %>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <h3>Respostas salvas</h3>
+        <div class="panel_contents"> 
+          <% form_tag salvar_path do  %>
+            <p><h4>Respostas salvas referentes a instituição <strong><%= @school.name %></strong>, dimensão <strong><%= @dimension.number %></strong> e segmento <strong><%= @segment.name %></strong></h4>
+              <br>
+              <%= hidden_field_tag :school, @school.id %>
+              <%= hidden_field_tag :service_level, @service_level.id %>
+              <%= hidden_field_tag :segment, @segment.id %>
+              <%= hidden_field_tag :name, @name %>
+              <%= hidden_field_tag :dimension, @dimension.number %>
+              <% if last_dimension %>
+                <%= submit_tag 'ir para a lista de presença' %>
+              <% else %>
+                <%= submit_tag 'ir para próxima dimensão' %>
+              <% end %>
+              <%= submit_tag 'sair e continuar depois' %>
+            </p>
+          <% end %>
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "flow/steps", :locals => {:current_step => @dimension.number+ 3} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

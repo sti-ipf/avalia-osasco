@@ -1,0 +1,40 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Instruções sobre o processo de avaliação</h2> 
+    <div class="action_items">
+      <%= render 'salutation'%>
+    </div>
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <h3>Leia atentamente as instruções abaixo</h3>
+        <div class="panel_contents">
+          <% form_tag responder_dimensao_path do  %>
+            <p>A prática da avaliação educacional que se consolidou na rede municipal de Osasco vem contribuindo nos últimos anos para que a escola reveja os avanços e desafios do ano que passou e planeje novas ações para o ano que inicia.</p>
+            <p>Nesse movimento, destaca-se o notável empenho da rede em vivenciar um processo democrático e emancipador, buscando a ampla participação de todos os segmentos da comunidade escolar: familiares, funcionários, gestores, professores e educandos.</p>
+
+            <p>Com ouvidos atentos às contribuições da rede e inestimável colaboração do Grupo de Trabalho da Avaliação, preparamos a Avaliação 2011 da rede municipal de educação de Osasco com muito carinho.</p>
+
+            <p>Neste site, além do instrumental para preenchimento online, vocês encontrarão outros materiais e ferramentas para facilitar esta etapa da avaliação.</p>
+
+            <p>Esperamos que os aprendizados acumulados resultem num processo prazeroso e significativo para cada um dos participantes, e que os esforços desta empreitada gerem muitos frutos em 2012.</p>
+            <p>
+              <%= hidden_field_tag :school, @school.id %>
+              <%= hidden_field_tag :service_level, @service_level.id %>
+              <%= hidden_field_tag :segment, @segment.id %>
+              <%= hidden_field_tag :name, @name %>
+
+              <%= submit_tag 'iniciar respostas' %>&nbsp;
+            </p>
+          <% end %>
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "flow/steps", :locals => {:current_step => 3} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

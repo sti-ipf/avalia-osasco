@@ -1,0 +1,18 @@
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <h1>Avaliação da Rede Municipal de Educação de Osasco 2011</h1>
+  <div id="title_bar"> 
+    <h2 id="page_title">Certificado de finalização do preenchimento online da avaliação</h2>
+  </div> 
+
+  <p>Certificamos que o segmento gestores da unidade educacional  <%= @school.name %> concluiu com êxito o preenchimento online da Avaliação da Rede Municipal de Osasco 2011.</p>
+  <p>Nível de ensino: <%= @service_level.name%></p>
+  <p>Escola: <%= @school.name%></p>
+  <p>Segmento: <%= @segment.name%></p>
+  <p>Data início da resposta: <%= @evaluation_status.started_at.try(:strftime, "%d/%m/%Y %H:%m") %></p>
+  <p>Data fim da resposta: <%= @evaluation_status.finished_at.try(:strftime, "%d/%m/%Y %H:%m") %></p>
+
+</body>

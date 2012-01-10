@@ -1,0 +1,31 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Lista de presença</h2>
+  <div class="action_items">
+    <%= render :partial => "salutation" %>
+  </div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+      <h3>Preencha a lista de presença</h3>
+      <div class="panel_contents">
+        <% form_tag salvar_lista_presenca_path, :multipart => true, :method => 'POST' do  %>
+          <p style="font-size:20px;">A Secretaria de Educação de Osasco orienta que as listas de presença sejam guardadas pela unidade escolar e fiquem à disposição para consulta do supervisor.</p>
+          <%= hidden_field_tag :school, @school.id %>
+          <%= hidden_field_tag :service_level, @service_level.id %>
+          <%= hidden_field_tag :segment, @segment.id %>
+          <%= hidden_field_tag :name, @name %>
+          <%= hidden_field_tag :last_presence_idx, 20 %>
+          <%= submit_tag 'Finalizar avaliação' %>
+        <% end %>
+      </div> 
+    </div> 
+  </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "flow/steps", :locals => {:current_step => @steps.size - 1} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

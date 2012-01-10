@@ -1,0 +1,21 @@
+<div class="panel sidebar_section" id="active admin demo_sidebar_section">
+  <h3>Etapas do processo</h3>
+  <div class="panel_contents">
+    <div id="steps">
+      <ul id="tabs">
+        <% @steps.each_index do |i|
+          step = @steps[i]
+          style = ""
+          if current_step.to_i == i
+            style = "current"
+          elsif current_step.to_i > i
+            style = "past"
+          else
+            style = "next"
+          end %>
+          <li class="<%= style %>" id="dashboard"><a href="#" alt="<%= step[0]%>" title = "<%= step[0]%>"><%= step[1]%></a></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

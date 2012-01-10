@@ -1,0 +1,25 @@
+<table>
+  <th></th>
+  <%@segments.each do |s|%>
+    <th>
+      <%=s%>
+    </th>
+  <%end%>
+
+  <%@data.each do |dd|%>
+    <tr>
+      <%dd.each do |d|%>
+        <% if d.class == String %>
+          <td><%=d%></td>
+        <% elsif d < 30 %>
+          <td style="background-color:red"><%="#{d}%"%></td>
+        <% elsif d == 100 %>
+          <td style="background-color:green"><%="#{d}%"%></td>
+        <% else %>
+          <td style="background-color:yellow"><%="#{d}%"%></td>
+        <%end%>
+      <%end%>
+    </tr>
+  <%end%>
+
+</table>

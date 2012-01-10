@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html> 
+  <head> 
+    <title>Compreender - Sistema de avaliação 2011</title>
+    <%= stylesheet_link_tag :all %>
+    <%= javascript_include_tag "jquery.js" %>
+    <%= javascript_include_tag "jquery_ujs.js" %>
+    <%= javascript_include_tag "autocomplete-rails.js" %>
+    <%= javascript_include_tag "jquery-ui.min.js" %>
+    <%= javascript_include_tag "livevalidation_standalone.compressed.js" %>
+    <%= javascript_include_tag "application.js" %>
+    <%= javascript_include_tag "jquery.infieldlabel.min.js", 'jquery.jgrowl_minimized.js' %>
+
+    <%= csrf_meta_tag %>
+  </head> 
+  <body> 
+    <div id="wrapper"> 
+      <div id="header">
+        <div class="right"><!--img alt="Lateral" src="/images/lateral.jpg?1312923745"--></div>
+        <h1 id="site_title">Avaliação da Rede Municipal de Educação de Osasco 2011</h1>
+        <p id="utility_nav"></p>
+      </div> 
+      <%= flash_messages.html_safe %>
+      <%= yield %>
+      <div id="footer"> 
+      </div> 
+    </div> 
+  </body> 
+</html> 

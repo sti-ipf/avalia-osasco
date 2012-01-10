@@ -1,0 +1,37 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Confirmação segmento</h2> 
+  <div class="action_items"></div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <h3>Digite seu nome</h3> 
+        <div class="panel_contents"> 
+          <% form_tag responder_dimensao_path do  %>
+            <p>Nome:<br>
+              <%= text_field_tag :name %>
+            </p>
+            <script type="text/javascript" charset="utf-8"> 
+              $(document).ready(function() {
+                var name = new LiveValidation('name', {validMessage: " ", failureMessage: " Nome obrigatório"});
+                name.add( Validate.Presence, {failureMessage: " Nome obrigatório", validMessage: " "});
+              });
+            </script> 
+            <p>
+              <%= hidden_field_tag :school, @school.id %>
+              <%= hidden_field_tag :service_level, @service_level.id %>
+              <%= hidden_field_tag :segment, @segment.id %>
+              <%= submit_tag 'iniciar respostas' %>&nbsp;
+            </p>
+          <% end %>
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "flow/steps", :locals => {:current_step => 2} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

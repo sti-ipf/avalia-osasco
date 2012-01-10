@@ -1,0 +1,31 @@
+<div id="title_bar"> 
+  <h2 id="page_title">Confirmação segmento</h2> 
+  <div class="action_items"></div> 
+</div> 
+<div class="with_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <h3>Digite seu nome</h3> 
+        <div class="panel_contents"> 
+          <% form_tag "/instructions" do  %>
+            <p>Nome:<br>
+              <%= text_field_tag :name %>
+            </p>
+            <p>
+              <%= hidden_field_tag :institution, @institution %>
+              <%= hidden_field_tag :institution_type, @institution_type %>
+              <%= hidden_field_tag :segment, @segment %>
+              <%= submit_tag 'prosseguir' %>&nbsp;
+            </p>
+          <% end %>
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  <div id="sidebar">
+    <%= render :partial => "steps", :locals => {:current_step => 2} %>
+  </div>
+</div> 
+<div id="footer"> 
+</div> 

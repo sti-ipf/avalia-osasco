@@ -1,0 +1,39 @@
+
+<div id="title_bar"> 
+  <h2 id="page_title">Autenticação</h2> 
+  <div class="action_items"></div> 
+</div> 
+<div class="without_sidebar" id="content"> 
+  <div id="main_content_wrapper"> 
+    <div id="main_content"> 
+      <div class="panel dashboard_section"> 
+        <h3>Selecione a escola e digite sua senha</h3> 
+        <div class="panel_contents"> 
+          <% form_tag autenticar_path do %>
+            <p>
+              <%= label_tag :school_name, "Digite o nome da sua unidade escolar no campo de preenchimento automático, ou, se preferir, selecione-a na lista abaixo" %><br />
+              <%= autocomplete_field_tag :school_name, '', autocomplete_school_name_evaluation_index_path, :id_element => '#school' %>
+              <%= hidden_field_tag :school_id, '' %>
+            </p>
+            <p>
+              <%= label_tag :school_name, "" %><br />
+              <%= select_tag "school", options_for_select(@schools), :size => 10 %></p>
+            </p>
+            <p>
+              <%= label_tag :password, "Senha" %><br />
+              <%= password_field_tag "password" %></p>
+              <p><%= submit_tag 'entrar' %></p>
+              <% end %>
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+</div> 
+<% else %>
+<div id="title_bar"> 
+<h2 id="page_title">Encerrado o preenchimendo da avaliação.</h2> 
+</div> 
+
+
