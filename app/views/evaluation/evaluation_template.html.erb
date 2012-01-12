@@ -1,4 +1,4 @@
-<table>
+<table id='evaluation_template'>
   <thead>
     <th>Dimensão</th>
     <th>Questão</th>
@@ -26,3 +26,15 @@
     <% end %>
   </tbody>
 </table>
+
+<script>
+  /*<![CDATA[*/
+
+  jQuery(document).ready(function($)
+  {
+    $('#evaluation_template').tableScroll({height:400});
+
+  });
+
+  /*]]>*/
+</script>
