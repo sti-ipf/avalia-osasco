@@ -1,0 +1,28 @@
+<table>
+  <thead>
+    <th>Dimensão</th>
+    <th>Questão</th>
+    <th>Não sabe</th>
+    <th>Não respondeu</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+  </thead>
+  <tbody>
+    <% @answers.each do |a| %>
+      <tr>
+        <td><%= a.dimension_number %></td>
+        <td><%= a.question_number %></td>
+        <td><%= a.do_not_know %></td>
+        <td><%= a.do_not_answer %></td>
+        <td><%= a.one %></td>
+        <td><%= a.two %></td>
+        <td><%= a.three %></td>
+        <td><%= a.four %></td>
+        <td><%= a.five %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

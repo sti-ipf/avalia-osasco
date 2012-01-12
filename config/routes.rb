@@ -14,6 +14,7 @@ IpfOsascoAvaliacao2011::Application.routes.draw do
   match "salvar", :to => 'evaluation#save'
   match "lista_presenca", :to => 'evaluation#presence_list'
   match "salvar_lista_presenca", :to => 'evaluation#save_presence_list'
+  match "gabarito", :to => 'evaluation#evaluation_template', :as => 'template'
 
   match "passwords/generate_all_letters", :to => 'passwords#generate_all_letters'
   match "passwords/generate_creche_conveniadas_letters", :to => 'passwords#generate_creche_conveniadas_letters'

@@ -1,6 +1,17 @@
 class EvaluationController < ApplicationController
   autocomplete :school, :name, :full => true
   
+  def evaluation_template
+    @answers = Answer.find_by_sql("
+      SELECT qt.dimension_number, qt.question_number, a.do_not_know, a.do_not_answer, 
+        a.one, a.two, a.three, a.four, a.five FROM answers a
+      INNER JOIN question_texts qt ON qt.id = a.question_text_id
+      INNER JOIN segments s ON s.id = a.segment_id
+      WHERE a.school_id = #{params[:school_id]}
+      AND a.segment_id = #{params[:segment_id]}
+    ")
+  end
+
   def index
     @schools = School.all.collect{ |school| [school.name, school.id] }
   end

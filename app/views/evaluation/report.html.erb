@@ -13,6 +13,22 @@
             </br>
             <%= link_to sl.name, "reports/#{sl.name.downcase}/#{school_name}_#{sl.name.upcase}.pdf" %>
           <% end %>
+          <br>
+          <br>
+          Gabaritos da escola:
+          <ul>
+            <% @school.service_levels.each do |sl| %>
+              <ul>
+                <li> <%= sl.name %> </li>
+                <ul>
+                  <% sl.segments.each do |s| %>
+                    <li> <%= link_to s.name, template_path(:school_id => @school.id, :segment_id => s.id) %> </li>
+                  <% end %>
+                </ul>
+              </ul>
+              </br>
+            <% end %>
+          </ul>
 
         </div> 
       </div> 
