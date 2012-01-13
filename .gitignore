@@ -9,3 +9,6 @@ public/system
 public/stylesheets/all.css
 **.orig
 .rvmrc
+public/reports
+lib/templates/*.jpg
+
