@@ -142,7 +142,7 @@ HEREDOC
       end
       html_code << <<-HEREDOC
         <th>Média geral</br> da questão</th>
-        <th>Média por</br> agrupamento</th>
+        
         <th>Média da</br> rede</th>
 HEREDOC
       html_code << '</tr>'
@@ -161,7 +161,8 @@ HEREDOC
             <th>Não respondeu</br>(Ø)</th>
             <th>média</th>
             <th>Não respondeu</br>(Ø)</th>
-            <th></th>
+
+
             <th></th>
             <th></th>
           </tr>

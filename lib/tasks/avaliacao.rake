@@ -43,7 +43,7 @@ namespace :tasks do
     #     )"
     # )
     schools = School.find_by_sql(
-      "SELECT * FROM schools WHERE id IN (select school_id from schools_service_levels where service_level_id IN (1, 2, 3, 4))"
+      "SELECT * FROM schools WHERE id IN (select school_id from schools_service_levels where service_level_id IN (5))"
     )
     schools.each do |s|
       s.service_levels.each do |sl|
@@ -53,7 +53,7 @@ namespace :tasks do
         report.generate_question_tables(s.id, sl.id)
         report.generate_practice_tables(s.id, sl.id)
         report.generate_index_table(s.id, sl.id)
-        report.generate_file(s.id, sl.id)
+        #report.generate_file(s.id, sl.id)
       end      
       # s_id = 32#70#68
       # service_level = 4#4#3
