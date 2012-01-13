@@ -50,9 +50,9 @@ namespace :tasks do
         puts s.id
         report = IPF::Report.new
         report.generate_graphics(s.id, sl.id)
-        report.generate_question_tables(s.id, sl.id)
-        report.generate_practice_tables(s.id, sl.id)
-        report.generate_index_table(s.id, sl.id)
+        #report.generate_question_tables(s.id, sl.id)
+        #report.generate_practice_tables(s.id, sl.id)
+        #report.generate_index_table(s.id, sl.id)
         report.generate_file(s.id, sl.id)
       end      
       # s_id = 32#70#68
