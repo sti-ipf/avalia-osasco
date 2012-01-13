@@ -73,6 +73,8 @@ module IPF
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares', 'Educandos']
       elsif service_level_id == 4
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Educandos']
+      elsif service_level_id == 5
+        @segments = ['Trabalhadores', 'Gestores', 'Familiares']
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
