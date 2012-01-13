@@ -104,6 +104,8 @@ module IPF
 
       if @type == "EMEF"
         initial_pages_total = 10
+      elsif @type == "BURJATO"
+        initial_pages_total = 9
       else
         initial_pages_total = 10
       end
