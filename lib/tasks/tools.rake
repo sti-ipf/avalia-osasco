@@ -8,6 +8,7 @@ INDIVIDUAL_REPORT_EMEF = File.expand_path "#{RAILS_ROOT}/lib/original_files/indi
 INDIVIDUAL_REPORT_EJA = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_eja.pdf"
 INDIVIDUAL_REPORT_EMEI = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_emei.pdf"
 INDIVIDUAL_REPORT_BURJATO = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_burjato.pdf"
+INDIVIDUAL_REPORT_CONVENIADA = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_conveniada.pdf"
 COVER = File.expand_path "#{RAILS_ROOT}/lib/original_files/capa.pdf"
 EXPEDIENTE = File.expand_path "#{RAILS_ROOT}/lib/original_files/expediente.pdf"
 TEMPLATE_DIRECTORY= File.expand_path "#{RAILS_ROOT}/lib/templates"
@@ -36,6 +37,9 @@ namespace :tools do
           report = INDIVIDUAL_REPORT_EMEI
         when 'BURJATO'
           report = INDIVIDUAL_REPORT_BURJATO
+        when 'CRECHE CONVENIADA'
+          report = INDIVIDUAL_REPORT_CONVENIADA
+          type = 'CONVENIADA'
       end
 
       (page_start..page_end).each do |i|
