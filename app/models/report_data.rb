@@ -92,22 +92,22 @@ class ReportData < ActiveRecord::Base
     question_numbers.each do |q|
       table_data[q.question_number] = []
       school = School.find(school_id)
-      group_id = Group.find_by_sql("SELECT id FROM groups 
-        WHERE ID IN (SELECT group_id FROM groups_schools WHERE school_id = #{school.id})
-        AND service_level_id = #{service_level_id}").first.id
+      # group_id = Group.find_by_sql("SELECT id FROM groups 
+      #   WHERE ID IN (SELECT group_id FROM groups_schools WHERE school_id = #{school.id})
+      #   AND service_level_id = #{service_level_id}").first.id
       answers = Answer.find_by_sql("SELECT *, s.name as segment_name FROM answers a
         INNER JOIN question_texts qt ON a.question_text_id = qt.id
         INNER JOIN segments s ON a.segment_id = s.id
         WHERE a.school_id = #{school_id}
         AND s.id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
         AND qt.question_number = '#{q.question_number}'")
-      group_answers = Answer.find_by_sql("
-        SELECT *, s.name as segment_name FROM answers a
-        INNER JOIN question_texts qt ON a.question_text_id = qt.id
-        INNER JOIN segments s ON a.segment_id = s.id
-        WHERE a.school_id IN (SELECT school_id FROM groups_schools WHERE group_id = #{group_id})
-        AND s.id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
-        AND qt.question_number = '#{q.question_number}'")
+      # group_answers = Answer.find_by_sql("
+      #   SELECT *, s.name as segment_name FROM answers a
+      #   INNER JOIN question_texts qt ON a.question_text_id = qt.id
+      #   INNER JOIN segments s ON a.segment_id = s.id
+      #   WHERE a.school_id IN (SELECT school_id FROM groups_schools WHERE group_id = #{group_id})
+      #   AND s.id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
+      #   AND qt.question_number = '#{q.question_number}'")
 
       schools_answers = Answer.find_by_sql("
         SELECT *, s.name as segment_name FROM answers a
@@ -125,10 +125,10 @@ class ReportData < ActiveRecord::Base
         total += a.media if a.media.class != String
       end
 
-      group_total = 0
-      group_answers.each do |a|
-        group_total += a.media if a.media.class != String
-      end
+      # group_total = 0
+      # group_answers.each do |a|
+      #   group_total += a.media if a.media.class != String
+      # end
 
       schools_total = 0
       schools_answers.each do |a|
@@ -140,11 +140,11 @@ class ReportData < ActiveRecord::Base
         table_data[q.question_number]['Média geral da questão'] = (total/answers.count).try(:round, 1)
       end
 
-      if (group_answers.count == 0 || group_total == 0)
-        table_data[q.question_number]['Média por agrupamento'] = '-'
-      else
-        table_data[q.question_number]['Média por agrupamento'] = (group_total/group_answers.count).try(:round, 1)
-      end
+      # if (group_answers.count == 0 || group_total == 0)
+      #   table_data[q.question_number]['Média por agrupamento'] = '-'
+      # else
+      #   table_data[q.question_number]['Média por agrupamento'] = (group_total/group_answers.count).try(:round, 1)
+      # end
 
       if (schools_answers.count == 0 || schools_total == 0)
         table_data[q.question_number]['Média da rede'] = '-'
@@ -160,9 +160,9 @@ class ReportData < ActiveRecord::Base
     school = School.find(school_id)
     dimension = Dimension.first(:conditions => "number = #{dimension_number} AND service_level_id = #{service_level_id}")
     indicator = Indicator.first(:conditions => "number = #{indicator_number} AND dimension_id = #{dimension.id}")
-    group_id = Group.find_by_sql("SELECT id FROM groups 
-        WHERE ID IN (SELECT group_id FROM groups_schools WHERE school_id = #{school.id})
-        AND service_level_id = #{service_level_id}").first.id
+    # group_id = Group.find_by_sql("SELECT id FROM groups 
+    #     WHERE ID IN (SELECT group_id FROM groups_schools WHERE school_id = #{school.id})
+    #     AND service_level_id = #{service_level_id}").first.id
     school_data = ReportData.find_by_sql("
       SELECT s.name, media  as calculated_media FROM report_data r
       INNER JOIN dimensions d ON r.dimension_id = d.id
@@ -182,26 +182,26 @@ class ReportData < ActiveRecord::Base
       AND media >= 0 AND media <= 5
       GROUP BY s.name")
     
-    group_averages = ReportData.find_by_sql("
-      SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
-      INNER JOIN segments s ON s.id = r.segment_id
-      WHERE dimension_id IN (SELECT id FROM dimensions WHERE number = #{dimension_number})
-      AND indicator_id IN (SELECT id FROM indicators WHERE number = #{indicator_number})
-      AND segment_id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
-      AND school_id IN (SELECT school_id FROM groups_schools WHERE group_id = #{group_id})
-      AND media >= 0 AND media <= 5
-      GROUP BY s.name")
+    # group_averages = ReportData.find_by_sql("
+    #   SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
+    #   INNER JOIN segments s ON s.id = r.segment_id
+    #   WHERE dimension_id IN (SELECT id FROM dimensions WHERE number = #{dimension_number})
+    #   AND indicator_id IN (SELECT id FROM indicators WHERE number = #{indicator_number})
+    #   AND segment_id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
+    #   AND school_id IN (SELECT school_id FROM groups_schools WHERE group_id = #{group_id})
+    #   AND media >= 0 AND media <= 5
+    #   GROUP BY s.name")
       
 
     labels = get_labels(school_data)
 
     school_values = get_segments_values_for_dimension_graphic(labels, school_data)
-    group_values = get_segments_values_for_dimension_graphic(labels, group_averages)
+    # group_values = get_segments_values_for_dimension_graphic(labels, group_averages)
     schools_values = get_segments_values_for_dimension_graphic(labels, schools_averages)
 
     values = []
     values << ["Média UE", school_values]
-    values << ["Média Agrupamento", group_values]
+    # values << ["Média Agrupamento", group_values]
     values << ["Média Geral da Rede", schools_values]
 
 
@@ -279,9 +279,9 @@ class ReportData < ActiveRecord::Base
   def self.dimension_graphic(school_id, service_level_id, dimension_number)
     school = School.find(school_id)
     dimension = Dimension.first(:conditions => "number = #{dimension_number} AND service_level_id = #{service_level_id}")
-    group_id = Group.find_by_sql("SELECT id FROM groups 
-        WHERE ID IN (SELECT group_id FROM groups_schools WHERE school_id = #{school.id})
-        AND service_level_id = #{service_level_id}").first.id
+    # group_id = Group.find_by_sql("SELECT id FROM groups 
+    #     WHERE ID IN (SELECT group_id FROM groups_schools WHERE school_id = #{school.id})
+    #     AND service_level_id = #{service_level_id}").first.id
     school_data = ReportData.find_by_sql("
       SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
       INNER JOIN segments s ON s.id = r.segment_id
@@ -297,24 +297,24 @@ class ReportData < ActiveRecord::Base
       AND media >= 0 AND media <= 5
       GROUP BY s.name")
     
-    group_averages = ReportData.find_by_sql("
-      SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
-      INNER JOIN segments s ON s.id = r.segment_id
-      WHERE dimension_id IN (SELECT id FROM dimensions WHERE number = #{dimension_number})
-      AND school_id IN (SELECT school_id FROM groups_schools WHERE group_id = #{group_id})
-      AND segment_id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
-      AND media >= 0 AND media <= 5
-      GROUP BY s.name")
+    # group_averages = ReportData.find_by_sql("
+    #   SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
+    #   INNER JOIN segments s ON s.id = r.segment_id
+    #   WHERE dimension_id IN (SELECT id FROM dimensions WHERE number = #{dimension_number})
+    #   AND school_id IN (SELECT school_id FROM groups_schools WHERE group_id = #{group_id})
+    #   AND segment_id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
+    #   AND media >= 0 AND media <= 5
+    #   GROUP BY s.name")
 
     labels = get_labels(school_data)
 
     school_values = get_segments_values_for_dimension_graphic(labels, school_data)
-    group_values = get_segments_values_for_dimension_graphic(labels, group_averages)
+    # group_values = get_segments_values_for_dimension_graphic(labels, group_averages)
     schools_values = get_segments_values_for_dimension_graphic(labels, schools_averages)
 
     values = []
     values << ["Média UE", school_values]
-    values << ["Média Agrupamento", group_values]
+    # values << ["Média Agrupamento", group_values]
     values << ["Média Geral da Rede", schools_values]
 
     puts values.inspect
