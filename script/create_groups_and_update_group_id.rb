@@ -6,7 +6,7 @@ end
 
 conn = ActiveRecord::Base.connection
 
-ServiceLevel.all(:conditions => "id <= 4").each do |s|
+ServiceLevel.all(:conditions => "id IN (1, 2, 3, 4, 6)").each do |s|
   (1..4).each do |i|
     Group.create(:name => "Grupo #{i}", :service_level_id => s.id)
   end
@@ -366,3 +366,67 @@ schools = School.find_by_sql("
             )")
 
 create_groups(schools, group)
+
+#CONVENIADAS
+
+group = Group.first(:conditions => "service_level_id = 6 AND name = 'Grupo 1'")
+
+schools = School.find_by_sql("
+          SELECT id FROM schools 
+          WHERE name IN(
+            'ASSOCIAçãO DAS MãES UNIDAS DO NOVO OSASCO – AMUNO I',
+            'ASSOCIAçãO BENEFICENTE GOTAS DE AMOR',
+            'CENTRO SOCIAL SANTO ANTONIO',
+            'ASSOCIAçãO DAS MULHERES PELA EDUCAçãO – NúCLEO COMEçANDO APRENDER',
+            'ASSOCIAçãO DAS MULHERES PELA EDUCAçãO – NúCLEO MENINO JESUS'
+            )")
+
+create_groups(schools, group)
+
+
+group = Group.first(:conditions => "service_level_id = 6 AND name = 'Grupo 2'")
+
+schools = School.find_by_sql("
+          SELECT id FROM schools 
+          WHERE name IN(
+            'CENTRO DE PARTICIPAçãO POPULAR DO JARDIM VELOSO',
+            'ASSOCIAçãO DAS MãES DO JARDIM VELOSO',
+            'ASSOCIAçãO DAS MULHERES PELA EDUCAçãO – NúCLEO AVENTURA DO APRENDER',
+            'ASSOCIAçãO DAS MULHERES PELA EDUCAçãO – NúCLEO BRILHO DO APRENDER',
+            'ASSOCIAçãO DAS MULHERES PELA EDUCAçãO – NúCLEO RECANTO DO APRENDER',
+            'ASSOCIAçãO DAS MULHERES EM DEFESA à CRIANçA HELENA MARIA',
+            'ASSOCIAçãO DAS MULHERES EM DEFESA à CRIANçA – TARCILA DO AMARAL',
+            'ASCC – ASSOCIAçãO SOLIDáRIA CRESCENDO CIDADã I - AçUCARá',
+            'ASCC – ASSOCIAçãO SOLIDáRIA CRESCENDO CIDADã II – BELA VISTA',
+            'ASSOCIAçãO DE EDUCAçãO POPULAR PIXOTE I'
+            )")
+
+create_groups(schools, group)
+
+group = Group.first(:conditions => "service_level_id = 6 AND name = 'Grupo 3'")
+
+schools = School.find_by_sql("
+          SELECT id FROM schools 
+          WHERE name IN(
+            'ASSOCIAçãO FAçA UMA CRIANçA SORRIR DE OSASCO E REGIãO – NúCLEO I',
+            'ASSOCIAçãO FAçA UMA CRIANçA SORRIR DE OSASCO E REGIãO – NúCLEO II ALFACRISO',
+            'ASSOCIAçãO DAS MãES UNIDAS DO NOVO OSASCO – AMUNO II',
+            'ASSOCIAçãO PADRE DOMINGOS BARBé',
+            'ASSOCIAçãO DAS MULHERES PELA EDUCAçãO – NúCLEO CASA DO APRENDER',
+            'ASSOCIAçãO DE PROTEçãO à MATERNIDADE E à ADOLESCêNCIA (ASPROMATINA) – PADRE DOMINGOS TONINI',
+            'ASSOCIAçãO DE PROTEçãO à MATERNIDADE E à ADOLESCêNCIA (ASPROMATINA) – PADRE GUERRINO'
+            )")
+
+create_groups(schools, group)
+
+group = Group.first(:conditions => "service_level_id = 6 AND name = 'Grupo 4'")
+
+schools = School.find_by_sql("
+          SELECT id FROM schools 
+          WHERE name IN(
+            'ASSOCIAçãO UNIãO DE MãES DO JARDIM DAS FLORES',
+            'ASSOCIAçãO QUINTAL MáGICO',
+            'ASSOCIAçãO DAS MULHERES PELA EDUCAçãO – NúCLEO CECíLIA MEIRELES'
+            )")
+create_groups(schools, group)
+

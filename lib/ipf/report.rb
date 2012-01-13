@@ -55,6 +55,7 @@ module IPF
           dimensions_total = 11
         when "CRECHE CONVENIADA"
           dimensions_total = 10
+          @type = "CONVENIADA"
       end
 
       school = School.find(school_id)
