@@ -10,6 +10,7 @@ INDIVIDUAL_REPORT_EMEI = File.expand_path "#{RAILS_ROOT}/lib/original_files/indi
 INDIVIDUAL_REPORT_BURJATO = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_burjato.pdf"
 INDIVIDUAL_REPORT_CONVENIADA = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_conveniadas.pdf"
 COVER = File.expand_path "#{RAILS_ROOT}/lib/original_files/capa.pdf"
+COVER_BURJATO = File.expand_path "#{RAILS_ROOT}/lib/original_files/capa_burjato.pdf"
 EXPEDIENTE = File.expand_path "#{RAILS_ROOT}/lib/original_files/expediente.pdf"
 TEMPLATE_DIRECTORY= File.expand_path "#{RAILS_ROOT}/lib/templates"
 TEMP_DIRECTORY = File.expand_path "#{RAILS_ROOT}/tmp"
@@ -51,6 +52,8 @@ namespace :tools do
       system "pdftops -eps -f 1 -l 1 #{COVER} #{eps_file}.eps 1> /dev/null 2> /dev/null"
       eps_file = File.join(TEMPLATE_DIRECTORY,"expediente")
       system "pdftops -eps -f 1 -l 1 #{EXPEDIENTE} #{eps_file}.eps 1> /dev/null 2> /dev/null"
+      eps_file = File.join(TEMPLATE_DIRECTORY,"capa_burjato")
+      system "pdftops -eps -f 1 -l 1 #{COVER_BURJATO} #{eps_file}.eps 1> /dev/null 2> /dev/null"
 
     end
 

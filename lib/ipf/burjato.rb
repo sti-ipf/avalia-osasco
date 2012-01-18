@@ -89,7 +89,7 @@ module IPF
 
       school_name = "#{school.report_name} (#{@type})"
 
-      ['capa', 'expediente'].each do |s|
+      ['capa_burjato', 'expediente'].each do |s|
         doc.image File.join(TEMPLATE_DIRECTORY, "#{s}.eps")
         if s == 'capa'
           t_y = [10.7, 10, 9.3]

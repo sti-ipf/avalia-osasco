@@ -244,11 +244,11 @@ module IPF
 
         doc.image next_page_file(doc)
         file = File.join(TEMPLATE_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_praticas.jpg")
-        doc.image file, :x => 1.6, :y => 9, :zoom => 50
+        doc.image file, :x => 1.6, :y => 20.5, :zoom => 50
         doc.next_page 
 
-        doc.image next_page_file(doc)
-        doc.next_page 
+        # doc.image next_page_file(doc)
+        # doc.next_page 
         
       end
 

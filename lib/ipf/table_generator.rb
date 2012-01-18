@@ -269,7 +269,7 @@ HEREDOC
         <style type="text/css">
           #container{
             float: left;
-            height: 1000px;
+            height: 350px;
             position: absolute;
           }
           table {border:1px solid black; border-collapse: collapse;}
