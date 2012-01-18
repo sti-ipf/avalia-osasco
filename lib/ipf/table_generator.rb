@@ -24,14 +24,18 @@ module IPF
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Educandos']
       elsif service_level_id == 5
         @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+      elsif service_level_id == 6
+        @segments = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
-      if service_level_id == 3
+
+      if [3, 6].include?(service_level_id)
         educandos = true
       else
         educandos = false
       end
+
       build_question_table_html(questions, data, educandos)
       html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_#{@dimension_number}_questoes.html"))
       convert_html_to_jpg(html_file, "#{@school_id}_#{@service_level_id}_#{@dimension_number}_questoes")
@@ -49,11 +53,19 @@ module IPF
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Educandos']
       elsif service_level_id == 5
         @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+      elsif service_level_id == 6
+        @segments = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares'] 
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
+
+      if [3, 6].include?(service_level_id)
+        educandos = true
+      else
+        educandos = false
+      end
       
-      build_index_table_html(dimensions, data, false)
+      build_index_table_html(dimensions, data, educandos)
       html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_index.html"))
       convert_html_to_jpg(html_file, "#{@school_id}_#{@service_level_id}_index")
     end
@@ -85,6 +97,12 @@ module IPF
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
 
+      if [3, 6].include?(service_level_id)
+        educandos = true
+      else
+        educandos = false
+      end
+
       @segments.each do |s|
         data[s] = Hash.new
         data[s]['consolidated'] = []
@@ -107,7 +125,7 @@ module IPF
 
       end
       
-      build_practices_table_html(data, rows_size, false)
+      build_practices_table_html(data, rows_size, educandos)
       html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_#{@dimension_number}_praticas.html"))
       convert_html_to_jpg(html_file, "#{@school_id}_#{@service_level_id}_#{@dimension_number}_praticas")
     end

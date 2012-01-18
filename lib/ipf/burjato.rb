@@ -1,5 +1,5 @@
 module IPF
-  class Report
+  class Burjato
 
     TEMPLATE_DIRECTORY= File.expand_path "#{RAILS_ROOT}/lib/templates"
     TEMP_DIRECTORY = File.expand_path "#{RAILS_ROOT}/tmp"
@@ -11,10 +11,10 @@ module IPF
       dimensions.each do |d|
         puts "GERANDO GRÁFICOS PARA A DIMENSAO #{d.number}"
         DimensionData.generate_graphic_per_dimension(school_id, service_level_id, d.number)
-        ReportData.dimension_graphic(school_id, service_level_id, d.number)
+        ReportData.dimension_graphic_burjato(school_id, service_level_id, d.number)
         indicators = Indicator.all(:conditions => "dimension_id = #{d.id}", :order => "number ASC").collect(&:number)
         indicators.each do |i|
-          ReportData.indicator_graphic(school_id, service_level_id, d.number, i)
+          ReportData.indicator_graphic_burjato(school_id, service_level_id, d.number, i)
         end
       end
     end
