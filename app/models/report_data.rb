@@ -21,7 +21,8 @@ class ReportData < ActiveRecord::Base
     :top_label_size   => 10
   }
 
-  SEGMENTS_ORDER = ['Professores', 'Gestores', 'Funcionários', 'Familiares', 'Educandos']
+  #SEGMENTS_ORDER = ['Professores', 'Gestores', 'Funcionários', 'Familiares', 'Educandos']
+  SEGMENTS_ORDER = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
 
   COLORS = ['#FFC540', '#6786B4', '#72AE6E']
 
@@ -226,6 +227,9 @@ class ReportData < ActiveRecord::Base
     
     label_number = 0
     labels.each do |l|
+      if l == 'Coordenadores pedagógicos'
+        l = 'Coord. ped.'
+      end
       g.labels[label_number] = l
       label_number += 1
     end
@@ -340,6 +344,11 @@ class ReportData < ActiveRecord::Base
     
     label_number = 0
     labels.each do |l|
+
+      if l == 'Coordenadores pedagógicos'
+        l = 'Coord. ped.'
+      end
+      puts l
       g.labels[label_number] = l
       label_number += 1
     end

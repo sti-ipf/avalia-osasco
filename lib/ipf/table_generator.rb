@@ -10,6 +10,7 @@ module IPF
       @service_level_id = service_level_id
       @dimension_number = dimension_number
       data = ReportData.question_table(school_id, service_level_id, dimension_number)
+
       question_numbers = QuestionText.find_by_sql("
         SELECT DISTINCT question_number FROM question_texts
         WHERE dimension_id IN (SELECT id FROM dimensions WHERE service_level_id = #{service_level_id} AND number = #{dimension_number})
@@ -164,6 +165,11 @@ module IPF
 HEREDOC
 
       @segments.each do |d|
+        if @service_level_id == 6
+          if d == 'Gestores'
+            d = 'Gerentes'
+          end
+        end
         html_code << "<th colspan = 2> #{d} </th>"
       end
       html_code << <<-HEREDOC
@@ -214,9 +220,14 @@ HEREDOC
         html_code << '<tr>'
         html_code << "<td>#{q}</td>"
         @segments.each do |s|
-          if data[q].nil? || data[q][s].nil?
+          segment = Segment.first(:conditions => "name = '#{s}' AND service_level_id = #{@service_level_id}")
+          question_text = QuestionText.first(:conditions => "question_number = '#{q}' AND segment_id = #{segment.id}")
+          if question_text.nil?
             html_code << "<td>-</td>"
             html_code << "<td class='nr'>-</td>"
+          elsif data[q].nil? || data[q][s].nil?
+            html_code << "<td>S/R</td>"
+            html_code << "<td class='nr'>S/R</td>"
           else
             html_code << "<td>#{data[q][s].first}</td>"
             html_code << "<td class='nr'>#{data[q][s].last}</td>"
@@ -286,8 +297,14 @@ HEREDOC
       
       @segments.each do |s|
         rows_size.times do |i|
+          ss = s
+          if @service_level_id == 6
+            if ss == 'Gestores'
+              ss = 'Gerentes'
+            end
+          end
           html_code << '<tr>'
-          html_code << "<td>#{s}</td>"
+          html_code << "<td>#{ss}</td>"
           if data[s]['consolidated'][i].nil?
             html_code << "<td></td>"
           else
@@ -364,6 +381,11 @@ HEREDOC
       
       html_code << "<th> </th>"
       @segments.each do |d|
+        if @service_level_id == 6
+          if d == 'Gestores'
+            d = 'Gerentes'
+          end
+        end
         html_code << "<th> #{d} </th>"
       end
       html_code << "<th> </th>"

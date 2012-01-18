@@ -108,7 +108,7 @@ module IPF
       elsif @type == "BURJATO"
         initial_pages_total = 9
       elsif @type == "CONVENIADA"
-        initial_pages_total = 11
+        initial_pages_total = 10
       else
         initial_pages_total = 10
       end
@@ -187,7 +187,7 @@ module IPF
         
         doc.image next_page_file(doc)
         graphics = 0
-        indicators = Indicator.all(:conditions => "dimension_id = #{dimension.id}", :order => "number ASC").collect(&:number)
+        indicators = Indicator.all(:conditions => "dimension_id = #{dimension.id} and id NOT IN (262, 267, 281, 285)", :order => "number ASC").collect(&:number)
         count = 0
 
 
@@ -230,7 +230,7 @@ module IPF
         end
 
 
-        if @type == "EJA"
+        if @type == "EJA" || @type == "CONVENIADA"
           question_y_points = [0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
         else
           question_y_points = [0, 9, 9, 6, 9, 9, 9, 9, 9, 9, 9, 9]
