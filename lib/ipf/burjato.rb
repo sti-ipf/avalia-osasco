@@ -69,7 +69,7 @@ module IPF
         tag :indexwhite, :name => 'Helvetica', :size => 8, :color => '#FFFFFF'
       end
 
-      school_name = "#{school.report_name} (#{@type})"
+      school_name = "#{school.report_name}"
       
       title = []
       tmp_title = ''
@@ -87,11 +87,11 @@ module IPF
 
       end
 
-      school_name = "#{school.report_name} (#{@type})"
+      school_name = "#{school.report_name}"
 
-      ['capa', 'expediente'].each do |s|
+      ['capa_burjato', 'expediente'].each do |s|
         doc.image File.join(TEMPLATE_DIRECTORY, "#{s}.eps")
-        if s == 'capa'
+        if s == 'capa_burjato'
           t_y = [10.7, 10, 9.3]
           t_i = 0
           title.each do |t|
@@ -661,7 +661,11 @@ HEREDOC
 
     def add_index(doc, index=true)
       @index ||= 2
-      doc.show "#{@index}", :with => :index, :align => :page_right if index
+      if @index.even?
+        doc.show "#{@index}", :with => :index, :align => :page_left if index        
+      else
+        doc.show "#{@index}", :with => :index, :align => :page_right if index
+      end
       @index += 1
     end
 
