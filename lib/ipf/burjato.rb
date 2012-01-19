@@ -134,8 +134,14 @@ module IPF
 
       y_points = [23.4, 22.7, 22, 21.3, 20.6]
       y_number = 0
+      ordered_segment_participation = []
 
-      segment_participation.each do |p|
+      ["gestores", "trabalhadores", "familiares"].each do |s|
+        segment_participation.each do |p|
+          ordered_segment_participation << p if p.name.downcase == s
+        end
+      end
+      ordered_segment_participation.each do |p|
         doc.moveto :x => 6.1, :y => y_points[y_number]
         doc.show p.name, :with => :font2, :align => :show_center 
         doc.moveto :x => 14.5, :y => y_points[y_number]
@@ -240,7 +246,7 @@ module IPF
 
         doc.image next_page_file(doc)
         file = File.join(TEMPLATE_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_praticas.jpg")
-        doc.image file, :x => 1.6, :y => 20.5, :zoom => 50
+        doc.image file, :x => 1.6, :y => 21.5, :zoom => 50
         doc.next_page 
 
         # doc.image next_page_file(doc)
