@@ -69,7 +69,7 @@ module IPF
         tag :indexwhite, :name => 'Helvetica', :size => 8, :color => '#FFFFFF'
       end
 
-      school_name = "#{school.report_name}"
+      school_name = "E.M.E.E. Dr. Edmundo Campana Burjato"
       
       title = []
       tmp_title = ''
@@ -87,7 +87,7 @@ module IPF
 
       end
 
-      school_name = "#{school.report_name}"
+      school_name = "E.M.E.E. Dr. Edmundo Campana Burjato"
 
       ['capa_burjato', 'expediente'].each do |s|
         doc.image File.join(TEMPLATE_DIRECTORY, "#{s}.eps")
@@ -291,7 +291,7 @@ module IPF
 
 
     g = Gruff::Bar.new("900x500")
-    g.title = ReportData.get_dimension_graphic_title(service_level_id, dimension)
+    g.title = get_dimension_graphic_title(service_level_id, dimension)
 
     i_color = 0
     values.each do |v|
@@ -322,6 +322,28 @@ module IPF
 
     
     g.write("#{Rails.root.to_s}/tmp/#{school_id}_#{service_level_id}_#{dimension_number}_ue_dimension_graphic.jpg")
+  end
+
+  def get_dimension_graphic_title(service_level_id, dimension)
+    service_level = ServiceLevel.find(service_level_id)
+    title = "Dimensão #{dimension.number}. #{dimension.name}"
+    new_title = ''
+    control_title = 0
+    if title.length > 74
+      title.split(' ').each do |t|
+        if control_title > 70
+          new_title << "\n#{t}"
+          control_title = 0
+          control_title  += "\n#{t}".length
+        else
+          new_title << " #{t}"
+          control_title  += " #{t}".length
+        end
+      end
+      return new_title
+    else
+      return title
+    end
   end
 
   def indicator_graphic(school_id, service_level_id, dimension_number, indicator_number)
@@ -356,6 +378,7 @@ module IPF
       i_color += 1
     end
     puts values.inspect
+    puts labels.inspect
     g.data(" ", Array.new(values.count, 0), "#fff")
 
     

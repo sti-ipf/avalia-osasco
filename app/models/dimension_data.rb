@@ -126,6 +126,8 @@ class DimensionData < ActiveRecord::Base
 
       if service_level_id == 3
         special_indicators = ['1.4', '3.9' , '4.5']
+      elsif service_level_id == 5
+        special_indicators = ['1.4', '4.5']
       else
         special_indicators = ['1.4', '3.10' , '4.5']
       end

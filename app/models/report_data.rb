@@ -22,7 +22,8 @@ class ReportData < ActiveRecord::Base
   }
 
   #SEGMENTS_ORDER = ['Professores', 'Gestores', 'Funcionários', 'Familiares', 'Educandos']
-  SEGMENTS_ORDER = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
+  #SEGMENTS_ORDER = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
+  SEGMENTS_ORDER = ['Gestores', 'Trabalhadores', 'Familiares']
 
   COLORS = ['#FFC540', '#6786B4', '#72AE6E']
 
