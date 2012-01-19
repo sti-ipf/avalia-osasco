@@ -11,10 +11,10 @@ module IPF
       dimensions.each do |d|
         puts "GERANDO GRÁFICOS PARA A DIMENSAO #{d.number}"
         DimensionData.generate_graphic_per_dimension(school_id, service_level_id, d.number)
-        ReportData.dimension_graphic_burjato(school_id, service_level_id, d.number)
+        dimension_graphic(school_id, service_level_id, d.number)
         indicators = Indicator.all(:conditions => "dimension_id = #{d.id}", :order => "number ASC").collect(&:number)
         indicators.each do |i|
-          ReportData.indicator_graphic_burjato(school_id, service_level_id, d.number, i)
+          indicator_graphic(school_id, service_level_id, d.number, i)
         end
       end
     end
@@ -23,7 +23,7 @@ module IPF
       dimensions = Dimension.all(:conditions => "service_level_id = #{service_level_id}")
       dimensions.each do |d|
         puts "GERANDO TABELA COM QUESTOES PARA A DIMENSAO #{d.number}"
-        IPF::TableGenerator.generate_question_table(school_id, service_level_id, d.number)
+        generate_question_table(school_id, service_level_id, d.number)
       end
     end
 
@@ -36,7 +36,7 @@ module IPF
     end
 
     def generate_index_table(school_id, service_level_id)
-      IPF::TableGenerator.generate_index_table(school_id, service_level_id)
+      generate_index_table(school_id, service_level_id)
     end
 
     def generate_file(school_id, service_level_id)
@@ -89,7 +89,7 @@ module IPF
 
       school_name = "#{school.report_name} (#{@type})"
 
-      ['capa_burjato', 'expediente'].each do |s|
+      ['capa', 'expediente'].each do |s|
         doc.image File.join(TEMPLATE_DIRECTORY, "#{s}.eps")
         if s == 'capa'
           t_y = [10.7, 10, 9.3]
@@ -244,7 +244,7 @@ module IPF
 
         doc.image next_page_file(doc)
         file = File.join(TEMPLATE_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_praticas.jpg")
-        doc.image file, :x => 1.6, :y => 9, :zoom => 50
+        doc.image file, :x => 1.6, :y => 20.5, :zoom => 50
         doc.next_page 
 
         doc.image next_page_file(doc)
@@ -268,6 +268,379 @@ module IPF
           :filename => File.join(PUBLIC_DIRECTORY,"#{file_name}_#{@type}.pdf"),
           :logfile => File.join(TEMP_DIRECTORY,"relatorio_individual.log")
     end
+
+
+  def dimension_graphic(school_id, service_level_id, dimension_number)
+    school = School.find(school_id)
+    dimension = Dimension.first(:conditions => "number = #{dimension_number} AND service_level_id = #{service_level_id}")
+    
+    school_data = ReportData.find_by_sql("
+      SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
+      INNER JOIN segments s ON s.id = r.segment_id
+      WHERE r.school_id = #{school_id} AND r.service_level_id = #{service_level_id} AND r.dimension_id = #{dimension.id}
+        AND media >= 0 AND media <= 5
+      GROUP BY s.name")
+
+    labels = ReportData.get_labels(school_data)
+
+    school_values = ReportData.get_segments_values_for_dimension_graphic(labels, school_data)  
+
+    values = []
+    values << ["Média UE", school_values]
+    
+
+
+    g = Gruff::Bar.new("900x500")
+    g.title = ReportData.get_dimension_graphic_title(service_level_id, dimension)
+
+    i_color = 0
+    values.each do |v|
+      g.data(v.first, v.last, ReportData::COLORS[i_color])
+      i_color += 1
+    end
+    
+    g.data(" ", Array.new(values.count, 0), "#fff")
+
+    
+    g.theme = {
+            :marker_color => 'white',
+            :background_colors => 'white'
+          }
+
+    ReportData::DEFAULT_PARAMS.each {|k, v| g.instance_variable_set("@#{k}", v)}
+    
+    label_number = 0
+    labels.each do |l|
+      if l == 'Coordenadores pedagógicos'
+        l = 'Coord. ped.'
+      end
+      puts l
+      g.labels[label_number] = l
+      label_number += 1
+    end
+    g.labels[labels.length] = "Média Geral"
+
+    
+    g.write("#{Rails.root.to_s}/tmp/#{school_id}_#{service_level_id}_#{dimension_number}_ue_dimension_graphic.jpg")
+  end
+
+  def indicator_graphic(school_id, service_level_id, dimension_number, indicator_number)
+    school = School.find(school_id)
+    dimension = Dimension.first(:conditions => "number = #{dimension_number} AND service_level_id = #{service_level_id}")
+    indicator = Indicator.first(:conditions => "number = #{indicator_number} AND dimension_id = #{dimension.id}")
+    
+    school_data = ReportData.find_by_sql("
+      SELECT s.name, media  as calculated_media FROM report_data r
+      INNER JOIN dimensions d ON r.dimension_id = d.id
+      INNER JOIN indicators i ON r.indicator_id = i.id
+      INNER JOIN segments s ON r.segment_id = s.id
+      WHERE r.school_id = #{school_id} AND r.service_level_id = #{service_level_id}
+      AND d.number = #{dimension_number} AND i.number = #{indicator_number}
+      AND media >= 0 AND media <= 5
+      GROUP BY s.name")
+
+    labels = ReportData.get_labels(school_data)
+
+    school_values = ReportData.get_segments_values_for_dimension_graphic(labels, school_data)
+
+    values = []
+    values << ["Média UE", school_values]
+
+
+    g = Gruff::Bar.new("900x380")
+    g.title = ReportData.get_indicator_graphic_title(dimension, indicator)
+
+    i_color = 0
+    values.each do |v|
+      g.data(v.first, v.last, ReportData::COLORS[i_color])
+      i_color += 1
+    end
+    puts values.inspect
+    g.data(" ", Array.new(values.count, 0), "#fff")
+
+    
+    g.theme = {
+            :marker_color => 'white',
+            :background_colors => 'white'
+          }
+
+    ReportData::DEFAULT_PARAMS.each {|k, v| g.instance_variable_set("@#{k}", v)}
+    
+    label_number = 0
+    labels.each do |l|
+      if l == 'Coordenadores pedagógicos'
+        l = 'Coord. ped.'
+      end
+      g.labels[label_number] = l
+      label_number += 1
+    end
+    g.labels[labels.length] = "Média Geral"
+
+    
+    g.write("#{Rails.root.to_s}/tmp/#{school_id}_#{service_level_id}_#{dimension_number}_#{indicator_number}_ue_indicator_graphic.jpg")
+  end
+
+  def question_table(school_id, service_level_id, dimension_number)
+    table_data = Hash.new
+    question_numbers = QuestionText.find_by_sql("
+      SELECT DISTINCT question_number FROM question_texts
+      WHERE dimension_id IN (SELECT id FROM dimensions WHERE service_level_id = #{service_level_id} AND number = #{dimension_number})
+      ORDER BY SUBSTRING_INDEX( question_number , '.', 1 ) + 0,
+      SUBSTRING_INDEX(SUBSTRING_INDEX( question_number , '.', 2 ), '.', -1) + 0,
+      SUBSTRING_INDEX( question_number , '.', -1 ) + 0")
+    question_numbers.each do |q|
+      table_data[q.question_number] = []
+      school = School.find(school_id)
+      
+      answers = Answer.find_by_sql("SELECT *, s.name as segment_name FROM answers a
+        INNER JOIN question_texts qt ON a.question_text_id = qt.id
+        INNER JOIN segments s ON a.segment_id = s.id
+        WHERE a.school_id = #{school_id}
+        AND s.id IN (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
+        AND qt.question_number = '#{q.question_number}'")
+
+      total = 0
+      table_data[q.question_number] = Hash.new
+
+      answers.each do |a|
+        do_not_answer = (a.do_not_answer == nil)? 0 : a.do_not_answer
+
+        table_data[q.question_number][a.segment_name] = [a.media, do_not_answer]
+        total += a.media if a.media.class != String
+      end
+
+      if (answers.count == 0 || total == 0)
+        table_data[q.question_number]['Média geral da questão'] = '-'
+      else
+        table_data[q.question_number]['Média geral da questão'] = (total/answers.count).try(:round, 1)
+      end
+
+    end
+    table_data
+  end
+
+  def generate_question_table(school_id, service_level_id, dimension_number)
+    @school_id = school_id
+    @service_level_id = service_level_id
+    @dimension_number = dimension_number
+    data = question_table(school_id, service_level_id, dimension_number)
+
+    question_numbers = QuestionText.find_by_sql("
+      SELECT DISTINCT question_number FROM question_texts
+      WHERE dimension_id IN (SELECT id FROM dimensions WHERE service_level_id = #{service_level_id} AND number = #{dimension_number})
+      ORDER BY SUBSTRING_INDEX( question_number , '.', 1 ) + 0,
+      SUBSTRING_INDEX(SUBSTRING_INDEX( question_number , '.', 2 ), '.', -1) + 0,
+      SUBSTRING_INDEX( question_number , '.', -1 ) + 0")
+    questions = question_numbers.collect(&:question_number)
+
+    @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+
+    build_question_table_html(questions, data)
+    html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_#{@dimension_number}_questoes.html"))
+    IPF::TableGenerator.convert_html_to_jpg(html_file, "#{@school_id}_#{@service_level_id}_#{@dimension_number}_questoes")
+  end
+
+  def generate_index_table(school_id, service_level_id)
+    @school_id = school_id
+    @service_level_id = service_level_id
+    dimensions = Dimension.all(:conditions => "service_level_id = #{service_level_id}")
+    data = ReportData.index_table_data(school_id, service_level_id)
+
+    @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+    
+    build_index_table_html(dimensions, data)
+    html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_index.html"))
+    IPF::TableGenerator.convert_html_to_jpg(html_file, "#{@school_id}_#{@service_level_id}_index")
+  end
+
+  def build_question_table_html(questions, data)
+    header = ''
+    html_code = <<HEREDOC
+      <!DOCTYPE html>
+      <html lang='pt-BR'>
+      <head>
+      <meta charset='utf-8'>
+
+      <style type="text/css">
+        #container{
+          float: left;
+          height: 1000px;
+          position: absolute;
+        }
+        table {border:1px solid black; border-collapse: collapse;}
+        th {background-color: #E5E5E5; border:1px solid black;}
+        tr {border:1px solid black;}
+        td {border:1px solid black; padding:3px; text-align:center;}
+        .break_page {}
+        h4{font-size:16px;}
+        .nr{background-color: #7990DA;}
+        li{font-size:11px; width:87%; text-align: justify;}
+        .note{margin-top: 15px;font-size:11px; width:87%; text-align: justify;}
+      </style>
+
+      </head>
+      <body>
+      <div id = 'container'>
+      <table width='100%'>
+        <tr>
+          <th>Questão</th>
+HEREDOC
+
+    @segments.each do |d|
+      html_code << "<th colspan = 2> #{d} </th>"
+    end
+    html_code << <<-HEREDOC
+      <th>Média geral</br> da questão</th>
+HEREDOC
+    html_code << '</tr>'
+  
+    html_code << <<-HEREDOC
+      <tr>
+        <th></th>
+        <th>média</th>
+        <th>Não respondeu</br>(Ø)</th>
+        <th>média</th>
+        <th>Não respondeu</br>(Ø)</th>
+        <th>média</th>
+        <th>Não respondeu</br>(Ø)</th>
+        <th></th>
+      </tr>
+HEREDOC
+
+    questions.each do |q|
+      html_code << '<tr>'
+      html_code << "<td>#{q}</td>"
+      @segments.each do |s|
+        segment = Segment.first(:conditions => "name = '#{s}' AND service_level_id = #{@service_level_id}")
+        question_text = QuestionText.first(:conditions => "question_number = '#{q}' AND segment_id = #{segment.id}")
+        if question_text.nil?
+          html_code << "<td>-</td>"
+          html_code << "<td class='nr'>-</td>"
+        elsif data[q].nil? || data[q][s].nil?
+          html_code << "<td>S/R</td>"
+          html_code << "<td class='nr'>S/R</td>"
+        else
+          html_code << "<td>#{data[q][s].first}</td>"
+          html_code << "<td class='nr'>#{data[q][s].last}</td>"
+        end
+      end
+
+      ['Média geral da questão'].each do |s|
+        html_code << "<td>#{data[q][s]}</td>"
+      end
+      html_code << '</tr>'
+    end
+    html_code << <<-HEREDOC
+      </table>
+      <div>
+        <p>
+          *    o símbolo (-) sinaliza que a pergunta não era pertinente ao segmento
+        </p>
+        <p>
+          * *  a sigla S/R (sem resposta) sinaliza que não foram inseridos dados no sistema online 
+        </p>
+      </div>
+    </div>
+HEREDOC
+
+    html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_#{@dimension_number}_questoes.html"), 'w+')
+    html_file.puts html_code
+    html_file.close
+    html_file
+  end
+
+
+  def build_index_table_html(dimensions, data)
+    header = ''
+    html_code = <<HEREDOC
+      <!DOCTYPE html>
+      <html lang='pt-BR'>
+      <head>
+      <meta charset='utf-8'>
+
+      <style type="text/css">
+        #container{
+          float: left;
+          height: 1000px;
+          position: absolute;
+        }
+        table {border:1px solid black; border-collapse: collapse;}
+        th {background-color: #E5E5E5; border:1px solid black;}
+        tr {border:1px solid black;}
+        td {border:1px solid black; padding:2px; text-align:center;}
+        .break_page {}
+        h4{font-size:16px;}
+        .nr{background-color: #7990DA;}
+        li{font-size:11px; width:87%; text-align: justify;}
+        .note{margin-top: 15px;font-size:11px; width:87%; text-align: justify;}
+      </style>
+
+      </head>
+      <body>
+      <div id = 'container'>
+      <table width='100%'>
+        <tr>
+          <td style='text-align: left'>
+            O índice geral da sua unidade em 2011, obtido com base na média dos índices de cada dimensão é: #{data['index']}
+          </td>
+        
+        </tr>
+      </table>
+      <div style='height: 40px; float:left; width: 100%;'></div>
+      <table width='100%'>
+        <tr>
+          <th>Dimensões</th>
+          <th colspan = #{@segments.count} >Dimensões</th>
+          <th>Índice da unidade</th>
+        </tr>
+        <tr>
+HEREDOC
+
+    
+    html_code << "<th> </th>"
+    @segments.each do |d|
+      html_code << "<th> #{d} </th>"
+    end
+    html_code << "<th> </th>"
+    html_code << '</tr>'
+
+    dimensions.each do |d|
+      html_code << '<tr>'
+      html_code << "<td style='text-align: left'>#{d.number}. #{data[d.number]['name']}</td>"
+      @segments.each do |s|
+        if data[d.number][s].nil?
+          html_code << "<td>-</td>"
+        else
+          html_code << "<td>#{data[d.number][s]}</td>"
+        end
+      end
+      
+      html_code << "<td>#{data[d.number]['index']}</td>"
+    
+      html_code << '</tr>'
+    end
+
+    html_code << <<-HEREDOC
+      <tr>
+        <td style='text-align: left'> Índice Geral por segmento/unidade </td>
+      
+HEREDOC
+
+    @segments.each do |s|
+      html_code << "<td> #{data[s]} </td>"
+    end
+    html_code << "<td> #{data['index']} </td></tr>"
+
+    html_code << <<-HEREDOC
+      </table>
+    </div>
+HEREDOC
+
+    html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_index.html"), 'w+')
+    html_file.puts html_code
+    html_file.close
+    html_file
+  end
 
   private
     def inc_page
