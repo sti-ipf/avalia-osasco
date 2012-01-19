@@ -65,8 +65,12 @@ class DimensionData < ActiveRecord::Base
 
     i_color = 0
     years.each do |y|
+      if y == 2011
+        i_color = 1
+      else
+        i_color = 0
+      end
       g.data(y.to_s, values[y], COLORS[i_color])
-      i_color += 1
     end
     g.data(" ", Array.new(values[years.last].count, 0), "#fff")
 
@@ -107,8 +111,12 @@ class DimensionData < ActiveRecord::Base
 
     i_color = 0
     years.each do |y|
+      if y == 2011
+        i_color = 1
+      else
+        i_color = 0
+      end
       g.data(y.to_s, values[y], COLORS[i_color])
-      i_color += 1
     end
 
     g.data(" ", Array.new(values[years.last].count, 0), "#fff")

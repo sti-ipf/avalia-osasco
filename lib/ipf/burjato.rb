@@ -455,7 +455,7 @@ module IPF
       SUBSTRING_INDEX( question_number , '.', -1 ) + 0")
     questions = question_numbers.collect(&:question_number)
 
-    @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+    @segments = ['Gestores', 'Trabalhadores', 'Familiares']
 
     build_question_table_html(questions, data)
     html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_#{@dimension_number}_questoes.html"))
@@ -468,7 +468,7 @@ module IPF
     dimensions = Dimension.all(:conditions => "service_level_id = #{service_level_id}")
     data = ReportData.index_table_data(school_id, service_level_id)
 
-    @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+    @segments = ['Gestores', 'Trabalhadores', 'Familiares']
     
     build_index_table_html(dimensions, data)
     html_file = File.new(File.join(TEMP_DIRECTORY,"#{@school_id}_#{@service_level_id}_index.html"))

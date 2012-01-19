@@ -124,6 +124,7 @@ module IPF
         doc.next_page if i != (initial_pages_total-1)
       end
 
+      
       segment_participation = Answer.find_by_sql("
         SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
           INNER JOIN segments s on a.segment_id = s.id
@@ -135,12 +136,42 @@ module IPF
       y_points = [23.4, 22.7, 22, 21.3, 20.6]
       y_number = 0
 
-      segment_participation.each do |p|
-        doc.moveto :x => 6.1, :y => y_points[y_number]
-        doc.show p.name, :with => :font2, :align => :show_center 
-        doc.moveto :x => 14.5, :y => y_points[y_number]
-        doc.show p.calculated_media.to_i, :with => :font2, :align => :show_center 
-        y_number += 1
+      if @type == "CONVENIADA"
+
+        ordered_segment_participation = []
+
+        ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"].each do |s|
+          segment_has_data = false
+          segment_participation.each do |p|
+            if p.name.downcase == s.downcase
+              ordered_segment_participation << [p.name, p.calculated_media.to_i] 
+              segment_has_data = true
+            end
+          end
+          if !segment_has_data
+            if s == 'Gestores'
+              s = 'Gerentes'
+            end
+            ordered_segment_participation << [s, 0] 
+          end
+        end
+
+        ordered_segment_participation.each do |p|
+          doc.moveto :x => 6.1, :y => y_points[y_number]
+          doc.show p.first, :with => :font2, :align => :show_center 
+          doc.moveto :x => 14.5, :y => y_points[y_number]
+          doc.show p.last, :with => :font2, :align => :show_center 
+          y_number += 1
+        end
+
+      else
+        segment_participation.each do |p|
+          doc.moveto :x => 6.1, :y => y_points[y_number]
+          doc.show p.name, :with => :font2, :align => :show_center 
+          doc.moveto :x => 14.5, :y => y_points[y_number]
+          doc.show p.calculated_media.to_i, :with => :font2, :align => :show_center 
+          y_number += 1
+        end
       end
       
       doc.next_page 
@@ -244,7 +275,7 @@ module IPF
 
         doc.image next_page_file(doc)
         file = File.join(TEMPLATE_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_praticas.jpg")
-        doc.image file, :x => 1.6, :y => 20.5, :zoom => 50
+        doc.image file, :x => 1.6, :y => 21.5, :zoom => 50
         doc.next_page 
 
         # doc.image next_page_file(doc)
@@ -288,7 +319,11 @@ module IPF
 
     def add_index(doc, index=true)
       @index ||= 2
-      doc.show "#{@index}", :with => :index, :align => :page_right if index
+      if @index.even?
+        doc.show "#{@index}", :with => :index, :align => :page_left if index        
+      else
+        doc.show "#{@index}", :with => :index, :align => :page_right if index
+      end
       @index += 1
     end
 

@@ -24,9 +24,9 @@ module IPF
       elsif service_level_id == 4
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Educandos']
       elsif service_level_id == 5
-        @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+        @segments = ['Gestores', 'Trabalhadores', 'Familiares']
       elsif service_level_id == 6
-        @segments = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
+        @segments = ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"]
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
@@ -53,9 +53,9 @@ module IPF
       elsif service_level_id == 4
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Educandos']
       elsif service_level_id == 5
-        @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+        @segments = ['Gestores', 'Trabalhadores', 'Familiares']
       elsif service_level_id == 6
-        @segments = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares'] 
+        @segments = ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"]
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
@@ -91,9 +91,9 @@ module IPF
       elsif service_level_id == 4
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Educandos']
       elsif service_level_id == 5
-        @segments = ['Trabalhadores', 'Gestores', 'Familiares']
+        @segments = ['Gestores', 'Trabalhadores', 'Familiares']
       elsif service_level_id == 6
-        @segments = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
+        @segments = ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"]
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end

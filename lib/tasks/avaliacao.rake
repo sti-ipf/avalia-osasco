@@ -45,13 +45,13 @@ namespace :tasks do
 
     #IPF::Report.new.generate_file(120, 2)
 
-    s_id = 135
-    sl_id = 6
+    s_id = 135#23
+    sl_id = 6#1
     report = IPF::Report.new
-    #report.generate_graphics(s_id, sl_id)
-    #report.generate_question_tables(s_id, sl_id)
+    report.generate_graphics(s_id, sl_id)
+    report.generate_question_tables(s_id, sl_id)
     report.generate_practice_tables(s_id, sl_id)
-    #report.generate_index_table(s_id, sl_id)
+    report.generate_index_table(s_id, sl_id)
     report.generate_file(s_id, sl_id)
 
     # schools = School.find_by_sql(
@@ -84,9 +84,9 @@ namespace :tasks do
     sl_id = 5
     report = IPF::Burjato.new
     report.generate_graphics(s_id, sl_id)
-    # report.generate_question_tables(s_id, sl_id)
+    report.generate_question_tables(s_id, sl_id)
     report.generate_practice_tables(s_id, sl_id)
-    # report.generate_index_table(s_id, sl_id)
+    report.generate_index_table(s_id, sl_id)
     report.generate_file(s_id, sl_id)
   end
 end
