@@ -368,9 +368,6 @@ module IPF
     
     label_number = 0
     labels.each do |l|
-      if l == 'Coordenadores pedagógicos'
-        l = 'Coord. ped.'
-      end
       g.labels[label_number] = l
       label_number += 1
     end
