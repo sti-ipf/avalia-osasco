@@ -69,7 +69,7 @@ module IPF
         tag :indexwhite, :name => 'Helvetica', :size => 8, :color => '#FFFFFF'
       end
 
-      school_name = "E.M.E.E. Dr. Edmundo Campana Burjato"
+      school_name = "E.M.E.E. Dr. Edmundo Campanha Burjato"
       
       title = []
       tmp_title = ''
@@ -87,7 +87,7 @@ module IPF
 
       end
 
-      school_name = "E.M.E.E. Dr. Edmundo Campana Burjato"
+      school_name = "E.M.E.E. Dr. Edmundo Campanha Burjato"
 
       ['capa_burjato', 'expediente'].each do |s|
         doc.image File.join(TEMPLATE_DIRECTORY, "#{s}.eps")
@@ -230,11 +230,7 @@ module IPF
         end
 
 
-        if @type == "EJA"
-          question_y_points = [0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
-        else
-          question_y_points = [0, 9, 9, 6, 9, 9, 9, 9, 9, 9, 9, 9]
-        end
+        question_y_points = [0, 9, 9, 6, 9, 9, 9, 9, 9, 9, 9, 9]
         
         
         doc.image next_page_file(doc)
@@ -247,8 +243,8 @@ module IPF
         doc.image file, :x => 1.6, :y => 20.5, :zoom => 50
         doc.next_page 
 
-        doc.image next_page_file(doc)
-        doc.next_page 
+        # doc.image next_page_file(doc)
+        # doc.next_page 
         
       end
 
