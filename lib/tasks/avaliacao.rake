@@ -44,16 +44,26 @@ namespace :tasks do
     # )
 
     #IPF::Report.new.generate_file(120, 2)
-
-    s_id = 135#23
-    sl_id = 6#1
-    report = IPF::Report.new
-    report.generate_graphics(s_id, sl_id)
-    report.generate_question_tables(s_id, sl_id)
-    report.generate_practice_tables(s_id, sl_id)
-    report.generate_index_table(s_id, sl_id)
-    report.generate_file(s_id, sl_id)
-
+    #143
+    #schools = School.all(:conditions => "id NOT IN (143) AND id IN (select school_id from schools_service_levels where service_level_id = 6)")
+    #schools = School.all(:conditions => "id IN (157)")
+    schools = School.all(:conditions => "id IN (14, 30, 48)")
+    schools.each do |s|
+        s_id = s.id#135#23
+        s.service_levels.each do |sl|
+            #sl_id = 6#1
+            sl_id = sl.id
+            report = IPF::Report.new
+            # puts '-' * 100
+            # puts s.id
+            # puts '-' * 100
+            report.generate_graphics(s_id, sl_id)
+            report.generate_question_tables(s_id, sl_id)
+            report.generate_practice_tables(s_id, sl_id)
+            report.generate_index_table(s_id, sl_id)
+            report.generate_file(s_id, sl_id)
+        end
+    end
     # schools = School.find_by_sql(
     #   "SELECT * FROM schools WHERE id IN (select school_id from schools_service_levels where service_level_id IN (6))"
     # )

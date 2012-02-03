@@ -26,7 +26,7 @@ module IPF
       elsif service_level_id == 5
         @segments = ['Gestores', 'Trabalhadores', 'Familiares']
       elsif service_level_id == 6
-        @segments = ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"]
+        @segments = ["Gestores", "Coordenadores pedagógicos", "Professores", "Funcionários", "Familiares"]
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
@@ -55,7 +55,7 @@ module IPF
       elsif service_level_id == 5
         @segments = ['Gestores', 'Trabalhadores', 'Familiares']
       elsif service_level_id == 6
-        @segments = ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"]
+        @segments = ["Gestores", "Coordenadores pedagógicos", "Professores", "Funcionários", "Familiares"]
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
@@ -81,6 +81,7 @@ module IPF
         WHERE p.school_id = #{school_id} AND p.dimension_id = #{dimension.id} AND
         p.segment_id IN
         (SELECT id FROM segments WHERE service_level_id = #{service_level_id})
+        GROUP BY s.name
         ORDER BY name")
       data = Hash.new
       rows_size = 0
@@ -93,7 +94,7 @@ module IPF
       elsif service_level_id == 5
         @segments = ['Gestores', 'Trabalhadores', 'Familiares']
       elsif service_level_id == 6
-        @segments = ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"]
+        @segments = ["Gestores", "Coordenadores pedagógicos", "Professores", "Funcionários", "Familiares"]
       else
         @segments = ['Professores', 'Gestores', 'Funcionários', 'Familiares']
       end
@@ -372,7 +373,7 @@ HEREDOC
         <table width='100%'>
           <tr>
             <th>Dimensões</th>
-            <th colspan = #{@segments.count} >Dimensões</th>
+            <th colspan = #{@segments.count} >Segmentos</th>
             <th>Índice da unidade</th>
           </tr>
           <tr>

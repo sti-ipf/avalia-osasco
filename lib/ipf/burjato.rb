@@ -612,7 +612,7 @@ HEREDOC
       <table width='100%'>
         <tr>
           <th>Dimensões</th>
-          <th colspan = #{@segments.count} >Dimensões</th>
+          <th colspan = #{@segments.count} >Segmentos</th>
           <th>Índice da unidade</th>
         </tr>
         <tr>

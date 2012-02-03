@@ -5,6 +5,19 @@ module IPF
     TEMP_DIRECTORY = File.expand_path "#{RAILS_ROOT}/tmp"
     PUBLIC_DIRECTORY = File.expand_path "#{RAILS_ROOT}/public"
 
+    def self.clean_name(school_name, sl_id)
+      if sl_id == 6
+        file_name = school_name.gsub(/[^a-z0-9çâãáàêẽéèîĩíìõôóòũûúù' ']+/i, '').gsub(' ', '_').gsub('[âãáàêẽéèîĩíìõôóòũûúù]','').downcase
+        file_name = file_name.gsub(/[á|à|ã|â|ä]/, 'a').gsub(/(é|è|ê|ë)/, 'e').gsub(/(í|ì|î|ï)/, 'i').gsub(/(ó|ò|õ|ô|ö)/, 'o').gsub(/(ú|ù|û|ü)/, 'u')
+        file_name = file_name.gsub(/(Á|À|Ã|Â|Ä)/, 'A').gsub(/(É|È|Ê|Ë)/, 'E').gsub(/(Í|Ì|Î|Ï)/, 'I').gsub(/(Ó|Ò|Õ|Ô|Ö)/, 'O').gsub(/(Ú|Ù|Û|Ü)/, 'U')
+        file_name = file_name.gsub(/ñ/, 'n').gsub(/Ñ/, 'N')
+        file_name = file_name.gsub(/ç/, 'c').gsub(/Ç/, 'C')
+      else
+        file_name = school_name.gsub(/[^a-z0-9çâãáàêẽéèîĩíìõôóòũûúù' ']+/i, '').gsub(' ', '_').gsub('[âãáàêẽéèîĩíìõôóòũûúù]','').downcase
+      end
+      file_name
+    end
+
     def generate_graphics(school_id, service_level_id)
       dimensions = Dimension.all(:conditions => "service_level_id = #{service_level_id}")
       DimensionData.generate_dimensions_graphic(school_id, service_level_id)
@@ -86,7 +99,7 @@ module IPF
         end
 
       end
-
+      puts school.report_name
       school_name = "#{school.report_name} (#{@type})"
 
       ['capa', 'expediente'].each do |s|
@@ -140,10 +153,13 @@ module IPF
 
         ordered_segment_participation = []
 
-        ["Gestores", "Coordenadores pedagógicos", "Familiares", "Funcionários", "Professores"].each do |s|
+        ["Gestores", "Coordenadores pedagógicos", "Professores", "Funcionários", "Familiares"].each do |s|
           segment_has_data = false
           segment_participation.each do |p|
             if p.name.downcase == s.downcase
+              if p.name == 'Gestores'
+                p.name = 'Gerentes'
+              end
               ordered_segment_participation << [p.name, p.calculated_media.to_i] 
               segment_has_data = true
             end
@@ -278,8 +294,10 @@ module IPF
         doc.image file, :x => 1.6, :y => 21.5, :zoom => 50
         doc.next_page 
 
-        # doc.image next_page_file(doc)
-        # doc.next_page 
+        if @type != "CONVENIADA"
+          doc.image next_page_file(doc)
+          doc.next_page 
+        end
         
       end
 
@@ -292,8 +310,8 @@ module IPF
       doc.next_page 
 
       doc.image next_page_file(doc)
-      
-      file_name = school.name.gsub(/[^a-z0-9çâãáàêẽéèîĩíìõôóòũûúù' ']+/i, '').gsub(' ', '_').downcase
+
+      file_name = IPF::Report.clean_name(school.name)
 
       doc.render :pdf, :debug => true, :quality => :prepress,
           :filename => File.join(PUBLIC_DIRECTORY,"#{file_name}_#{@type}.pdf"),

@@ -398,7 +398,8 @@ schools = School.find_by_sql("
             'ASSOCIAçãO DAS MULHERES EM DEFESA à CRIANçA – TARCILA DO AMARAL',
             'ASCC – ASSOCIAçãO SOLIDáRIA CRESCENDO CIDADã I - AçUCARá',
             'ASCC – ASSOCIAçãO SOLIDáRIA CRESCENDO CIDADã II – BELA VISTA',
-            'ASSOCIAçãO DE EDUCAçãO POPULAR PIXOTE I'
+            'ASSOCIAçãO DE EDUCAçãO POPULAR PIXOTE I',
+            'LAR DA CRIANçA EMMANUEL NúCLEO KARDECISTA 21 DE ABRIL'
             )")
 
 create_groups(schools, group)
