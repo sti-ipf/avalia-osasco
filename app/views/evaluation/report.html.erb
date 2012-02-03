@@ -16,7 +16,7 @@
             <% else %>
               <% sl_name = sl.name %>
             <% end %>
-            <%= link_to sl.name, "reports/#{sl.name.downcase}/#{school_name}_#{sl_name.upcase}.pdf" %>
+            <%= link_to sl.name, "reports/#{sl.name.downcase.gsub(' ', '')}/#{school_name}_#{sl_name.upcase}.pdf" %>
           <% end %>
           <br>
           <br>
