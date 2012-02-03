@@ -11,7 +11,12 @@
           <% @school.service_levels.each do |sl| %>
             </br>
             <% school_name = IPF::Report.clean_name(@school.name, sl.id) %>
-            <%= link_to sl.name, "reports/#{sl.name.downcase}/#{school_name}_#{sl.name.upcase}.pdf" %>
+            <% if sl.id == 6 %>
+              <% sl_name = "CONVENIADA" %>
+            <% else %>
+              <% sl_name = sl.name %>
+            <% end %>
+            <%= link_to sl.name, "reports/#{sl.name.downcase}/#{school_name}_#{sl_name.upcase}.pdf" %>
           <% end %>
           <br>
           <br>
