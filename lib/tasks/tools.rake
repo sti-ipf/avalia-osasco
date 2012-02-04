@@ -9,6 +9,7 @@ INDIVIDUAL_REPORT_EJA = File.expand_path "#{RAILS_ROOT}/lib/original_files/indiv
 INDIVIDUAL_REPORT_EMEI = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_emei.pdf"
 INDIVIDUAL_REPORT_BURJATO = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_burjato.pdf"
 INDIVIDUAL_REPORT_CONVENIADA = File.expand_path "#{RAILS_ROOT}/lib/original_files/individual_conveniadas.pdf"
+GERAL_REPORT = File.expand_path "#{RAILS_ROOT}/lib/original_files/geral.pdf"
 COVER = File.expand_path "#{RAILS_ROOT}/lib/original_files/capa.pdf"
 COVER_BURJATO = File.expand_path "#{RAILS_ROOT}/lib/original_files/capa_burjato.pdf"
 EXPEDIENTE = File.expand_path "#{RAILS_ROOT}/lib/original_files/expediente.pdf"
@@ -63,6 +64,22 @@ namespace :tools do
         eps_file = File.join(TEMPLATE_DIRECTORY,"1_1_#{i}_questoes.eps")
         system "pdftops -eps -f 1 -l 1 #{pdf_file} #{eps_file} 1> /dev/null 2> /dev/null"
       end
+    end
+
+    task :geral do
+      abort "PAGE_START and PAGE_END are mandatody" if ENV['PAGE_START'].nil? || ENV['PAGE_END'].nil? || ENV['TYPE'].nil?
+      page_start =  ENV['PAGE_START'].to_i
+      page_end   =  ENV['PAGE_END'].to_i
+      
+
+      report = GERAL_REPORT
+
+      (page_start..page_end).each do |i|
+        eps_file = File.join("#{TEMPLATE_DIRECTORY}/GERAL","pg_00")
+        page_number = (i.to_s.length == 1)? "0#{i}"  : i
+        system "pdftops -eps -f #{i} -l #{i} #{report} #{eps_file}#{page_number}.eps 1> /dev/null 2> /dev/null"
+      end
+
     end
       
   end
