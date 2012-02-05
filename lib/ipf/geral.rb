@@ -78,24 +78,26 @@ module IPF
         doc.next_page if i != (i-1)
       end
 
-      
-
       doc.image next_page_file(doc)  
-      sl_id = 1
-      file = File.join(TEMP_DIRECTORY,"#{sl_id}_dimensions_graphic_geral.jpg")
-      doc.image file, :x => 1.6, :y => 9, :zoom => 55
-      doc.showpage
-      doc.image next_page_file(doc)
 
-      y = 18
-      dimensions_total = Dimension.count(:conditions => "service_level_id = #{sl_id}")
-      (1..1).each do |i|      
-        file = File.join(TEMP_DIRECTORY,"#{sl_id}_#{i}_dimension_graphic_geral.jpg")
-        puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+      y_points = {1 => 9, 2 => 17.5}
+      [1, 2].each do |sl_id|
+        file = File.join(TEMP_DIRECTORY,"#{sl_id}_dimensions_graphic_geral.jpg")
+        doc.image file, :x => 1.6, :y => y_points[sl_id], :zoom => 55
+        doc.showpage
+        doc.image next_page_file(doc)
 
-        doc.image file, :x => 1.6, :y => y, :zoom => 50
-        doc.showpage 
-        doc.image next_page_file(doc) if i != dimensions_total
+        y = 18
+        dimensions_total = Dimension.count(:conditions => "service_level_id = #{sl_id}")
+
+        (1..dimensions_total).each do |i|      
+          file = File.join(TEMP_DIRECTORY,"#{sl_id}_#{i}_dimension_graphic_geral.jpg")
+          puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+          doc.image file, :x => 1.6, :y => y, :zoom => 50
+          doc.showpage 
+          doc.image next_page_file(doc) if i != dimensions_total
+        end
       end
 
       # if (@type != "EJA" && @type != "CONVENIADA")
