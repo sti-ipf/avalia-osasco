@@ -401,6 +401,36 @@ class ReportData < ActiveRecord::Base
     end
   end
 
+  def self.get_dimension_graphic_title_geral(service_level_id, dimension)
+    if [1,2].include?(service_level_id)
+      sl = "Educação Infantil"
+    elsif [6].include?(service_level_id)
+      sl = "Creches Conveniadas"
+    elsif [3].include?(service_level_id)
+      sl = "Educação Fundamental"
+    elsif [4].include?(service_level_id)
+      sl = "EJA"
+    end
+    title = "Dimensão #{dimension.number}. #{dimension.name} Média Geral #{sl}, por segmento"
+    new_title = ''
+    control_title = 0
+    if title.length > 74
+      title.split(' ').each do |t|
+        if control_title > 70
+          new_title << "\n#{t}"
+          control_title = 0
+          control_title  += "\n#{t}".length
+        else
+          new_title << " #{t}"
+          control_title  += " #{t}".length
+        end
+      end
+      return new_title
+    else
+      return title
+    end
+  end
+
   def self.get_indicator_graphic_title(dimension, indicator)
     title = "#{dimension.number}.#{indicator.number}.#{indicator.name}"
     new_title = ''
@@ -445,6 +475,131 @@ class ReportData < ActiveRecord::Base
       values << custom_round((total/(values_total)))
     end
     values
+  end
+
+  def self.dimension_graphic_geral(service_level_ids, dimension_number)
+    dimension = Dimension.first(:conditions => "number = #{dimension_number} AND service_level_id = #{service_level_ids[0]}")
+
+    data = []
+
+    service_level_ids.each do |sl_id|
+      data << [sl_id,
+        ReportData.find_by_sql("
+        SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
+        INNER JOIN segments s ON s.id = r.segment_id
+        WHERE dimension_id IN (SELECT id FROM dimensions WHERE number = #{dimension_number})
+        AND segment_id IN (SELECT id FROM segments WHERE service_level_id = #{sl_id})
+        AND media >= 0 AND media <= 5
+        GROUP BY s.name")]
+    end
+
+    labels = get_labels(data.first.last)
+
+    values = []
+    data.each do |d|
+      values << [ServiceLevel.find(d.first).name, get_segments_values_for_dimension_graphic(labels, d.last)]
+    end
+
+    puts values.inspect
+
+    g = Gruff::Bar.new("900x500")
+    g.title = get_dimension_graphic_title_geral(service_level_ids[0], dimension)
+
+    i_color = 0
+    values.each do |v|
+      g.data(v.first, v.last, COLORS[i_color])
+      i_color += 1
+    end
+    
+    g.data(" ", Array.new(values.count, 0), "#fff")
+
+    
+    g.theme = {
+            :marker_color => 'white',
+            :background_colors => 'white'
+          }
+
+    DEFAULT_PARAMS.each {|k, v| g.instance_variable_set("@#{k}", v)}
+    
+    label_number = 0
+    labels.each do |l|
+
+      if l == 'Coordenadores pedagógicos'
+        l = 'Coord. ped.'
+      end
+      if l == 'Gestores' && service_level_ids[0] == 6
+        l = 'Gerentes'
+      end
+      g.labels[label_number] = l
+      label_number += 1
+    end
+    g.labels[labels.length] = "Média Geral"
+
+    
+    g.write("#{Rails.root.to_s}/tmp/#{service_level_ids[0]}_#{service_level_ids[1]}_#{dimension_number}_ue_dimension_graphic_report_geral.jpg")
+  end
+
+  def self.indicator_graphic_geral(service_level_ids, dimension_number, indicator_number)
+    dimension = Dimension.first(:conditions => "number = #{dimension_number} AND service_level_id = #{service_level_ids[0]}")
+    indicator = Indicator.first(:conditions => "number = #{indicator_number} AND dimension_id = #{dimension.id}")
+    data = []
+
+    service_level_ids.each do |sl_id|
+      data << [sl_id,
+        ReportData.find_by_sql("
+        SELECT s.name, media  as calculated_media FROM report_data r
+        INNER JOIN dimensions d ON r.dimension_id = d.id
+        INNER JOIN indicators i ON r.indicator_id = i.id
+        INNER JOIN segments s ON r.segment_id = s.id
+        WHERE r.service_level_id = #{sl_id}
+        AND d.number = #{dimension_number} AND i.number = #{indicator_number}
+        AND media >= 0 AND media <= 5
+        GROUP BY s.name")]
+    end
+
+    labels = get_labels(data.first.last)
+
+    values = []
+    data.each do |d|
+      values << [ServiceLevel.find(d.first).name, get_segments_values_for_dimension_graphic(labels, d.last)]
+    end
+    
+    g = Gruff::Bar.new("900x380")
+    g.title = get_indicator_graphic_title(dimension, indicator)
+
+    i_color = 0
+    values.each do |v|
+      g.data(v.first, v.last, COLORS[i_color])
+      i_color += 1
+    end
+    puts values.inspect
+    g.data(" ", Array.new(values.count, 0), "#fff")
+
+    
+    g.theme = {
+            :marker_color => 'white',
+            :background_colors => 'white'
+          }
+
+    DEFAULT_PARAMS.each {|k, v| g.instance_variable_set("@#{k}", v)}
+    
+    label_number = 0
+    labels.each do |l|
+      if l == 'Coordenadores pedagógicos'
+        l = 'Coord. ped.'
+      end
+
+      if l == 'Gestores' && service_level_ids[0] == 6
+        l = 'Gerentes'
+      end
+
+      g.labels[label_number] = l
+      label_number += 1
+    end
+    g.labels[labels.length] = "Média Geral"
+
+    
+    g.write("#{Rails.root.to_s}/tmp/#{service_level_ids[0]}_#{service_level_ids[1]}_#{dimension_number}_#{indicator_number}_ue_indicator_graphic_geral.jpg")
   end
 
 end
