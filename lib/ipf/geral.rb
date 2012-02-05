@@ -87,16 +87,22 @@ module IPF
         doc.showpage
         doc.image next_page_file(doc)
 
-        y = 18
         dimensions_total = Dimension.count(:conditions => "service_level_id = #{sl_id}")
-
+        y = 18
         (1..dimensions_total).each do |i|      
           file = File.join(TEMP_DIRECTORY,"#{sl_id}_#{i}_dimension_graphic_geral.jpg")
           puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
           doc.image file, :x => 1.6, :y => y, :zoom => 50
-          doc.showpage 
-          doc.image next_page_file(doc) if i != dimensions_total
+
+          if [4, 6, 8].include?(i)
+            y = 5.5
+          else
+            y = 18.5
+            doc.showpage 
+            doc.image next_page_file(doc) if i != dimensions_total
+          end
+
         end
       end
 
