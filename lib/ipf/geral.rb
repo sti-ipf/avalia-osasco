@@ -78,10 +78,11 @@ module IPF
         doc.next_page if i != (i-1)
       end
 
-      doc.image next_page_file(doc)  
+      
 
       y_points = {1 => 9, 2 => 17.5}
       [1, 2].each do |sl_id|
+        doc.image next_page_file(doc)  
         file = File.join(TEMP_DIRECTORY,"#{sl_id}_dimensions_graphic_geral.jpg")
         doc.image file, :x => 1.6, :y => y_points[sl_id], :zoom => 55
         doc.showpage
