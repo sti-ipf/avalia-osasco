@@ -260,12 +260,12 @@ module IPF
           file = File.join(TEMP_DIRECTORY,"#{sl_id}_#{i}_dimension_graphic_geral.jpg")
           puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-          doc.image file, :x => 1.6, :y => y, :zoom => 50
+          doc.image file, :x => 1.6, :y => y, :zoom => 48
 
           if [4, 6, 8].include?(i)
-            y = 5.5
+            y = 5.6
           else
-            y = 18.5
+            y = 20
             doc.showpage 
             doc.image next_page_file(doc) if i != dimensions_total
           end
