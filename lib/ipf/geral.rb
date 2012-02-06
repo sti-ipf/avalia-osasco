@@ -112,14 +112,14 @@ module IPF
       doc.next_page
 
 
-      dimension_graphic_y_points = [0, 17, 5, 17, 1, 11, 12.5, 12.5, 11, 13.5, 12.5, 12.5]
+      dimension_graphic_y_points = [0, 17, 6, 17, 1, 0.5, 0.5, 4, 0.5, 17, 3]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
         file = File.join(TEMP_DIRECTORY,"1_2_#{i}_ue_dimension_graphic_report_geral.jpg")
         puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-        doc.image file, :x => 1.6, :y => dimension_graphic_y_points[i], :zoom => 55
+        doc.image file, :x => 1.6, :y => dimension_graphic_y_points[i], :zoom => 53
         doc.showpage
 
         
@@ -147,6 +147,7 @@ module IPF
           
           if !File.exists?(file)
             file_exist = false 
+            doc.showpage if graphics < 4 && count < 4
             next
           end
 
@@ -162,12 +163,80 @@ module IPF
           end
 
         end
-        doc.image next_page_file(doc)
-        doc.next_page 
-        # doc.image next_page_file(doc)
-        # doc.next_page 
+
+        if ![5, 6, 7, 9].include?(i)
+          doc.image next_page_file(doc)
+          doc.next_page 
+        end
       end
 
+      6.times do |i|
+        doc.image next_page_file(doc)
+        doc.next_page if i != (i-1)
+      end
+
+      dimensions_total = Dimension.count(:conditions => "service_level_id = #{6}")
+
+      dimension_graphic_y_points = [0, 13, 6, 17, 1, 0.5, 0.5, 4, 0.5, 17, 3]
+
+      (1..dimensions_total).each do |i|
+        doc.image next_page_file(doc)
+        file = File.join(TEMP_DIRECTORY,"6__#{i}_ue_dimension_graphic_report_geral.jpg")
+        puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+        doc.image file, :x => 1.6, :y => dimension_graphic_y_points[i], :zoom => 53
+        doc.showpage
+
+        
+        doc.image next_page_file(doc)
+        graphics = 0
+        count = 0
+        indicator_number = 0
+        file_exist = true
+
+        while file_exist
+          indicator_number += 1
+          case graphics
+            when 0
+              y = 20.4
+            when 1
+              y = 14
+            when 2
+              y = 7.5
+            when 3
+              y = 1
+          end
+          
+          
+          file = File.join(TEMP_DIRECTORY,"6__#{i}_#{indicator_number}_ue_indicator_graphic_geral.jpg")
+          
+          if !File.exists?(file)
+            file_exist = false 
+            doc.showpage if graphics < 4 && count < 4
+            next
+          end
+
+          doc.image file, :x => 3, :y => y, :zoom => 45
+
+          graphics += 1
+          count += 1
+
+          if graphics >= 4
+            add_index(doc) if count > 4
+            doc.showpage
+            graphics = 0
+          end
+
+        end
+
+        if ![5, 6, 7, 9].include?(i)
+          doc.image next_page_file(doc)
+          doc.next_page 
+        end
+      end
+
+      doc.image next_page_file(doc)
+      doc.next_page
 
       # if (@type != "EJA" && @type != "CONVENIADA")
         
@@ -239,7 +308,15 @@ module IPF
 
     def page_file(pg_no, doc, index=true)
       add_index(doc, index)
-      file = File.join("#{TEMPLATE_DIRECTORY}/#{@type}","pg_%04d.eps" % pg_no)
+      case pg_no.to_s.length
+        when 1
+          zeros = '000'
+        when 2
+          zeros = '00'
+        when 3
+          zeros = '00'
+      end
+      file = File.join("#{TEMPLATE_DIRECTORY}/#{@type}","pg_#{zeros}#{pg_no}.eps")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
       file
     end
