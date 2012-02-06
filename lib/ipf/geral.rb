@@ -80,6 +80,8 @@ module IPF
 
       
 
+      dimensions_total = Dimension.count(:conditions => "service_level_id = #{1}")
+
       y_points = {1 => 9, 2 => 17.5}
       [1, 2].each do |sl_id|
         doc.image next_page_file(doc)  
@@ -88,7 +90,6 @@ module IPF
         doc.showpage
         doc.image next_page_file(doc)
 
-        dimensions_total = Dimension.count(:conditions => "service_level_id = #{sl_id}")
         y = 18
         (1..dimensions_total).each do |i|      
           file = File.join(TEMP_DIRECTORY,"#{sl_id}_#{i}_dimension_graphic_geral.jpg")
@@ -107,62 +108,74 @@ module IPF
         end
       end
 
+      doc.image next_page_file(doc)
+      doc.next_page
+
+
+      dimension_graphic_y_points = [0, 17, 5, 12.5, 12, 11, 12.5, 12.5, 11, 13.5, 12.5, 12.5]
+
+      (1..dimensions_total).each do |i|
+        doc.image next_page_file(doc)
+        file = File.join(TEMP_DIRECTORY,"1_2_#{i}_ue_dimension_graphic_report_geral.jpg")
+        puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+        doc.image file, :x => 1.6, :y => dimension_graphic_y_points[i], :zoom => 55
+        doc.showpage
+
+        
+        doc.image next_page_file(doc)
+        graphics = 0
+        count = 0
+        indicator_number = 0
+        file_exist = true
+
+        while file_exist
+          indicator_number += 1
+          case graphics
+            when 0
+              y = 20.4
+            when 1
+              y = 14
+            when 2
+              y = 7.5
+            when 3
+              y = 1
+          end
+          
+          
+          file = File.join(TEMP_DIRECTORY,"1_2_#{i}_#{indicator_number}_ue_indicator_graphic_geral.jpg")
+          
+          if !File.exists?(file)
+            file_exist = false 
+            next
+          end
+
+          doc.image file, :x => 3, :y => y, :zoom => 45
+
+          graphics += 1
+          count += 1
+
+          if graphics >= 4
+            add_index(doc) if count > 4
+            doc.showpage
+            graphics = 0
+          end
+
+        end
+        doc.image next_page_file(doc)
+        doc.next_page 
+        # doc.image next_page_file(doc)
+        # doc.next_page 
+      end
+
+
       # if (@type != "EJA" && @type != "CONVENIADA")
         
 
       
       #   puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      
-      
-
-      # dimension_graphic_y_points = [0, 10, 12.5, 12.5, 12, 11, 12.5, 12.5, 11, 13.5, 12.5, 12.5]
-
-      # (1..dimensions_total).each do |i|
-
-      #   dimension = Dimension.first(:conditions => "service_level_id = #{service_level_id} AND number = #{i}")
-      #   doc.image next_page_file(doc)
-      #   file = File.join(TEMP_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_ue_dimension_graphic.jpg")
-      #   puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
-
-      #   doc.image file, :x => 1.6, :y => dimension_graphic_y_points[i], :zoom => 55
-      #   doc.showpage
-
-        
-      #   doc.image next_page_file(doc)
-      #   graphics = 0
-      #   indicators = Indicator.all(:conditions => "dimension_id = #{dimension.id} and id NOT IN (262, 267, 281, 285)", :order => "number ASC").collect(&:number)
-      #   count = 0
-
-
-      #   indicators.each do |indicator|
-      #     case graphics
-      #       when 0
-      #         y = 20.4
-      #       when 1
-      #         y = 14
-      #       when 2
-      #         y = 7.5
-      #       when 3
-      #         y = 1
-      #     end
-          
-          
-      #     file = File.join(TEMP_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_#{indicator}_ue_indicator_graphic.jpg")
-      #     puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
-
-      #     doc.image file, :x => 3, :y => y, :zoom => 45
-
-      #     graphics += 1
-      #     count += 1
-
-      #     if graphics >= 4
-      #       add_index(doc) if count > 4
-      #       doc.showpage
-      #       graphics = 0
-      #     end
-
-      #   end
+    
         
       #   if graphics != 0 && indicators.count > 4
       #     add_index(doc)
