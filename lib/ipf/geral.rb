@@ -177,7 +177,7 @@ module IPF
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{6}")
 
-      dimension_graphic_y_points = [0, 13, 6, 17, 17, 0.5, 0.5, 4, 0.5, 17, 3]
+      dimension_graphic_y_points = [0, 13, 6, 17, 17, 0.5, 17, 4, 0.5, 17, 3]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
@@ -229,7 +229,7 @@ module IPF
 
         end
 
-        if ![5, 6, 7, 9].include?(i)
+        if ![6, 7, 9].include?(i)
           doc.image next_page_file(doc)
           doc.next_page 
         end
@@ -239,8 +239,39 @@ module IPF
         end
       end
 
-      doc.image next_page_file(doc)
-      doc.next_page
+      2.times do |i|
+        doc.image next_page_file(doc)
+        doc.next_page if i != (i-1)
+      end
+
+
+      dimensions_total = Dimension.count(:conditions => "service_level_id = #{3}")
+
+      y_points = {3 => 10}
+      [3].each do |sl_id|
+        doc.image next_page_file(doc)  
+        file = File.join(TEMP_DIRECTORY,"#{sl_id}_dimensions_graphic_geral.jpg")
+        doc.image file, :x => 1.6, :y => y_points[sl_id], :zoom => 55
+        doc.showpage
+        doc.image next_page_file(doc)
+
+        y = 18
+        (1..dimensions_total).each do |i|      
+          file = File.join(TEMP_DIRECTORY,"#{sl_id}_#{i}_dimension_graphic_geral.jpg")
+          puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+          doc.image file, :x => 1.6, :y => y, :zoom => 50
+
+          if [4, 6, 8].include?(i)
+            y = 5.5
+          else
+            y = 18.5
+            doc.showpage 
+            doc.image next_page_file(doc) if i != dimensions_total
+          end
+
+        end
+      end
 
       # if (@type != "EJA" && @type != "CONVENIADA")
         
