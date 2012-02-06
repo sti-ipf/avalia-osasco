@@ -280,7 +280,7 @@ module IPF
       doc.next_page
 
 
-      dimension_graphic_y_points = [0, 17, 6, 12, 2, 1.5, 0.5, 4, 0.5, 12, 5, 12]
+      dimension_graphic_y_points = [0, 17, 6, 12, 2, 1.5, 17, 4, 0.5, 13.5, 4, 7.5]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
@@ -332,7 +332,7 @@ module IPF
 
         end
 
-        if ![5, 6, 7, 9].include?(i)
+        if ![6, 7, 9, 10].include?(i)
           doc.image next_page_file(doc)
           doc.next_page 
         end
