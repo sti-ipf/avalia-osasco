@@ -262,8 +262,11 @@ module IPF
 
           doc.image file, :x => 1.6, :y => y, :zoom => 48
 
-          if [4, 6, 8].include?(i)
-            y = 5.6
+          if [4, 6, 8, 10].include?(i)
+            y = 5.8
+            if i == 10
+              y = 7
+            end
           else
             y = 20
             doc.showpage 
@@ -273,6 +276,67 @@ module IPF
         end
       end
 
+      doc.image next_page_file(doc)
+      doc.next_page
+
+
+      dimension_graphic_y_points = [0, 17, 6, 12, 2, 1.5, 0.5, 4, 0.5, 12, 5, 12]
+
+      (1..dimensions_total).each do |i|
+        doc.image next_page_file(doc)
+        file = File.join(TEMP_DIRECTORY,"3__#{i}_ue_dimension_graphic_report_geral.jpg")
+        puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+        doc.image file, :x => 1.6, :y => dimension_graphic_y_points[i], :zoom => 53
+        doc.showpage
+
+        
+        doc.image next_page_file(doc)
+        graphics = 0
+        count = 0
+        indicator_number = 0
+        file_exist = true
+
+        while file_exist
+          indicator_number += 1
+          case graphics
+            when 0
+              y = 20.4
+            when 1
+              y = 14
+            when 2
+              y = 7.5
+            when 3
+              y = 1
+          end
+          
+          
+          file = File.join(TEMP_DIRECTORY,"3__#{i}_#{indicator_number}_ue_indicator_graphic_geral.jpg")
+          
+          if !File.exists?(file)
+            file_exist = false 
+            doc.showpage if graphics < 4 && count < 4
+            next
+          end
+
+          doc.image file, :x => 3, :y => y, :zoom => 45
+
+          graphics += 1
+          count += 1
+
+          if graphics >= 4
+            add_index(doc) if count > 4
+            doc.showpage
+            graphics = 0
+          end
+
+        end
+
+        if ![5, 6, 7, 9].include?(i)
+          doc.image next_page_file(doc)
+          doc.next_page 
+        end
+      end
       # if (@type != "EJA" && @type != "CONVENIADA")
         
 
