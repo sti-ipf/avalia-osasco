@@ -264,7 +264,11 @@ class ReportData < ActiveRecord::Base
         total += dd.calculated_media
       end
       data[d.number]['name'] = d.name
-      data[d.number]['index'] = custom_round(((total/dimension_data.count)/5).to_f, 3)
+      if dimension_data.count == 0
+        data[d.number]['index'] = 0
+      else
+        data[d.number]['index'] = custom_round(((total/dimension_data.count)/5).to_f, 3)
+      end
     end
 
     index_total = 0

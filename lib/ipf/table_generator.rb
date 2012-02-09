@@ -4,6 +4,20 @@ module IPF
     TEMPLATE_DIRECTORY= File.expand_path "#{RAILS_ROOT}/lib/templates"
     TEMP_DIRECTORY = File.expand_path "#{RAILS_ROOT}/tmp"
     PUBLIC_DIRECTORY = File.expand_path "#{RAILS_ROOT}/public"
+    DIMENSION = {
+                  1 => "1. Ambiente Educativo",
+                  2 => "2. Ambiente Físico Escolar e Materiais",
+                  3 => "3. Planejamento Institucional e Prática Pedagógica",
+                  4 => "4. Avaliação",
+                  5 => "5. Acesso e Permanência dos Educandos na Escola",
+                  6 => "6. Promoção da Saúde",
+                  7 => "7. Educação Socioambiental e Práticas Pedagógicas",
+                  8 => "8. Envolvimento com as Famílias e Participação na Rede de Proteção Social",
+                  9 => "9. Gestão Escolar Democrática",
+                  10 => "10. Formação e Condições de Trabalho dos Profissionais da Escola",
+                  11 => "11. Processos de Alfabetização e Letramento",
+                  12 => "Índice geral da unidade"
+                  }
 
     def self.generate_question_table(school_id, service_level_id, dimension_number)
       @school_id = school_id

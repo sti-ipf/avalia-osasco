@@ -206,6 +206,7 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page
 
+
       doc.image next_page_file(doc)
       doc.next_page
 
@@ -234,6 +235,22 @@ module IPF
           x_number += 2.6
         end
       end
+
+      doc.image next_page_file(doc)
+      doc.next_page
+
+      file = File.join(TEMPLATE_DIRECTORY,"CRECHE_legend.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+      doc.image file, :x => 1.6, :y => 17, :zoom => 50
+
+      doc.image next_page_file(doc)
+      doc.next_page
+
+      file = File.join(TEMPLATE_DIRECTORY,"CRECHE_table.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+      doc.image file, :x => 1.6, :y => 17, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page
