@@ -170,7 +170,75 @@ module IPF
         end
       end
 
-      6.times do |i|
+      # 6.times do |i|
+      #   doc.image next_page_file(doc)
+      #   doc.next_page if i != (i-1)
+      # end
+
+
+
+      group_data = {}
+      groups = Group.all(:conditions => "service_level_id = 1")
+      groups.each do |g|
+        data = DimensionData.find_by_sql("
+          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
+          WHERE service_level_id = 1  and year = 2011
+          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
+          GROUP BY year, dimension_number
+          ORDER BY year, dimension_number
+        ")
+        group_data[g.id] = {}
+        data.each do |d|
+          group_data[g.id][d.dimension_number] = d.calculated_media
+        end
+      end
+
+      y_numbers = [0, 18.4, 17.6, 16.6, 15.8, 15, 14.3, 13.5, 12.2, 11.2, 10.4]
+      (1..dimensions_total).each do |i|
+        x_number = 9.5
+        groups.each do |g|
+          doc.moveto :x => x_number, :y => y_numbers[i]
+          doc.show group_data[g.id][i], :with => :font2, :align => :show_center 
+          x_number += 2.6
+        end
+      end
+
+      doc.image next_page_file(doc)
+      doc.next_page
+
+      doc.image next_page_file(doc)
+      doc.next_page
+
+      group_data = {}
+      groups = Group.all(:conditions => "service_level_id = 2")
+      groups.each do |g|
+        data = DimensionData.find_by_sql("
+          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
+          WHERE service_level_id = 2  and year = 2011
+          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
+          GROUP BY year, dimension_number
+          ORDER BY year, dimension_number
+        ")
+        group_data[g.id] = {}
+        data.each do |d|
+          group_data[g.id][d.dimension_number] = d.calculated_media
+        end
+      end
+
+      y_numbers = [0, 25.8, 25, 23.8, 23, 22.1, 21.2, 20.3, 19, 17.9, 16.9]
+      (1..dimensions_total).each do |i|
+        x_number = 9.5
+        groups.each do |g|
+          doc.moveto :x => x_number, :y => y_numbers[i]
+          doc.show group_data[g.id][i], :with => :font2, :align => :show_center 
+          x_number += 2.6
+        end
+      end
+
+      doc.image next_page_file(doc)
+      doc.next_page
+
+      3.times do |i|
         doc.image next_page_file(doc)
         doc.next_page if i != (i-1)
       end
@@ -236,6 +304,32 @@ module IPF
         if [3].include?(i)
           doc.image next_page_file(doc)
           doc.next_page 
+        end
+      end
+
+      group_data = {}
+      groups = Group.all(:conditions => "service_level_id = 6")
+      groups.each do |g|
+        data = DimensionData.find_by_sql("
+          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
+          WHERE service_level_id = 6  and year = 2011
+          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
+          GROUP BY year, dimension_number
+          ORDER BY year, dimension_number
+        ")
+        group_data[g.id] = {}
+        data.each do |d|
+          group_data[g.id][d.dimension_number] = d.calculated_media
+        end
+      end
+
+      y_numbers = [0, 17.6, 16.8, 15.8, 15, 14.1, 13.2, 12.4, 11.1, 10.2, 9.4]
+      (1..dimensions_total).each do |i|
+        x_number = 9.5
+        groups.each do |g|
+          doc.moveto :x => x_number, :y => y_numbers[i]
+          doc.show group_data[g.id][i], :with => :font2, :align => :show_center 
+          x_number += 2.6
         end
       end
 
@@ -337,58 +431,143 @@ module IPF
           doc.next_page 
         end
       end
-      # if (@type != "EJA" && @type != "CONVENIADA")
-        
+
+      2.times do |i|
+        doc.image next_page_file(doc)
+        doc.next_page if i != (i-1)
+      end
+
+      group_data = {}
+      groups = Group.all(:conditions => "service_level_id = 3")
+      groups.each do |g|
+        data = DimensionData.find_by_sql("
+          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
+          WHERE service_level_id = 3  and year = 2011
+          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
+          GROUP BY year, dimension_number
+          ORDER BY year, dimension_number
+        ")
+        group_data[g.id] = {}
+        data.each do |d|
+          group_data[g.id][d.dimension_number] = d.calculated_media
+        end
+      end
+
+      y_numbers = [0, 26, 25.2, 24.2, 23.4, 22.5, 21.8, 20.9, 19.7, 18.8, 18, 17]
+      (1..dimensions_total).each do |i|
+        x_number = 9.5
+        groups.each do |g|
+          doc.moveto :x => x_number, :y => y_numbers[i]
+          doc.show group_data[g.id][i], :with => :font2, :align => :show_center 
+          x_number += 2.6
+        end
+      end
+
+      3.times do |i|
+        doc.image next_page_file(doc)
+        doc.next_page if i != (i-1)
+      end
 
       
-      #   puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-    
+
+      dimensions_total = Dimension.count(:conditions => "service_level_id = #{4}")
+
+      dimension_graphic_y_points = [0, 16, 2, 2, 0.5, 0.5, 4, 5, 3, 7]
+
+      (1..dimensions_total).each do |i|
+        doc.image next_page_file(doc)
+        file = File.join(TEMP_DIRECTORY,"4__#{i}_ue_dimension_graphic_report_geral.jpg")
+        puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+        doc.image file, :x => 1.6, :y => dimension_graphic_y_points[i], :zoom => 53
+        doc.showpage
+
         
-      #   if graphics != 0 && indicators.count > 4
-      #     add_index(doc)
-      #     doc.showpage
-      #   end
+        doc.image next_page_file(doc)
+        graphics = 0
+        count = 0
+        indicator_number = 0
+        file_exist = true
 
-      #   if graphics < 4 && indicators.count < 4
-      #     doc.showpage
-      #   end
+        while file_exist
+          indicator_number += 1
+          case graphics
+            when 0
+              y = 20.4
+            when 1
+              y = 14
+            when 2
+              y = 7.5
+            when 3
+              y = 1
+          end
+          
+          
+          file = File.join(TEMP_DIRECTORY,"4__#{i}_#{indicator_number}_ue_indicator_graphic_geral.jpg")
+          
+          if !File.exists?(file)
+            file_exist = false 
+            doc.showpage if graphics < 4 && count < 4
+            next
+          end
 
+          doc.image file, :x => 3, :y => y, :zoom => 45
 
-      #   if @type == "EJA" || @type == "CONVENIADA"
-      #     question_y_points = [0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
-      #   else
-      #     question_y_points = [0, 9, 9, 6, 9, 9, 9, 9, 9, 9, 9, 9]
-      #   end
-        
-        
-      #   doc.image next_page_file(doc)
-      #   file = File.join(TEMPLATE_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_questoes.jpg")
-      #   doc.image file, :x => 1.6, :y => question_y_points[i], :zoom => 50
-      #   doc.showpage
+          graphics += 1
+          count += 1
 
-      #   doc.image next_page_file(doc)
-      #   file = File.join(TEMPLATE_DIRECTORY,"#{school_id}_#{service_level_id}_#{i}_praticas.jpg")
-      #   doc.image file, :x => 1.6, :y => 21.5, :zoom => 50
-      #   doc.next_page 
+          if graphics >= 4
+            add_index(doc) if count > 4
+            doc.showpage
+            graphics = 0
+          end
 
-      #   if @type != "CONVENIADA"
-      #     doc.image next_page_file(doc)
-      #     doc.next_page 
-      #   end
-        
-      # end
+        end
 
-      # doc.image next_page_file(doc)
-      # doc.next_page 
+        if ![2, 3, 4, 5, 6, 7, 8, 9].include?(i)
+          doc.image next_page_file(doc)
+          doc.next_page 
+        end
+        if [].include?(i)
+          doc.image next_page_file(doc)
+          doc.next_page 
+        end
+      end
 
-      # doc.image next_page_file(doc)
-      # file = File.join(TEMPLATE_DIRECTORY,"#{school_id}_#{service_level_id}_index.jpg")
-      # doc.image file, :x => 1.6, :y => 9, :zoom => 50
-      # doc.next_page 
+      doc.image next_page_file(doc)
+      doc.next_page 
 
-      # doc.image next_page_file(doc)
+      group_data = {}
+      groups = Group.all(:conditions => "service_level_id = 4")
+      groups.each do |g|
+        data = DimensionData.find_by_sql("
+          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
+          WHERE service_level_id = 4  and year = 2011
+          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
+          GROUP BY year, dimension_number
+          ORDER BY year, dimension_number
+        ")
+        group_data[g.id] = {}
+        data.each do |d|
+          group_data[g.id][d.dimension_number] = d.calculated_media
+        end
+      end
 
+      y_numbers = [0, 21, 20.2, 19.5, 18.6, 17.8, 17, 16.2, 15.5, 14.5]
+      (1..dimensions_total).each do |i|
+        x_number = 9.5
+        groups.each do |g|
+          doc.moveto :x => x_number, :y => y_numbers[i]
+          doc.show group_data[g.id][i], :with => :font2, :align => :show_center 
+          x_number += 2.6
+        end
+      end
+
+      
+      doc.image next_page_file(doc)
+      doc.next_page 
+      doc.image next_page_file(doc)
 
       doc.render :pdf, :debug => true, :quality => :prepress,
           :filename => File.join(PUBLIC_DIRECTORY,"GERAL.pdf"),

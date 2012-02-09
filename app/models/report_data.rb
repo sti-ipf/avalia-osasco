@@ -22,7 +22,7 @@ class ReportData < ActiveRecord::Base
   }
 
   SEGMENTS_ORDER = ['Professores', 'Gestores', 'Funcionários', 'Familiares', 'Educandos']
-  #SEGMENTS_ORDER = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
+  SEGMENTS_ORDER_CONVENIADAS = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
   #SEGMENTS_ORDER = ['Gestores', 'Trabalhadores', 'Familiares']
 
   COLORS = ['#FFC540', '#6786B4', '#72AE6E']
@@ -195,7 +195,7 @@ class ReportData < ActiveRecord::Base
       GROUP BY s.name")
       
 
-    labels = get_labels(school_data)
+    labels = get_labels(school_data, service_level_id)
 
     school_values = get_segments_values_for_dimension_graphic(labels, school_data)
     group_values = get_segments_values_for_dimension_graphic(labels, group_averages)
@@ -316,7 +316,7 @@ class ReportData < ActiveRecord::Base
       AND media >= 0 AND media <= 5
       GROUP BY s.name")
 
-    labels = get_labels(school_data)
+    labels = get_labels(school_data, service_level_id)
 
     school_values = get_segments_values_for_dimension_graphic(labels, school_data)
     group_values = get_segments_values_for_dimension_graphic(labels, group_averages)
@@ -366,9 +366,14 @@ class ReportData < ActiveRecord::Base
     g.write("#{Rails.root.to_s}/tmp/#{school_id}_#{service_level_id}_#{dimension_number}_ue_dimension_graphic.jpg")
   end
 
-  def self.get_labels(data)
+  def self.get_labels(data, service_level_id)
     labels = []
-    SEGMENTS_ORDER.each do |s|
+    if service_level_id == 6
+      segment_order = SEGMENTS_ORDER_CONVENIADAS
+    else
+      segment_order = SEGMENTS_ORDER
+    end
+    segment_order.each do |s|
       data.each do |d|
         if d.name == s && !d.calculated_media.nil?
           labels << d.name 
@@ -485,15 +490,13 @@ class ReportData < ActiveRecord::Base
     service_level_ids.each do |sl_id|
       data << [sl_id,
         ReportData.find_by_sql("
-        SELECT s.name, ROUND(AVG(media),1) as calculated_media FROM report_data r
-        INNER JOIN segments s ON s.id = r.segment_id
-        WHERE dimension_id IN (SELECT id FROM dimensions WHERE number = #{dimension_number})
-        AND segment_id IN (SELECT id FROM segments WHERE service_level_id = #{sl_id})
-        AND media >= 0 AND media <= 5
-        GROUP BY s.name")]
+        SELECT segment as name, ROUND(AVG(media),1) as calculated_media FROM general_data g
+        WHERE dimension_number = #{dimension_number} 
+        AND service_level_id = #{sl_id}
+        GROUP BY name")]
     end
 
-    labels = get_labels(data.first.last)
+    labels = get_labels(data.first.last, service_level_ids.first)
 
     values = []
     data.each do |d|
@@ -546,18 +549,14 @@ class ReportData < ActiveRecord::Base
 
     service_level_ids.each do |sl_id|
       data << [sl_id,
-        ReportData.find_by_sql("
-        SELECT s.name, media  as calculated_media FROM report_data r
-        INNER JOIN dimensions d ON r.dimension_id = d.id
-        INNER JOIN indicators i ON r.indicator_id = i.id
-        INNER JOIN segments s ON r.segment_id = s.id
-        WHERE r.service_level_id = #{sl_id}
-        AND d.number = #{dimension_number} AND i.number = #{indicator_number}
-        AND media >= 0 AND media <= 5
-        GROUP BY s.name")]
+        GeneralData.all(:select => "segment as name, media as calculated_media",:conditions => "
+          service_level_id = #{sl_id}
+          AND dimension_number = #{dimension_number}
+          AND indicator_number = #{indicator_number}",
+          :group => "segment")]
     end
 
-    labels = get_labels(data.first.last)
+    labels = get_labels(data.first.last, service_level_ids.first)
 
     values = []
     data.each do |d|

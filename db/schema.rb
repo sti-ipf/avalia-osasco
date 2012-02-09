@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120101142303) do
+ActiveRecord::Schema.define(:version => 20120209003919) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -72,6 +72,9 @@ ActiveRecord::Schema.define(:version => 20120101142303) do
     t.datetime "updated_at"
   end
 
+  add_index "answers", ["question_text_id", "segment_id", "school_id"], :name => "idx_a_text_id_segment_id_school_id"
+  add_index "answers", ["question_text_id"], :name => "idx_a_text_id"
+
   create_table "complex_queries", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -129,6 +132,16 @@ ActiveRecord::Schema.define(:version => 20120101142303) do
     t.datetime "updated_at"
   end
 
+  create_table "general_data", :force => true do |t|
+    t.integer  "service_level_id"
+    t.integer  "dimension_number"
+    t.integer  "indicator_number"
+    t.string   "segment"
+    t.float    "media"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.integer  "service_level_id"
@@ -140,6 +153,8 @@ ActiveRecord::Schema.define(:version => 20120101142303) do
     t.integer "group_id",  :null => false
     t.integer "school_id", :null => false
   end
+
+  add_index "groups_schools", ["group_id"], :name => "idx_groups"
 
   create_table "indicators", :force => true do |t|
     t.string   "name"
@@ -214,6 +229,8 @@ ActiveRecord::Schema.define(:version => 20120101142303) do
     t.integer  "dimension_id"
   end
 
+  add_index "question_texts", ["question_number"], :name => "idx_question_texts"
+
   create_table "questions", :force => true do |t|
     t.integer  "number"
     t.integer  "service_level_id"
@@ -239,6 +256,7 @@ ActiveRecord::Schema.define(:version => 20120101142303) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "group_id"
+    t.string   "report_name"
   end
 
   create_table "schools_service_levels", :id => false, :force => true do |t|
@@ -253,10 +271,16 @@ ActiveRecord::Schema.define(:version => 20120101142303) do
     t.datetime "updated_at"
   end
 
+  add_index "segments", ["service_level_id"], :name => "idx_segments"
+
   create_table "service_levels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "tbm", :id => false, :force => true do |t|
+    t.integer "id"
   end
 
 end
