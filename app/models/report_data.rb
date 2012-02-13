@@ -420,7 +420,7 @@ class ReportData < ActiveRecord::Base
     elsif [4].include?(service_level_id)
       sl = "EJA"
     end
-    title = "Dimensão #{dimension.number}. #{dimension.name} Média Geral #{sl}, por segmento"
+    title = "   "
     new_title = ''
     control_title = 0
     if title.length > 74
@@ -514,7 +514,19 @@ class ReportData < ActiveRecord::Base
 
     i_color = 0
     values.each do |v|
-      g.data(v.first, v.last, COLORS[i_color])
+      if service_level_ids.count == 1
+        case service_level_ids.first 
+          when 3
+            colors = ["#FF4040"]
+          when 4
+            colors = ["#996AD6"]
+          when 6
+            colors = ["#00AE68"]
+        end
+        g.data(v.first, v.last, colors[i_color])
+      else
+        g.data(v.first, v.last, COLORS[i_color])
+      end
       i_color += 1
     end
     
@@ -527,6 +539,8 @@ class ReportData < ActiveRecord::Base
           }
 
     DEFAULT_PARAMS.each {|k, v| g.instance_variable_set("@#{k}", v)}
+
+    g.hide_legend = true if service_level_ids.first == 6
     
     label_number = 0
     labels.each do |l|
@@ -572,7 +586,19 @@ class ReportData < ActiveRecord::Base
 
     i_color = 0
     values.each do |v|
-      g.data(v.first, v.last, COLORS[i_color])
+      if service_level_ids.count == 1
+        case service_level_ids.first 
+          when 3
+            colors = ["#FF4040"]
+          when 4
+            colors = ["#996AD6"]
+          when 6
+            colors = ["#00AE68"]
+        end
+        g.data(v.first, v.last, colors[i_color])
+      else
+        g.data(v.first, v.last, COLORS[i_color])
+      end
       i_color += 1
     end
     puts values.inspect
@@ -586,6 +612,8 @@ class ReportData < ActiveRecord::Base
 
     DEFAULT_PARAMS.each {|k, v| g.instance_variable_set("@#{k}", v)}
     
+    g.hide_legend = true if service_level_ids.count == 1
+
     label_number = 0
     labels.each do |l|
       if l == 'Coordenadores pedagógicos'

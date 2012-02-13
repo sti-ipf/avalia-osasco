@@ -242,7 +242,7 @@ module IPF
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 17, :zoom => 50
+      doc.image file, :x => 1.6, :y => 10.5, :zoom => 50
 
       doc.image next_page_file(doc)
       doc.next_page
@@ -250,15 +250,29 @@ module IPF
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE_table.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 17, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 9, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page
 
-      3.times do |i|
-        doc.image next_page_file(doc)
-        doc.next_page if i != (i-1)
-      end
+      file = File.join(TEMPLATE_DIRECTORY,"EMEI_legend.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+      doc.image file, :x => 1.6, :y => 7, :zoom => 50  
+
+      doc.image next_page_file(doc)
+      doc.next_page
+
+      file = File.join(TEMPLATE_DIRECTORY,"EMEI_table.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+      doc.image file, :x => 1.6, :y => 6, :zoom => 50  
+
+      doc.image next_page_file(doc)
+      doc.next_page
+
+      doc.image next_page_file(doc)
+      doc.next_page
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{6}")
 
@@ -350,10 +364,21 @@ module IPF
         end
       end
 
-      2.times do |i|
-        doc.image next_page_file(doc)
-        doc.next_page if i != (i-1)
-      end
+      doc.image next_page_file(doc)
+      doc.next_page 
+
+      file = File.join(TEMPLATE_DIRECTORY,"CRECHE CONVENIADA_legend.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+      doc.image file, :x => 1.6, :y => 18, :zoom => 50  
+      
+      file = File.join(TEMPLATE_DIRECTORY,"CRECHE CONVENIADA_table.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+      doc.image file, :x => 1.6, :y => 5, :zoom => 50  
+
+      doc.image next_page_file(doc)
+      doc.next_page 
+      
 
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{3}")
@@ -480,10 +505,26 @@ module IPF
         end
       end
 
-      3.times do |i|
-        doc.image next_page_file(doc)
-        doc.next_page if i != (i-1)
-      end
+      doc.image next_page_file(doc)
+      doc.next_page 
+
+      file = File.join(TEMPLATE_DIRECTORY,"EMEF_legend.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+      doc.image file, :x => 1.6, :y => 8.5, :zoom => 50  
+
+      doc.image next_page_file(doc)
+      doc.next_page 
+      
+      file = File.join(TEMPLATE_DIRECTORY,"EMEF_table.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+
+      doc.image file, :x => 1.6, :y => 6, :zoom => 50  
+
+      doc.image next_page_file(doc)
+      doc.next_page 
+
+      doc.image next_page_file(doc)
+      doc.next_page 
 
       
 
@@ -584,7 +625,24 @@ module IPF
       
       doc.image next_page_file(doc)
       doc.next_page 
+
+      file = File.join(TEMPLATE_DIRECTORY,"EJA_legend.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+      doc.image file, :x => 1.6, :y => 14, :zoom => 50  
+
       doc.image next_page_file(doc)
+      doc.next_page 
+
+      file = File.join(TEMPLATE_DIRECTORY,"EJA_table.jpg")
+      puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
+      doc.image file, :x => 1.6, :y => 12, :zoom => 50  
+
+      doc.image next_page_file(doc)
+      doc.next_page 
+
+      doc.image next_page_file(doc)
+      
+
 
       doc.render :pdf, :debug => true, :quality => :prepress,
           :filename => File.join(PUBLIC_DIRECTORY,"GERAL.pdf"),

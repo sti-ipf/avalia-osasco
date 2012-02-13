@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120209003919) do
+ActiveRecord::Schema.define(:version => 20120212182910) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -138,6 +138,18 @@ ActiveRecord::Schema.define(:version => 20120209003919) do
     t.integer  "indicator_number"
     t.string   "segment"
     t.float    "media"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "general_report_data", :force => true do |t|
+    t.float    "media"
+    t.integer  "indicator_id"
+    t.integer  "segment_id"
+    t.integer  "dimension_id"
+    t.integer  "type"
+    t.integer  "service_level_id"
+    t.integer  "year"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

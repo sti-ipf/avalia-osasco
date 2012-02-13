@@ -173,6 +173,14 @@ class DimensionData < ActiveRecord::Base
     return years, new_data
   end
 
+  def self.get_years_and_data_per_year_geral(data)
+    new_data = []
+    data.each do |d|
+      new_data << d
+    end 
+    new_data
+  end
+
   def self.get_labels(indicators, dimension_number)
     labels = []
     indicators.count.times do |i|
@@ -233,14 +241,28 @@ class DimensionData < ActiveRecord::Base
   end
 
   def self.generate_dimensions_graphic_geral(service_level_id)
+    dimension_data_2010 = DimensionData.find_by_sql("
+      SELECT *, ROUND(AVG(media),1) as calculated_media, d.number as dimension_number 
+      FROM general_report_data g
+      INNER JOIN dimensions d ON g.dimension_id = d.id
+      WHERE g.service_level_id = #{service_level_id}
+      AND YEAR = 2010
+      AND data_type = 1
+      GROUP BY dimension_number
+      ORDER BY dimension_number")
     dimension_data = DimensionData.find_by_sql("
       SELECT *, ROUND(AVG(value),1) as calculated_media FROM dimension_data
       WHERE service_level_id = #{service_level_id}
-      GROUP BY year, dimension_number
-      ORDER BY year, dimension_number")
-    years, data_per_years = get_years_and_data_per_year(dimension_data)
-    
-    labels = get_labels_for_dimensions_graphic(data_per_years[years.last].collect(&:dimension_number))
+      AND year = 2011
+      GROUP BY dimension_number
+      ORDER BY dimension_number")
+
+    years = [2010, 2011]
+    data_per_years = Hash.new
+    data_per_years[2010] = get_years_and_data_per_year_geral(dimension_data_2010)
+    data_per_years[2011] = get_years_and_data_per_year_geral(dimension_data)
+
+    labels = get_labels_for_dimensions_graphic(data_per_years[2011].collect(&:dimension_number))
 
     values = Hash.new
     years.each do |y|
@@ -281,12 +303,27 @@ class DimensionData < ActiveRecord::Base
   end
 
   def self.generate_graphic_per_dimension_geral( service_level_id, dimension_number)
+    dimension_data_2010 = DimensionData.find_by_sql("
+      SELECT *, ROUND(AVG(media),1) as value, CONCAT(d.number, '.' ,i.number) as indicator_number 
+      FROM general_report_data g
+      INNER JOIN dimensions d ON g.dimension_id = d.id
+      INNER JOIN indicators i ON g.indicator_id = i.id
+      WHERE g.service_level_id = #{service_level_id}
+      AND YEAR = 2010
+      AND d.number = #{dimension_number}
+      AND data_type = 1
+      GROUP BY i.number")
     dimension_data = DimensionData.all(:conditions => "service_level_id = #{service_level_id}
-      AND dimension_number = #{dimension_number}", :order => 'YEAR ASC',
-      :group => "indicator_number, year")
-    years, data_per_years = get_years_and_data_per_year(dimension_data)
+      AND dimension_number = #{dimension_number} AND year = 2011",
+      :group => "indicator_number")
 
-    labels = get_labels(data_per_years[years.last].collect(&:indicator_number), dimension_number)
+    years = [2010, 2011]
+    data_per_years = Hash.new
+    data_per_years[2010] = get_years_and_data_per_year_geral(dimension_data_2010)
+    data_per_years[2011] = get_years_and_data_per_year_geral(dimension_data)
+    
+
+    labels = get_labels(data_per_years[2011].collect(&:indicator_number), dimension_number)
 
     puts data_per_years[years.last].collect(&:indicator_number).inspect
     values = Hash.new
