@@ -8,7 +8,7 @@ service_levels.each do |service_level|
     indicators = Indicator.all(:conditions => "dimension_id = #{dimension.id}")
     indicators.each do |indicator|
       data = ReportData.find_by_sql("
-        SELECT s.name, media  as calculated_media FROM report_data r
+        SELECT s.name, ROUND(AVG(media),2)  as calculated_media FROM report_data r
         INNER JOIN dimensions d ON r.dimension_id = d.id
         INNER JOIN indicators i ON r.indicator_id = i.id
         INNER JOIN segments s ON r.segment_id = s.id
@@ -23,7 +23,7 @@ service_levels.each do |service_level|
           :dimension_number => dimension.number,
           :indicator_number => indicator.number,
           :segment => d.name,
-          :media => d.calculated_media)
+          :media => d.calculated_media.to_s[0..2])
       end
     end
   end

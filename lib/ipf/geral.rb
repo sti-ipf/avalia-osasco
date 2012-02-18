@@ -38,26 +38,6 @@ module IPF
       end
     end
 
-    def generate_question_tables(school_id, service_level_id)
-      dimensions = Dimension.all(:conditions => "service_level_id = #{service_level_id}")
-      dimensions.each do |d|
-        puts "GERANDO TABELA COM QUESTOES PARA A DIMENSAO #{d.number}"
-        IPF::TableGenerator.generate_question_table(school_id, service_level_id, d.number)
-      end
-    end
-
-    def generate_practice_tables(school_id, service_level_id)
-      dimensions = Dimension.all(:conditions => "service_level_id = #{service_level_id}")
-      dimensions.each do |d|
-        puts "GERANDO TABELA DE PRATICAS PARA A DIMENSAO #{d.number}"
-        IPF::TableGenerator.generate_practices_table(school_id, service_level_id, d.number)
-      end
-    end
-
-    def generate_index_table(school_id, service_level_id)
-      IPF::TableGenerator.generate_index_table(school_id, service_level_id)
-    end
-
     def generate_file
       doc = RGhost::Document.new
       doc.define_tags do

@@ -31,9 +31,6 @@ array.each do |a|
     
   
     if indicators_numbers.include?(indicator_number) && last_indicator_number == '9'
-      puts indicator_number
-      puts dimension_number
-      puts a.first
       indicator_number = '10'
     else
       indicators_numbers << indicator_number

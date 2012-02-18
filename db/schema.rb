@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120212182910) do
+ActiveRecord::Schema.define(:version => 20120218204356) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -108,6 +108,15 @@ ActiveRecord::Schema.define(:version => 20120212182910) do
     t.datetime "updated_at"
   end
 
+  create_table "dimensions_average_geral", :force => true do |t|
+    t.integer  "service_level_id"
+    t.integer  "dimension_id"
+    t.integer  "dimension_number"
+    t.float    "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "evaluation_answer_stats", :force => true do |t|
     t.integer  "service_level_id"
     t.integer  "segment_id"
@@ -147,7 +156,7 @@ ActiveRecord::Schema.define(:version => 20120212182910) do
     t.integer  "indicator_id"
     t.integer  "segment_id"
     t.integer  "dimension_id"
-    t.integer  "type"
+    t.integer  "data_type"
     t.integer  "service_level_id"
     t.integer  "year"
     t.datetime "created_at"
@@ -173,6 +182,29 @@ ActiveRecord::Schema.define(:version => 20120212182910) do
     t.string   "description"
     t.integer  "number"
     t.integer  "dimension_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "indicators_average_geral", :force => true do |t|
+    t.integer  "service_level_id"
+    t.integer  "dimension_id"
+    t.integer  "dimension_number"
+    t.integer  "indicator_id"
+    t.integer  "indicator_number"
+    t.float    "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "segment",          :default => ""
+  end
+
+  create_table "indicators_data_geral", :force => true do |t|
+    t.integer  "service_level_id"
+    t.integer  "dimension_id"
+    t.integer  "dimension_number"
+    t.integer  "indicator_id"
+    t.integer  "indicator_number"
+    t.float    "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

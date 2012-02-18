@@ -461,28 +461,36 @@ class ReportData < ActiveRecord::Base
     end
   end
 
-  def self.get_segments_values_for_dimension_graphic(labels, data)
+  def self.get_segments_values_for_dimension_graphic(labels, data, dimension_number = nil, service_level_id = nil, indicator_number = nil)
     values = []
     segments_without_answers = []
     labels.each do |l|
       data.each do |d|
         if d.name == l 
-          values << d.calculated_media 
+          values << d.calculated_media.to_s[0..2].to_f
           segments_without_answers << d.calculated_media if d.calculated_media == 0
         end
       end
-    end
-    total = 0
-    values.each do |v|
-      total += v
-    end
     
-    values_total = values.count - segments_without_answers.count 
-    if (values_total == 0 || total == 0)
-      values << 0
-    else
-      values << custom_round((total/(values_total)))
     end
+    if service_level_id.nil?
+      total = 0
+      values.each do |v|
+        total += v
+      end
+      
+      values_total = values.count - segments_without_answers.count 
+      if (values_total == 0 || total == 0)
+        values << 0
+      else
+        values << custom_round((total/(values_total)))
+      end
+    elsif !indicator_number.nil?
+      values << IndicatorsDataGeral.first(:conditions => "dimension_number = #{dimension_number} and service_level_id = #{service_level_id} and indicator_number = #{indicator_number}").value
+    else
+      values << DimensionsAverageGeral.first(:conditions => "dimension_number = #{dimension_number} and service_level_id = #{service_level_id}").value
+    end    
+    
     values
   end
 
@@ -493,18 +501,18 @@ class ReportData < ActiveRecord::Base
 
     service_level_ids.each do |sl_id|
       data << [sl_id,
-        ReportData.find_by_sql("
-        SELECT segment as name, ROUND(AVG(media),1) as calculated_media FROM general_data g
-        WHERE dimension_number = #{dimension_number} 
-        AND service_level_id = #{sl_id}
-        GROUP BY name")]
+        IndicatorsAverageGeral.find_by_sql("
+            SELECT segment as name, ROUND(AVG(value),2) as calculated_media FROM indicators_average_geral g
+            WHERE dimension_number = #{dimension_number} 
+            AND service_level_id = #{sl_id}
+            GROUP BY name")]
     end
 
     labels = get_labels(data.first.last, service_level_ids.first)
 
     values = []
     data.each do |d|
-      values << [ServiceLevel.find(d.first).name, get_segments_values_for_dimension_graphic(labels, d.last)]
+      values << [ServiceLevel.find(d.first).name, get_segments_values_for_dimension_graphic(labels, d.last, dimension_number, d.first)]
     end
 
     puts values.inspect
@@ -567,20 +575,23 @@ class ReportData < ActiveRecord::Base
 
     service_level_ids.each do |sl_id|
       data << [sl_id,
-        GeneralData.all(:select => "segment as name, media as calculated_media",:conditions => "
-          service_level_id = #{sl_id}
+        IndicatorsAverageGeral.find_by_sql("
+          SELECT segment as name, value as calculated_media FROM indicators_average_geral
+          WHERE service_level_id = #{sl_id}
           AND dimension_number = #{dimension_number}
-          AND indicator_number = #{indicator_number}",
-          :group => "segment")]
+          AND indicator_number = #{indicator_number}
+          GROUP BY segment
+        ")
+        ]
     end
 
     labels = get_labels(data.first.last, service_level_ids.first)
 
     values = []
     data.each do |d|
-      values << [ServiceLevel.find(d.first).name, get_segments_values_for_dimension_graphic(labels, d.last)]
+      values << [ServiceLevel.find(d.first).name, get_segments_values_for_dimension_graphic(labels, d.last, dimension_number, d.first, indicator_number)]
     end
-    
+
     g = Gruff::Bar.new("900x380")
     g.title = get_indicator_graphic_title(dimension, indicator)
 

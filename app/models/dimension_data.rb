@@ -20,34 +20,32 @@ class DimensionData < ActiveRecord::Base
   COLORS = ['#3D2D84', '#FFC540']
 
   def self.get_data
-    School.all.each do |s|
-      s.service_levels.each do |sl|
-        previous_avaliations = PreviousAvaliation.all(:conditions => "school_id = #{s.id} AND service_level_id = #{sl.id}", 
-          :order => "dimension_id ASC, indicator_number + 0 ASC")
+      ServiceLevel.all.each do |sl|
+        previous_avaliations = GeneralReportData.all(:conditions => "service_level_id = #{sl.id} and indicator_id is not null", 
+          :order => "dimension_id ASC, indicator_id + 0 ASC")
         previous_avaliations.each do |p|
-          dimension = Dimension.first(:conditions => "number = #{p.dimension_id} AND service_level_id = #{sl.id}")
-          DimensionData.create(:dimension_number => dimension.number, :indicator_number => p.indicator_number, 
-            :year => p.year, :value => p.media, :school_id => s.id, :service_level_id => sl.id)
+          puts p.inspect
+          dimension = Dimension.first(:conditions => "id = #{p.dimension_id}")
+          indicator = Indicator.first(:conditions => "id = #{p.indicator_id}")
+          DimensionData.create(:dimension_number => dimension.number, :indicator_number => indicator.number, 
+            :year => p.year, :value => p.media, :service_level_id => sl.id)
         end
 
-        report_data = ReportData.find_by_sql("
-          SELECT *, ROUND(AVG(media),1) as calculated_media FROM report_data 
-          WHERE school_id = #{s.id} AND media >= 0 and media <= 5 AND service_level_id = #{sl.id}
-          GROUP BY indicator_id
-          ORDER BY dimension_id ASC, indicator_id ASC")
-        report_data.each do |r|
-          dimension = Dimension.find(r.dimension_id)
-          indicator = Indicator.find(r.indicator.id)
-          DimensionData.create(:dimension_number => dimension.number, :indicator_number => "#{dimension.number}.#{indicator.number}", 
-            :year => 2011, :value => r.calculated_media, :school_id => s.id, :service_level_id => sl.id)
+        general_data = GeneralData.find_by_sql("
+          SELECT *, ROUND(AVG(media),2) as calculated_media FROM general_data 
+          WHERE media >= 0 and media <= 5 AND service_level_id = #{sl.id}
+          GROUP BY indicator_number, dimension_number
+          ORDER BY dimension_number ASC, indicator_number ASC")
+        general_data.each do |r|
+          DimensionData.create(:dimension_number => r.dimension_number, :indicator_number => "#{r.dimension_number}.#{r.indicator_number}", 
+            :year => 2011, :value => r.calculated_media.to_s[0..2], :service_level_id => sl.id)
         end
       end
-    end
   end
 
   def self.generate_dimensions_graphic(school_id, service_level_id)
     dimension_data = DimensionData.find_by_sql("
-      SELECT *, ROUND(AVG(value),1) as calculated_media FROM dimension_data
+      SELECT *, ROUND(AVG(value),1) as calculated_media, indicator_number as inu FROM dimension_data
       WHERE school_id = #{school_id} AND service_level_id = #{service_level_id}
       GROUP BY year, dimension_number
       ORDER BY year, dimension_number")
@@ -193,7 +191,7 @@ class DimensionData < ActiveRecord::Base
     values = []
     labels.each do |l|
       data.each do |d|
-        values << d.value if d.indicator_number.to_s == l
+        values << d.value if d.inu.to_s == l
       end
     end
     values
@@ -234,7 +232,7 @@ class DimensionData < ActiveRecord::Base
     values = []
     labels.each do |l|
       data.each do |d|
-        values << d.calculated_media if d.dimension_number.to_s == l
+        values << d.calculated_media.to_s[0..2].to_f if d.dimension_number.to_s == l
       end
     end
     values
@@ -248,12 +246,12 @@ class DimensionData < ActiveRecord::Base
       WHERE g.service_level_id = #{service_level_id}
       AND YEAR = 2010
       AND data_type = 1
+      AND media > 0
       GROUP BY dimension_number
       ORDER BY dimension_number")
-    dimension_data = DimensionData.find_by_sql("
-      SELECT *, ROUND(AVG(value),1) as calculated_media FROM dimension_data
+    dimension_data = DimensionsAverageGeral.find_by_sql("
+      SELECT *, ROUND(AVG(value),2) as calculated_media FROM dimensions_average_geral g
       WHERE service_level_id = #{service_level_id}
-      AND year = 2011
       GROUP BY dimension_number
       ORDER BY dimension_number")
 
@@ -304,7 +302,7 @@ class DimensionData < ActiveRecord::Base
 
   def self.generate_graphic_per_dimension_geral( service_level_id, dimension_number)
     dimension_data_2010 = DimensionData.find_by_sql("
-      SELECT *, ROUND(AVG(media),1) as value, CONCAT(d.number, '.' ,i.number) as indicator_number 
+      SELECT *, ROUND(AVG(media),1) as value, CONCAT(d.number, '.' ,i.number) as inu 
       FROM general_report_data g
       INNER JOIN dimensions d ON g.dimension_id = d.id
       INNER JOIN indicators i ON g.indicator_id = i.id
@@ -312,10 +310,15 @@ class DimensionData < ActiveRecord::Base
       AND YEAR = 2010
       AND d.number = #{dimension_number}
       AND data_type = 1
+      AND media > 0
       GROUP BY i.number")
-    dimension_data = DimensionData.all(:conditions => "service_level_id = #{service_level_id}
-      AND dimension_number = #{dimension_number} AND year = 2011",
-      :group => "indicator_number")
+    dimension_data = IndicatorsDataGeral.find_by_sql("
+      SELECT ROUND(AVG(value),1) as value, CONCAT(dimension_number, '.' ,indicator_number) as inu 
+      FROM indicators_data_geral
+      WHERE service_level_id = #{service_level_id} AND
+      dimension_number = #{dimension_number}
+      GROUP BY indicator_number
+      ")
 
     years = [2010, 2011]
     data_per_years = Hash.new
@@ -323,9 +326,11 @@ class DimensionData < ActiveRecord::Base
     data_per_years[2011] = get_years_and_data_per_year_geral(dimension_data)
     
 
-    labels = get_labels(data_per_years[2011].collect(&:indicator_number), dimension_number)
+    labels = get_labels(data_per_years[2011].collect(&:inu), dimension_number)
 
-    puts data_per_years[years.last].collect(&:indicator_number).inspect
+    puts '-' * 100
+    puts data_per_years[years.last].inspect
+    puts '-' * 100
     values = Hash.new
     years.each do |y|
       values[y] = get_values(labels, data_per_years[y])
