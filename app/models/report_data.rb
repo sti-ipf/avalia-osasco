@@ -158,6 +158,22 @@ class ReportData < ActiveRecord::Base
     table_data
   end
 
+  def self.get_group_data_geral(service_level_id)
+    groups = Group.all(:conditions => "service_level_id = #{service_level_id}")
+    group_data = []
+    groups.each do |group|
+      group_data << ReportData.find_by_sql("
+      SELECT d.number as dimension_number, d.name as dimension_name, ROUND(AVG(media),1) as calculated_media FROM report_data rd
+      INNER JOIN dimensions d ON d.id = rd.dimension_id
+      WHERE rd.service_level_id = #{service_level_id}
+      AND school_id IN (SELECT school_id FROM groups_schools WHERE group_id = #{group.id})
+      AND rd.media >= 0
+      GROUP by rd.dimension_id
+      ")
+    end
+    group_data
+  end
+
   def self.indicator_graphic(school_id, service_level_id, dimension_number, indicator_number)
     school = School.find(school_id)
     dimension = Dimension.first(:conditions => "number = #{dimension_number} AND service_level_id = #{service_level_id}")

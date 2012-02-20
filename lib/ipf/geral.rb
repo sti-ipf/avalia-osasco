@@ -53,7 +53,7 @@ module IPF
         doc.next_page
       end
 
-      25.times do |i|
+      22.times do |i|
         doc.image next_page_file(doc)
         doc.next_page if i != (i-1)
       end
@@ -62,7 +62,7 @@ module IPF
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{1}")
 
-      y_points = {1 => 9, 2 => 17.5}
+      y_points = {1 => 13.8, 2 => 17.5}
       [1, 2].each do |sl_id|
         doc.image next_page_file(doc)  
         file = File.join(TEMP_DIRECTORY,"#{sl_id}_dimensions_graphic_geral.jpg")
@@ -80,7 +80,7 @@ module IPF
           if [4, 6, 8].include?(i)
             y = 5.5
           else
-            y = 18.5
+            y = 18
             doc.showpage 
             doc.image next_page_file(doc) if i != dimensions_total
           end
