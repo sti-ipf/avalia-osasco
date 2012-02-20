@@ -80,9 +80,13 @@ module IPF
           if [4, 6, 8].include?(i)
             y = 5.5
           else
-            y = 18
+            y = 18.5
             doc.showpage 
             doc.image next_page_file(doc) if i != dimensions_total
+          end
+
+          if sl_id == 2 && i == 4
+            y = 5
           end
 
         end
@@ -215,6 +219,9 @@ module IPF
           x_number += 2.6
         end
       end
+
+      doc.image next_page_file(doc)
+      doc.next_page
 
       doc.image next_page_file(doc)
       doc.next_page
