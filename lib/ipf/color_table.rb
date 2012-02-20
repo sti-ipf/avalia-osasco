@@ -50,15 +50,16 @@ module IPF
 
     def self.build_legends(schools, title, file_name)
       html_code = get_initial_html
-      html_code << "#{title}
+      html_code << "<div style='font-size:16px;margin-botton:15px;'>#{title}</div>
+                    <br>
                     <table>"
       break_control = 0
       schools_size = schools.size
       schools.each do |i|
         html_code << "
           <tr>
-            <td style=\"font-size:16px\">#{i[1]}</td>
-            <td style=\"width:auto;font-size:16px\">#{i[0]}</td>
+            <td style=\"font-size:14px; padding:5px;\">#{i[1]}</td>
+            <td style=\"width:auto;font-size:14px; padding:3px;\">#{i[0]}</td>
           </tr>"
         break_control += 1
         # if break_control == 40 && schools_size > 50
@@ -145,7 +146,7 @@ module IPF
         if !value.nil?
           if !with_grades
             css_class = get_css_class(value)
-            table << "<td class = \"#{css_class}\"> </td>"
+            table << "<td class = \"#{css_class}\"> #{value} </td>"
           else
             table << "<td> #{value} </td>"
           end

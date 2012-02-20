@@ -222,7 +222,7 @@ module IPF
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 10.5, :zoom => 50
+      doc.image file, :x => 1.6, :y => 5, :zoom => 50
 
       doc.image next_page_file(doc)
       doc.next_page
@@ -238,7 +238,7 @@ module IPF
       file = File.join(TEMPLATE_DIRECTORY,"EMEI_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 7, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 1, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page
@@ -349,12 +349,12 @@ module IPF
 
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE CONVENIADA_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
-      doc.image file, :x => 1.6, :y => 18, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 15, :zoom => 50  
       
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE CONVENIADA_table.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 5, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 2, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page 
@@ -490,7 +490,7 @@ module IPF
 
       file = File.join(TEMPLATE_DIRECTORY,"EMEF_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
-      doc.image file, :x => 1.6, :y => 8.5, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 1.5, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page 
@@ -608,7 +608,7 @@ module IPF
 
       file = File.join(TEMPLATE_DIRECTORY,"EJA_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
-      doc.image file, :x => 1.6, :y => 14, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 8, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page 
