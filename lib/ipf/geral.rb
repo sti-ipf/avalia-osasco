@@ -223,9 +223,6 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page
 
-      doc.image next_page_file(doc)
-      doc.next_page
-
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
@@ -263,7 +260,7 @@ module IPF
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{6}")
 
-      dimension_graphic_y_points = [0, 13, 6, 17, 17, 0.5, 17, 4, 0.5, 17, 3]
+      dimension_graphic_y_points = [0, 8, 5, 17, 17, 4, 17, 4, 0.5, 17, 3]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
@@ -356,12 +353,12 @@ module IPF
 
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE CONVENIADA_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
-      doc.image file, :x => 1.6, :y => 15, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 19, :zoom => 50  
       
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE CONVENIADA_table.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 2, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 0, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page 
