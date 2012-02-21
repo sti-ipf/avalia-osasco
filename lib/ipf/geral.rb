@@ -400,7 +400,7 @@ module IPF
       doc.next_page
 
 
-      dimension_graphic_y_points = [0, 17, 6, 12, 2, 1.5, 17, 4, 0.5, 13.5, 4, 7.5]
+      dimension_graphic_y_points = [0, 17, 6, 12, 2, 2, 17, 4, 0.5, 13.5, 4, 7.5]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
