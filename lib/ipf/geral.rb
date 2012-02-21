@@ -492,6 +492,9 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page 
 
+      doc.image next_page_file(doc)
+      doc.next_page 
+
       file = File.join(TEMPLATE_DIRECTORY,"EMEF_legend.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
       doc.image file, :x => 1.6, :y => 1.5, :zoom => 50  
