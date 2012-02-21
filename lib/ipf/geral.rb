@@ -53,12 +53,49 @@ module IPF
         doc.next_page
       end
 
-      22.times do |i|
+      21.times do |i|
         doc.image next_page_file(doc)
         doc.next_page if i != (i-1)
       end
 
+      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+        INNER JOIN segments s on a.segment_id = s.id
+        WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 1)
+        GROUP BY s.name")
+      segment_data = Hash.new
+      segment_tmp.each do |s|
+        segment_data[s.name] = s.calculated_media
+      end
       
+      i = 0
+      y_numbers = [14.7, 14, 13.4, 12.8]
+      segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
+      segments.each do |s|
+        doc.moveto :x => 14.9, :y => y_numbers[i]
+        doc.show segment_data[s], :with => :font2, :align => :show_center 
+        i += 1
+      end
+
+      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+        INNER JOIN segments s on a.segment_id = s.id
+        WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 2)
+        GROUP BY s.name")
+      segment_data = Hash.new
+      segment_tmp.each do |s|
+        segment_data[s.name] = s.calculated_media
+      end
+      
+      i = 0
+      y_numbers = [9.6, 8.9, 8.3, 7.7]
+      segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
+      segments.each do |s|
+        doc.moveto :x => 14.9, :y => y_numbers[i]
+        doc.show segment_data[s], :with => :font2, :align => :show_center 
+        i += 1
+      end
+
+      doc.image next_page_file(doc)
+      doc.next_page 
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{1}")
 
@@ -148,7 +185,7 @@ module IPF
 
         end
 
-        if ![5, 6, 7, 9].include?(i)
+        if ![5, 6, 7, 9, 10].include?(i)
           doc.image next_page_file(doc)
           doc.next_page 
         end
@@ -163,21 +200,9 @@ module IPF
 
       group_data = {}
       groups = Group.all(:conditions => "service_level_id = 1")
-      groups.each do |g|
-        data = DimensionData.find_by_sql("
-          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
-          WHERE service_level_id = 1  and year = 2011
-          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
-          GROUP BY year, dimension_number
-          ORDER BY year, dimension_number
-        ")
-        group_data[g.id] = {}
-        data.each do |d|
-          group_data[g.id][d.dimension_number] = d.calculated_media
-        end
-      end
+      group_data = ReportData.get_group_data_geral(1)
 
-      y_numbers = [0, 18.4, 17.6, 16.6, 15.8, 15, 14.3, 13.5, 12.2, 11.2, 10.4]
+      y_numbers = [0, 11.8, 11, 10, 9.2, 8.3, 7.6, 6.8, 5.5, 4.5, 3.8]
       (1..dimensions_total).each do |i|
         x_number = 9.5
         groups.each do |g|
@@ -196,21 +221,9 @@ module IPF
 
       group_data = {}
       groups = Group.all(:conditions => "service_level_id = 2")
-      groups.each do |g|
-        data = DimensionData.find_by_sql("
-          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
-          WHERE service_level_id = 2  and year = 2011
-          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
-          GROUP BY year, dimension_number
-          ORDER BY year, dimension_number
-        ")
-        group_data[g.id] = {}
-        data.each do |d|
-          group_data[g.id][d.dimension_number] = d.calculated_media
-        end
-      end
+      group_data = ReportData.get_group_data_geral(2)
 
-      y_numbers = [0, 25.8, 25, 23.8, 23, 22.1, 21.2, 20.3, 19, 17.9, 16.9]
+      y_numbers = [0, 23.9, 23, 22.1, 21.3, 20.4, 19.8, 19, 17.9, 16.7, 16]
       (1..dimensions_total).each do |i|
         x_number = 9.5
         groups.each do |g|
@@ -219,6 +232,9 @@ module IPF
           x_number += 2.6
         end
       end
+
+      doc.image next_page_file(doc)
+      doc.next_page
 
       doc.image next_page_file(doc)
       doc.next_page
@@ -234,7 +250,7 @@ module IPF
       file = File.join(TEMPLATE_DIRECTORY,"CRECHE_table.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 9, :zoom => 50  
+      doc.image file, :x => 1.6, :y => 8, :zoom => 50  
 
       doc.image next_page_file(doc)
       doc.next_page
@@ -254,6 +270,24 @@ module IPF
 
       doc.image next_page_file(doc)
       doc.next_page
+
+      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+        INNER JOIN segments s on a.segment_id = s.id
+        WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 6)
+        GROUP BY s.name")
+      segment_data = Hash.new
+      segment_tmp.each do |s|
+        segment_data[s.name] = s.calculated_media
+      end
+      
+      i = 0
+      y_numbers = [16.2, 15.5, 14.9, 14.3, 13.6]
+      segments = ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares']
+      segments.each do |s|
+        doc.moveto :x => 14.9, :y => y_numbers[i]
+        doc.show segment_data[s], :with => :font2, :align => :show_center 
+        i += 1
+      end
 
       doc.image next_page_file(doc)
       doc.next_page
@@ -279,6 +313,7 @@ module IPF
 
         while file_exist
           indicator_number += 1
+          next if ['3.10', '4.5', '9.2', '10.3'].include?("#{i}.#{indicator_number}")
           case graphics
             when 0
               y = 20.4
@@ -312,7 +347,7 @@ module IPF
 
         end
 
-        if ![6, 7, 9].include?(i)
+        if ![6, 7, 9, 10].include?(i)
           doc.image next_page_file(doc)
           doc.next_page 
         end
@@ -324,21 +359,9 @@ module IPF
 
       group_data = {}
       groups = Group.all(:conditions => "service_level_id = 6")
-      groups.each do |g|
-        data = DimensionData.find_by_sql("
-          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
-          WHERE service_level_id = 6  and year = 2011
-          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
-          GROUP BY year, dimension_number
-          ORDER BY year, dimension_number
-        ")
-        group_data[g.id] = {}
-        data.each do |d|
-          group_data[g.id][d.dimension_number] = d.calculated_media
-        end
-      end
+      group_data = ReportData.get_group_data_geral(6)
 
-      y_numbers = [0, 17.6, 16.8, 15.8, 15, 14.1, 13.2, 12.4, 11.1, 10.2, 9.4]
+      y_numbers = [0, 16, 15.1, 14.2, 13.3, 12.4, 11.6, 10.8, 9.5, 8.5, 7.7]
       (1..dimensions_total).each do |i|
         x_number = 9.5
         groups.each do |g|
@@ -347,6 +370,9 @@ module IPF
           x_number += 2.6
         end
       end
+
+      doc.image next_page_file(doc)
+      doc.next_page 
 
       doc.image next_page_file(doc)
       doc.next_page 
@@ -363,7 +389,23 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page 
       
-
+      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+        INNER JOIN segments s on a.segment_id = s.id
+        WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 3)
+        GROUP BY s.name")
+      segment_data = Hash.new
+      segment_tmp.each do |s|
+        segment_data[s.name] = s.calculated_media
+      end
+      
+      i = 0
+      y_numbers = [24.2, 23.5, 22.9, 22.2, 21.6]
+      segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares', 'Educandos']
+      segments.each do |s|
+        doc.moveto :x => 14.9, :y => y_numbers[i]
+        doc.show segment_data[s], :with => :font2, :align => :show_center 
+        i += 1
+      end
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{3}")
 
@@ -458,28 +500,14 @@ module IPF
         end
       end
 
-      2.times do |i|
-        doc.image next_page_file(doc)
-        doc.next_page if i != (i-1)
-      end
+      doc.image next_page_file(doc)
+      doc.next_page 
 
       group_data = {}
       groups = Group.all(:conditions => "service_level_id = 3")
-      groups.each do |g|
-        data = DimensionData.find_by_sql("
-          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
-          WHERE service_level_id = 3  and year = 2011
-          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
-          GROUP BY year, dimension_number
-          ORDER BY year, dimension_number
-        ")
-        group_data[g.id] = {}
-        data.each do |d|
-          group_data[g.id][d.dimension_number] = d.calculated_media
-        end
-      end
+      group_data = ReportData.get_group_data_geral(3)
 
-      y_numbers = [0, 26, 25.2, 24.2, 23.4, 22.5, 21.8, 20.9, 19.7, 18.8, 18, 17]
+      y_numbers = [0, 24.6, 23.8, 22.8, 22, 21.2, 20.4, 19.5, 18.5, 17.4, 16.6, 15.7]
       (1..dimensions_total).each do |i|
         x_number = 9.5
         groups.each do |g|
@@ -488,6 +516,9 @@ module IPF
           x_number += 2.6
         end
       end
+
+      doc.image next_page_file(doc)
+      doc.next_page 
 
       doc.image next_page_file(doc)
       doc.next_page 
@@ -510,15 +541,31 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page 
 
+      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+        INNER JOIN segments s on a.segment_id = s.id
+        WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 4)
+        GROUP BY s.name")
+      segment_data = Hash.new
+      segment_tmp.each do |s|
+        segment_data[s.name] = s.calculated_media
+      end
+      
+      i = 0
+      y_numbers = [21.1, 20.4, 19.8, 19.2]
+      segments = ['Gestores', 'Professores', 'Funcionários', 'Educandos']
+      segments.each do |s|
+        doc.moveto :x => 14.9, :y => y_numbers[i]
+        doc.show segment_data[s], :with => :font2, :align => :show_center 
+        i += 1
+      end
+
       doc.image next_page_file(doc)
       doc.next_page 
-
-      
 
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{4}")
 
-      dimension_graphic_y_points = [0, 16, 2, 2, 0.5, 0.5, 4, 5, 3, 7]
+      dimension_graphic_y_points = [0, 9, 4, 2, 0.5, 0.5, 4, 5, 3, 7]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
@@ -580,27 +627,12 @@ module IPF
         end
       end
 
-      doc.image next_page_file(doc)
-      doc.next_page 
-
       group_data = {}
       groups = Group.all(:conditions => "service_level_id = 4")
-      groups.each do |g|
-        data = DimensionData.find_by_sql("
-          SELECT dimension_number, ROUND(AVG(value),1) as calculated_media FROM dimension_data
-          WHERE service_level_id = 4  and year = 2011
-          AND school_id  IN (SELECT school_id FROM groups_schools WHERE group_id = #{g.id})
-          GROUP BY year, dimension_number
-          ORDER BY year, dimension_number
-        ")
-        group_data[g.id] = {}
-        data.each do |d|
-          group_data[g.id][d.dimension_number] = d.calculated_media
-        end
-      end
+      group_data = ReportData.get_group_data_geral(4)
 
-      y_numbers = [0, 21, 20.2, 19.5, 18.6, 17.8, 17, 16.2, 15.5, 14.5]
-      (1..dimensions_total).each do |i|
+      y_numbers = [0, 9.4, 8.7, 7.8, 7, 6.2, 5.4, 4.6, 3.7]
+      (1..8).each do |i|
         x_number = 9.5
         groups.each do |g|
           doc.moveto :x => x_number, :y => y_numbers[i]
@@ -609,6 +641,15 @@ module IPF
         end
       end
 
+      doc.image next_page_file(doc)
+      doc.next_page 
+
+      x_number = 9.5
+      groups.each do |g|
+        doc.moveto :x => x_number, :y => 27
+        doc.show group_data[g.id][9], :with => :font2, :align => :show_center 
+        x_number += 2.6
+      end
       
       doc.image next_page_file(doc)
       doc.next_page 
