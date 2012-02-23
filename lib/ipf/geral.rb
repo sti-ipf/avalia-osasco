@@ -58,10 +58,13 @@ module IPF
         doc.next_page if i != (i-1)
       end
 
-      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
+(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
+        INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 1)
-        GROUP BY s.name")
+        GROUP BY ss.name, s.name) tmp
+       GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
         segment_data[s.name] = s.calculated_media
@@ -76,10 +79,13 @@ module IPF
         i += 1
       end
 
-      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
+(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
+        INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 2)
-        GROUP BY s.name")
+        GROUP BY ss.name, s.name) tmp
+       GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
         segment_data[s.name] = s.calculated_media
@@ -271,13 +277,16 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page
 
-      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
+        (SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
+        INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 6)
-        GROUP BY s.name")
+        GROUP BY ss.name, s.name) tmp
+       GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media
+        segment_data[s.name] = s.calculated_media.to_i
       end
       
       i = 0
@@ -389,10 +398,13 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page 
       
-      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
+(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
+        INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 3)
-        GROUP BY s.name")
+        GROUP BY ss.name, s.name) tmp
+       GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
         segment_data[s.name] = s.calculated_media
@@ -541,10 +553,13 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page 
 
-      segment_tmp = Answer.find_by_sql("SELECT s.name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
+(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
+        INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 4)
-        GROUP BY s.name")
+        GROUP BY ss.name, s.name) tmp
+       GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
         segment_data[s.name] = s.calculated_media
@@ -631,8 +646,8 @@ module IPF
       groups = Group.all(:conditions => "service_level_id = 4")
       group_data = ReportData.get_group_data_geral(4)
 
-      y_numbers = [0, 9.4, 8.7, 7.8, 7, 6.2, 5.4, 4.6, 3.7]
-      (1..8).each do |i|
+      y_numbers = [0, 10.1, 9.4, 8.5, 7.8, 6.9, 6.2, 5.3, 4.5, 3.5]
+      (1..9).each do |i|
         x_number = 9.5
         groups.each do |g|
           doc.moveto :x => x_number, :y => y_numbers[i]
@@ -643,13 +658,6 @@ module IPF
 
       doc.image next_page_file(doc)
       doc.next_page 
-
-      x_number = 9.5
-      groups.each do |g|
-        doc.moveto :x => x_number, :y => 27
-        doc.show group_data[g.id][9], :with => :font2, :align => :show_center 
-        x_number += 2.6
-      end
       
       doc.image next_page_file(doc)
       doc.next_page 

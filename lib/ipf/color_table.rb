@@ -71,7 +71,7 @@ module IPF
       create_html_file(html_code, "#{file_name}.html")
     end
 
-    def self.build_html(data,schools, dimensions, file_name, with_grades)
+    def self.build_html(data, schools, dimensions, file_name, with_grades)
       html_code = get_initial_html
       html_code << '<table>'
       header = ''
@@ -82,7 +82,7 @@ module IPF
           <td rowspan = '3'>Escolas</td>
          </tr>
          <tr>
-          <td colspan = '#{dimensions.count}'> Dimensões </td>
+          <td colspan = '#{dimensions.count+1}'> Dimensões </td>
          </tr>
          <tr>"
       end
@@ -95,6 +95,8 @@ module IPF
         end
       end
 
+      [html_code, header].each {|s| s << "<td> Índice geral </td>"}
+
       [html_code, header].each {|s| s << "</tr>"}
 
       schools.each do |school|
@@ -102,6 +104,9 @@ module IPF
         dimensions.each do |dimension|
           html_code = add_data_in_table(data, school[0], dimension, html_code, with_grades)
         end
+        value = data[school[0]]['index']
+        css_class = get_css_class(value)
+        html_code << "<td class = \"#{css_class}\"> #{value} </td>"
         html_code << "</tr>"
       end
       html_code << "</table></body></html>"
