@@ -487,7 +487,7 @@ class ReportData < ActiveRecord::Base
     labels.each do |l|
       data.each do |d|
         if d.name == l 
-          values << d.calculated_media.to_s[0..2].to_f
+          values << d.calculated_media
           segments_without_answers << d.calculated_media if d.calculated_media == 0
         end
       end
@@ -522,7 +522,7 @@ class ReportData < ActiveRecord::Base
     service_level_ids.each do |sl_id|
       data << [sl_id,
         IndicatorsAverageGeral.find_by_sql("
-            SELECT segment as name, ROUND(AVG(value),2) as calculated_media FROM indicators_average_geral g
+            SELECT segment as name, ROUND(AVG(value),1) as calculated_media FROM indicators_average_geral g
             WHERE dimension_number = #{dimension_number} 
             AND service_level_id = #{sl_id}
             GROUP BY name")]
