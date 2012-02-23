@@ -294,7 +294,7 @@ module IPF
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{6}")
 
-      dimension_graphic_y_points = [0, 8, 5, 17, 17, 3.4, 17, 4, 0.5, 17, 3]
+      dimension_graphic_y_points = [0, 7.5, 5, 17, 17, 3.4, 17, 4, 0.5, 17, 3]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
