@@ -71,7 +71,7 @@ module IPF
       end
       
       i = 0
-      y_numbers = [14.7, 14, 13.4, 12.8]
+      y_numbers = [19, 18, 17, 16]
       segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
       segments.each do |s|
         doc.moveto :x => 14.9, :y => y_numbers[i]
@@ -92,7 +92,7 @@ module IPF
       end
       
       i = 0
-      y_numbers = [9.6, 8.9, 8.3, 7.7]
+      y_numbers = [13, 12, 11, 10]
       segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
       segments.each do |s|
         doc.moveto :x => 14.9, :y => y_numbers[i]
@@ -677,6 +677,10 @@ module IPF
       doc.next_page 
 
       doc.image next_page_file(doc)
+      doc.next_page 
+
+      doc.image next_page_file(doc)
+
       
 
 

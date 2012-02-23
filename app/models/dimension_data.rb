@@ -17,7 +17,7 @@ class DimensionData < ActiveRecord::Base
     :top_label_size   => 10
   }
 
-  COLORS = ['#3D2D84', '#FFC540']
+  COLORS = ['#3D2D84', '#FFC540', '#00AE68', '#66A1D2']
 
   def self.get_data
       ServiceLevel.all.each do |sl|
@@ -64,7 +64,14 @@ class DimensionData < ActiveRecord::Base
     i_color = 0
     years.each do |y|
       if y == 2011
-        i_color = 1
+        case service_level_id
+          when 1
+            i_color = 2
+          when 2
+            i_color = 3
+          when 3
+            i_color = 1
+        end
       else
         i_color = 0
       end
@@ -110,7 +117,14 @@ class DimensionData < ActiveRecord::Base
     i_color = 0
     years.each do |y|
       if y == 2011
-        i_color = 1
+        case service_level_id
+          when 1
+            i_color = 2
+          when 2
+            i_color = 3
+          when 3
+            i_color = 1
+        end
       else
         i_color = 0
       end
@@ -273,7 +287,14 @@ class DimensionData < ActiveRecord::Base
     i_color = 0
     years.each do |y|
       if y == 2011
-        i_color = 1
+        case service_level_id
+          when 1
+            i_color = 2
+          when 2
+            i_color = 3
+          when 3
+            i_color = 1
+        end
       else
         i_color = 0
       end

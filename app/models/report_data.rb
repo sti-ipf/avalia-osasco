@@ -544,16 +544,26 @@ class ReportData < ActiveRecord::Base
     values.each do |v|
       if service_level_ids.count == 1
         case service_level_ids.first 
-          when 3
-            colors = ["#FF4040"]
-          when 4
-            colors = ["#996AD6"]
-          when 6
+          when 1
             colors = ["#00AE68"]
+          when 2
+            colors = ["#66A1D2"]
+          when 3
+            colors = ["#FFC540"]
+          when 4
+            colors = ["#FF4040"]
+          when 6
+            colors = ["#996AD6"]
         end
-        g.data(v.first, v.last, colors[i_color])
+        g.data(v.first, v.last, colors[0])
       else
-        g.data(v.first, v.last, COLORS[i_color])
+        case v.first
+          when 'CRECHE'
+            colors = ["#00AE68"]
+          when 'EMEI'
+            colors = ["#66A1D2"]
+          end
+        g.data(v.first, v.last, colors[0])
       end
       i_color += 1
     end
@@ -619,12 +629,16 @@ class ReportData < ActiveRecord::Base
     values.each do |v|
       if service_level_ids.count == 1
         case service_level_ids.first 
-          when 3
-            colors = ["#FF4040"]
-          when 4
-            colors = ["#996AD6"]
-          when 6
+          when 1
             colors = ["#00AE68"]
+          when 2
+            colors = ["#66A1D2"]
+          when 3
+            colors = ["#FFC540"]
+          when 4
+            colors = ["#FF4040"]
+          when 6
+            colors = ["#996AD6"]
         end
         g.data(v.first, v.last, colors[i_color])
       else
