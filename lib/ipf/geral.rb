@@ -71,7 +71,7 @@ module IPF
       end
       
       i = 0
-      y_numbers = [17.3, 16.7, 16.1, 15.5]
+      y_numbers = [13.1, 12.5, 11.9, 11.2]
       segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
       segments.each do |s|
         doc.moveto :x => 14.9, :y => y_numbers[i]
@@ -92,7 +92,7 @@ module IPF
       end
       
       i = 0
-      y_numbers = [12.3, 11.6, 10.9, 10.3]
+      y_numbers = [8.1, 7.4, 6.8, 6.1]
       segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
       segments.each do |s|
         doc.moveto :x => 14.9, :y => y_numbers[i]
@@ -105,7 +105,7 @@ module IPF
 
       dimensions_total = Dimension.count(:conditions => "service_level_id = #{1}")
 
-      y_points = {1 => 13.8, 2 => 17.5}
+      y_points = {1 => 10.8, 2 => 17.5}
       [1, 2].each do |sl_id|
         doc.image next_page_file(doc)  
         file = File.join(TEMP_DIRECTORY,"#{sl_id}_dimensions_graphic_geral.jpg")
@@ -454,7 +454,7 @@ module IPF
       doc.next_page
 
 
-      dimension_graphic_y_points = [0, 17, 6, 12, 2, 2, 17, 4, 0.5, 13.5, 4, 7.5]
+      dimension_graphic_y_points = [0, 17, 6, 12, 2, 1.5, 17, 4, 0.5, 13.5, 4, 7.5]
 
       (1..dimensions_total).each do |i|
         doc.image next_page_file(doc)
