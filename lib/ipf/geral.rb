@@ -67,11 +67,11 @@ module IPF
        GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media
+        segment_data[s.name] = s.calculated_media.to_i
       end
       
       i = 0
-      y_numbers = [19, 18, 17, 16]
+      y_numbers = [17.3, 16.7, 16.1, 15.5]
       segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
       segments.each do |s|
         doc.moveto :x => 14.9, :y => y_numbers[i]
@@ -88,11 +88,11 @@ module IPF
        GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media
+        segment_data[s.name] = s.calculated_media.to_i
       end
       
       i = 0
-      y_numbers = [13, 12, 11, 10]
+      y_numbers = [12.3, 11.6, 10.9, 10.3]
       segments = ['Gestores', 'Professores', 'Funcionários', 'Familiares']
       segments.each do |s|
         doc.moveto :x => 14.9, :y => y_numbers[i]
@@ -407,7 +407,7 @@ module IPF
        GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media
+        segment_data[s.name] = s.calculated_media.to_i
       end
       
       i = 0
@@ -548,7 +548,7 @@ module IPF
       file = File.join(TEMPLATE_DIRECTORY,"EMEF_table.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
 
-      doc.image file, :x => 1.6, :y => 6, :zoom => 50  
+      doc.image file, :x => 0.5, :y => 6, :zoom => 50
 
       doc.image next_page_file(doc)
       doc.next_page 
@@ -562,7 +562,7 @@ module IPF
        GROUP BY name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media
+        segment_data[s.name] = s.calculated_media.to_i
       end
       
       i = 0
@@ -672,9 +672,6 @@ module IPF
       file = File.join(TEMPLATE_DIRECTORY,"EJA_table.jpg")
       puts "ARQUIVO NAO EXISTE: #{file}" if !File.exists?(file)
       doc.image file, :x => 1.6, :y => 12, :zoom => 50  
-
-      doc.image next_page_file(doc)
-      doc.next_page 
 
       doc.image next_page_file(doc)
       doc.next_page 

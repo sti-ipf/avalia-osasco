@@ -547,7 +547,7 @@ class ReportData < ActiveRecord::Base
           when 1
             colors = ["#00AE68"]
           when 2
-            colors = ["#66A1D2"]
+            colors = ["#EDC09E"]
           when 3
             colors = ["#FFC540"]
           when 4
@@ -561,8 +561,8 @@ class ReportData < ActiveRecord::Base
           when 'CRECHE'
             colors = ["#00AE68"]
           when 'EMEI'
-            colors = ["#66A1D2"]
-          end
+            colors = ["#EDC09E"]
+        end
         g.data(v.first, v.last, colors[0])
       end
       i_color += 1
@@ -632,7 +632,7 @@ class ReportData < ActiveRecord::Base
           when 1
             colors = ["#00AE68"]
           when 2
-            colors = ["#66A1D2"]
+            colors = ["#EDC09E"]
           when 3
             colors = ["#FFC540"]
           when 4
@@ -640,9 +640,15 @@ class ReportData < ActiveRecord::Base
           when 6
             colors = ["#996AD6"]
         end
-        g.data(v.first, v.last, colors[i_color])
+        g.data(v.first, v.last, colors[0])
       else
-        g.data(v.first, v.last, COLORS[i_color])
+        case v.first
+          when 'CRECHE'
+            colors = ["#00AE68"]
+          when 'EMEI'
+            colors = ["#EDC09E"]
+        end
+        g.data(v.first, v.last, colors[0])
       end
       i_color += 1
     end
