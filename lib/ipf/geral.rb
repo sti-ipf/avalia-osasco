@@ -53,7 +53,7 @@ module IPF
         doc.next_page
       end
 
-      21.times do |i|
+      20.times do |i|
         doc.image next_page_file(doc)
         doc.next_page if i != (i-1)
       end
