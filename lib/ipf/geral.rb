@@ -59,7 +59,7 @@ module IPF
       end
 
       segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
-(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
+(SELECT s.name as name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
         INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 1)
