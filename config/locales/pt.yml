@@ -40,15 +40,15 @@ pt:
       link: "Crie uma"
   activerecord:
     models:
-      admin_user: "Usuários"
-      dimension: "Dimensões"
-      indicator: "Indicadores"
-      school: "Escolas"
-      service_level: "Níveis de serviço"
-      segment: "Seguimentos"
-      password: "Senhas"
-      answer_log: "Log de respostas"
-      evaluation_answer_stat: "Estatísticas"
+      admin_user: "Usuário"
+      dimension: "Dimensão"
+      indicator: "Indicador"
+      school: "Escola"
+      service_level: "Nível de serviço"
+      segment: "Segmento"
+      password: "Senha"
+      answer_log: "Log de resposta"
+      evaluation_answer_stat: "Estatística"
     attributes:
       admin_user:
         email: "Email"
@@ -73,7 +73,7 @@ pt:
       password:
         password: "Senha"
         school: "Escola"
-        segment: "Seguimento"
+        segment: "Segmento"
         service_level: "Nível de serviço"
         created_at: "Criado em"
         updated_at: "Atualizado em"
@@ -82,6 +82,7 @@ pt:
         service_levels: "Níveis de serviço"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+        report_name: "Nome que será exibido no relatório"
       service_level:
         name: "Nome"
         created_at: "Criado em"

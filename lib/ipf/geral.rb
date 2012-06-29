@@ -58,16 +58,23 @@ module IPF
         doc.next_page if i != (i-1)
       end
 
-      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
-(SELECT s.name as name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT s.name as name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
         INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 1)
-        GROUP BY ss.name, s.name) tmp
-       GROUP BY name")
+        GROUP BY ss.name, s.name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media.to_i
+        segment_data[s.name] ||= []
+        segment_data[s.name] << s.calculated_media.to_i
+      end
+
+      ['Gestores', 'Professores', 'Funcionários', 'Familiares'].each do |s|
+        total = 0
+        segment_data[s].each do |ss|
+          total += ss
+        end
+        segment_data[s] = total
       end
       
       i = 0
@@ -79,16 +86,23 @@ module IPF
         i += 1
       end
 
-      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
-(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT s.name as name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
         INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 2)
-        GROUP BY ss.name, s.name) tmp
-       GROUP BY name")
+        GROUP BY ss.name, s.name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media.to_i
+        segment_data[s.name] ||= []
+        segment_data[s.name] << s.calculated_media.to_i
+      end
+
+      ['Gestores', 'Professores', 'Funcionários', 'Familiares'].each do |s|
+        total = 0
+        segment_data[s].each do |ss|
+          total += ss
+        end
+        segment_data[s] = total
       end
       
       i = 0
@@ -277,16 +291,23 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page
 
-      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
-        (SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT s.name as name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
         INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 6)
-        GROUP BY ss.name, s.name) tmp
-       GROUP BY name")
+        GROUP BY ss.name, s.name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media.to_i
+        segment_data[s.name] ||= []
+        segment_data[s.name] << s.calculated_media.to_i
+      end
+
+      ['Gestores', 'Coordenadores pedagógicos', 'Professores', 'Funcionários', 'Familiares'].each do |s|
+        total = 0
+        segment_data[s].each do |ss|
+          total += ss
+        end
+        segment_data[s] = total
       end
       
       i = 0
@@ -398,16 +419,23 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page 
       
-      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
-(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT s.name as name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
         INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 3)
-        GROUP BY ss.name, s.name) tmp
-       GROUP BY name")
+        GROUP BY ss.name, s.name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media.to_i
+        segment_data[s.name] ||= []
+        segment_data[s.name] << s.calculated_media.to_i
+      end
+
+      ['Gestores', 'Professores', 'Funcionários', 'Familiares', 'Educandos'].each do |s|
+        total = 0
+        segment_data[s].each do |ss|
+          total += ss
+        end
+        segment_data[s] = total
       end
       
       i = 0
@@ -553,16 +581,23 @@ module IPF
       doc.image next_page_file(doc)
       doc.next_page 
 
-      segment_tmp = Answer.find_by_sql("SELECT name, SUM(calculated_media) AS calculated_media FROM
-(SELECT s.name as name, ROUND(AVG(quantity_of_people),0) AS calculated_media FROM answers a 
+      segment_tmp = Answer.find_by_sql("SELECT s.name as name, ROUND(AVG(quantity_of_people),1) AS calculated_media FROM answers a 
         INNER JOIN segments s on a.segment_id = s.id
         INNER JOIN schools ss on a.school_id = ss.id
         WHERE s.id IN (SELECT id FROM segments WHERE service_level_id = 4)
-        GROUP BY ss.name, s.name) tmp
-       GROUP BY name")
+        GROUP BY ss.name, s.name")
       segment_data = Hash.new
       segment_tmp.each do |s|
-        segment_data[s.name] = s.calculated_media.to_i
+        segment_data[s.name] ||= []
+        segment_data[s.name] << s.calculated_media.to_i
+      end
+
+      ['Gestores', 'Professores', 'Funcionários', 'Educandos'].each do |s|
+        total = 0
+        segment_data[s].each do |ss|
+          total += ss
+        end
+        segment_data[s] = total
       end
       
       i = 0
@@ -714,9 +749,9 @@ module IPF
     def add_index(doc, index=true)
       @index ||= 2
       if @index.even?
-        doc.show "#{@index}", :with => :index, :align => :page_left if index        
+        doc.show "#{@index}", :with => :index, :align => :page_right if index        
       else
-        doc.show "#{@index}", :with => :index, :align => :page_right if index
+        doc.show "#{@index}", :with => :index, :align => :page_left if index
       end
       @index += 1
     end

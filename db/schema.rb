@@ -72,23 +72,9 @@ ActiveRecord::Schema.define(:version => 20120218204356) do
     t.datetime "updated_at"
   end
 
-  add_index "answers", ["question_text_id", "segment_id", "school_id"], :name => "idx_a_text_id_segment_id_school_id"
-  add_index "answers", ["question_text_id"], :name => "idx_a_text_id"
-
   create_table "complex_queries", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "dimension_data", :force => true do |t|
-    t.integer  "school_id"
-    t.integer  "dimension_number"
-    t.string   "indicator_number"
-    t.integer  "year"
-    t.float    "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "service_level_id"
   end
 
   create_table "dimension_statuses", :force => true do |t|
@@ -141,16 +127,6 @@ ActiveRecord::Schema.define(:version => 20120218204356) do
     t.datetime "updated_at"
   end
 
-  create_table "general_data", :force => true do |t|
-    t.integer  "service_level_id"
-    t.integer  "dimension_number"
-    t.integer  "indicator_number"
-    t.string   "segment"
-    t.float    "media"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "general_report_data", :force => true do |t|
     t.float    "media"
     t.integer  "indicator_id"
@@ -162,20 +138,6 @@ ActiveRecord::Schema.define(:version => 20120218204356) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "groups", :force => true do |t|
-    t.string   "name"
-    t.integer  "service_level_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "groups_schools", :id => false, :force => true do |t|
-    t.integer "group_id",  :null => false
-    t.integer "school_id", :null => false
-  end
-
-  add_index "groups_schools", ["group_id"], :name => "idx_groups"
 
   create_table "indicators", :force => true do |t|
     t.string   "name"
@@ -193,9 +155,9 @@ ActiveRecord::Schema.define(:version => 20120218204356) do
     t.integer  "indicator_id"
     t.integer  "indicator_number"
     t.float    "value"
+    t.string   "segment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "segment",          :default => ""
   end
 
   create_table "indicators_data_geral", :force => true do |t|
@@ -245,35 +207,13 @@ ActiveRecord::Schema.define(:version => 20120218204356) do
     t.datetime "updated_at"
   end
 
-  create_table "previous_avaliations", :force => true do |t|
-    t.string   "year"
-    t.integer  "school_id"
-    t.string   "school_name"
-    t.integer  "service_level_id"
-    t.integer  "dimension_id"
-    t.string   "indicator_number"
-    t.float    "media"
-    t.float    "professores"
-    t.float    "familiares"
-    t.float    "funcionarios"
-    t.float    "gestores"
-    t.float    "educandos"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "question_texts", :force => true do |t|
     t.text     "text"
     t.integer  "question_id"
     t.integer  "segment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "dimension_number"
-    t.string   "question_number"
-    t.integer  "dimension_id"
   end
-
-  add_index "question_texts", ["question_number"], :name => "idx_question_texts"
 
   create_table "questions", :force => true do |t|
     t.integer  "number"
@@ -283,24 +223,11 @@ ActiveRecord::Schema.define(:version => 20120218204356) do
     t.datetime "updated_at"
   end
 
-  create_table "report_data", :force => true do |t|
-    t.float    "media"
-    t.string   "answers_ids"
-    t.integer  "indicator_id"
-    t.integer  "segment_id"
-    t.integer  "dimension_id"
-    t.integer  "school_id"
-    t.integer  "service_level_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "schools", :force => true do |t|
     t.string   "name"
+    t.string   "report_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "group_id"
-    t.string   "report_name"
   end
 
   create_table "schools_service_levels", :id => false, :force => true do |t|
@@ -315,16 +242,10 @@ ActiveRecord::Schema.define(:version => 20120218204356) do
     t.datetime "updated_at"
   end
 
-  add_index "segments", ["service_level_id"], :name => "idx_segments"
-
   create_table "service_levels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "tbm", :id => false, :force => true do |t|
-    t.integer "id"
   end
 
 end
