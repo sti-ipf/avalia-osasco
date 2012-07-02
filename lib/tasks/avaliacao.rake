@@ -99,6 +99,53 @@ namespace :tasks do
     report.generate_index_table(s_id, sl_id)
     report.generate_file(s_id, sl_id)
   end
+
+  task :do_not_answer_report => :environment do
+    data = {}
+    header = ['Nível de serviço', 'Segmento', 'Questão', 'Número da questão', 'Total', 'Frequencia']
+    file  = FasterCSV.open("tmp/relatorio_nao_quero_responder.csv", "w")
+    file << header
+    ServiceLevel.all.each do |s|
+      data[s.id] = {}
+      schools_ids = s.schools.collect(&:id).join(",")
+      s.segments.each do |ss|
+        result = Answer.find_by_sql("
+          select SUM(do_not_answer) as total, SUM(quantity_of_people) as quantity_of_people, 
+          a.question_text_id, qt.text as question, qt.question_number as question_number from answers a
+          INNER JOIN question_texts qt ON qt.id = a.question_text_id
+          where a.do_not_answer is not null 
+          AND a.school_id IN (#{schools_ids})
+          AND a.segment_id = #{ss.id}
+          group by question_text_id
+          ")
+        data[s.id][ss.id] = result
+      end
+
+      s.segments.each do |ss|
+        #file  = FasterCSV.open("tmp/#{s.name}-#{ss.name}.csv", "w")
+        #file << header
+        data[s.id][ss.id].each do |d|
+          next if d.total == 0
+          new_array = Array.new(6)
+          new_array[0] = s.name
+          new_array[1] = ss.name
+          new_array[2] = d.question
+          new_array[3] = "\"#{d.question_number.to_s}\""
+          new_array[4] = d.total.to_i
+          new_array[5] = "#{d.total.to_i} / #{d.quantity_of_people} (total de respostas)"
+          
+          (0..5).each do |i|
+            new_array[i] = "  " if new_array[i].blank?
+          end
+          file << new_array
+        end
+        #file.close
+      end
+    end
+    file.close
+
+
+  end
 end
 
 

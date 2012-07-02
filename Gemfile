@@ -41,3 +41,5 @@ gem 'rghost'
 gem 'pdfkit'
 
 gem 'imgkit'
+
+gem 'to_worksheet'

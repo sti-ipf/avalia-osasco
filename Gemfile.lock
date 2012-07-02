@@ -136,6 +136,7 @@ GEM
       rspec (~> 2.6.0)
     sass (3.1.12)
     thor (0.14.6)
+    to_worksheet (0.0.1)
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
@@ -168,4 +169,5 @@ DEPENDENCIES
   rghost
   rmagick
   rspec-rails (= 2.6.1)
+  to_worksheet
   wicked_pdf
