@@ -1,6 +1,6 @@
 class ComplexQueriesController < ApplicationController
-  def map_table
-    
+  
+  def map_table  
     schools = School.all
     @segments = ['Familiares', 'Funcionários', 'Professores', 'Gestores', 'Educandos', 'Coordenadores pedagógicos']
     @data = ComplexQuery.get_schools_status_data(schools, @segments)
@@ -9,6 +9,9 @@ class ComplexQueriesController < ApplicationController
       s.service_levels.each do |sl|
         @school_names << "#{sl.name} - #{s.name}"
       end
+    end
+    respond_to do |format|
+      format.html{render :layout => 'custom'}
     end
   end
 

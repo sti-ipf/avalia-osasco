@@ -6,5 +6,9 @@ ActiveAdmin.register ServiceLevel do
     column :name
     default_actions
   end
+
+  action_item do
+    link_to "Importar", import_service_levels_path
+  end
 end
 

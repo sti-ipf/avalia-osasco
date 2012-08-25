@@ -16,6 +16,10 @@ ActiveAdmin.register Dimension do
   rescue
   end
 
+  action_item do
+    link_to "Importar", import_dimensions_path
+  end
+
   index do
     column :number
     column :name

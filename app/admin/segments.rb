@@ -15,6 +15,10 @@ ActiveAdmin.register Segment do
   rescue
   end
 
+  action_item do
+    link_to "Importar", import_segments_path
+  end
+
   index do
     column :name
     default_actions

@@ -49,6 +49,7 @@ pt:
       password: "Senha"
       answer_log: "Log de resposta"
       evaluation_answer_stat: "Estatística"
+      question: "Questão"
     attributes:
       admin_user:
         email: "Email"
@@ -68,6 +69,7 @@ pt:
       indicator:
         name: "Nome"
         number: "Número"
+        dimension: "Dimensão"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       password:

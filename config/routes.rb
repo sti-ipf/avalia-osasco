@@ -21,7 +21,18 @@ IpfOsascoAvaliacao2011::Application.routes.draw do
   match "passwords/generate_all_passwords", :to => 'passwords#generate_all_passwords'
   match "admin/passwords/:id/download_letter", :to => 'admin_passwords#download_letter'
 
-  match "mapa", :to => 'complex_queries#map_table'
+  match "mapa", :to => 'complex_queries#map_table', :as => 'map'
+  match "sistema/respostas/gerar_estatisticas", :to => 'system#generate_answer_stats', :as => 'generate_answer_stats'
+  match "sistema/senhas/gerar", :to => 'system#generate_passwords', :as => 'generate_passwords'
+  match "sistema/instrumental/importar", :to => 'system#import_instrument', :as => 'import_instrument'
+  match "sistema/niveis_de_servico/importar", :to => 'system#import_service_levels', :as => 'import_service_levels'
+  match "sistema/escolas/importar", :to => 'system#import_schools', :as => 'import_schools'
+  match "sistema/dimensoes/importar", :to => 'system#import_dimensions', :as => 'import_dimensions'
+  match "sistema/segmentos/importar", :to => 'system#import_segments', :as => 'import_segments'
+  match "sistema/indicadores/importar", :to => 'system#import_indicators', :as => 'import_indicators'
+  
+  
+  
 
   resources :evaluation do
     get :autocomplete_school_name, :on => :collection

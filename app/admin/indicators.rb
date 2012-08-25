@@ -17,6 +17,10 @@ ActiveAdmin.register Indicator do
   rescue
   end
 
+  action_item do
+    link_to "Importar", import_indicators_path
+  end
+
   index do
     column :number
     column :name

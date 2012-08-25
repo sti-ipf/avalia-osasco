@@ -15,6 +15,9 @@ ActiveAdmin.register School do
   rescue
   end
 
+  action_item do
+    link_to "Importar", import_schools_path
+  end
 
   index do
     column :name
