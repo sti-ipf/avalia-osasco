@@ -1,0 +1,8 @@
+  <%= semantic_form_for [:admin, @question] do |f| %>
+    <%= f.inputs :indicator, :service_level, :number, :name => "Questão" %>
+    <%= f.semantic_fields_for :question_texts do |question_text| %>
+      <%= question_text.inputs :text, :name => "Texto" %>
+    <% end %>
+    <%= f.buttons :commit %>
+  <% end %>
+

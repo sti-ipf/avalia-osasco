@@ -1,0 +1,6 @@
+<%= form_tag(import_service_levels_path, :id => 'import_service_levels_form', :multipart => true) do %>
+  <%= label_tag "Informe o arquivo dos níveis de serviço a ser importado:" %>
+  <%= file_field(:csv_file, 'csv_file', :id => 'csv_file') %>
+  <%= submit_tag('Importar', :class => 'submit') %>
+<% end %>
+<%= link_to "Exemplo de arquivo", "/template/niveis_de_servico_exemplo.csv" %>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html> 
+  <head> 
+    <title>Compreender - Sistema de avaliação 2011</title>
+      <%= stylesheet_link_tag "admin/active_admin.css" %>
+  </head> 
+  <body class = "admin_dashboard logged_in index">
+    <div id="wrapper">
+      <div id="header">
+        <h1 id="site_title">Site de administração das avaliações do Instituto Paulo Freire</h1>
+        <ul id="tabs" class="tabbed_navigation">
+          <li id="painel_administrativo">
+            <a href="/admin">Painel Administrativo</a>
+          </li>
+        </ul>
+        <p id="utility_nav">
+          <span class="current_user">admin@example.com</span>
+          <a data-method="get" href="/admin/logout">Sair</a>
+        </p>
+      </div>
+      <div id="title_bar">
+        <div id="titlebar_left">
+          <h2 id="page_title"><%= custom_title %></h2>
+        </div>
+        <div id="titlebar_right"></div>
+      </div>
+
+      <div id="active_admin_content" class="without_sidebar">
+        <div id="main_content_wrapper">
+          <div id="main_content">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body> 
+</html> 

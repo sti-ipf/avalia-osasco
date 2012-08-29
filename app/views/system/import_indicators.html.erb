@@ -1,0 +1,6 @@
+<%= form_tag(import_indicators_path, :id => 'import_indicators_form', :multipart => true) do %>
+  <%= label_tag "Informe o arquivo dos indicadores a ser importado:" %>
+  <%= file_field(:csv_file, 'csv_file', :id => 'csv_file') %>
+  <%= submit_tag('Importar', :class => 'submit') %>
+<% end %>
+<%= link_to "Exemplo de arquivo", "/template/indicadores_de_exemplo.csv" %>
