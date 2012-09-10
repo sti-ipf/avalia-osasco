@@ -1,4 +1,4 @@
-if Rails.env.production?
+#if Rails.env.production?
       CRECHE = 0
       EMEI = 1
       EMEF = 2
@@ -52,9 +52,8 @@ if Rails.env.production?
                                     {:name => "CRECHE VILMA CATAN", :service_levels => [levels[CRECHE]]}
                                   ])
       # # Criação das EMEIs
-      schools_creche = School.create([{:name => "EMEI ADELAIDE DIAS", :service_levels => [levels[EMEI]]},
+      schools_creche = School.create([
                                     {:name => "EMEI ADHEMAR PEREIRA DE BARROS, DR.", :service_levels => [levels[EMEI]]},
-                                    {:name => "EMEI ALICE MANHOLER PITERI", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI ALIPIO PEREIRA DOS SANTOS, PROF.", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI ANTONIO PAULINO RIBEIRO", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI CRISTINE APARECIDA DE OLIVEIRA BRAGA", :service_levels => [levels[EMEI]]},
@@ -66,7 +65,6 @@ if Rails.env.production?
                                     {:name => "EMEI ESTEVÃO BRETT", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI FERNANDO BUONADUCE, PROF.", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI FORTUNATA PEREIRA DE JESUS SANTOS", :service_levels => [levels[EMEI]]},
-                                    {:name => "CEMEI GERTRUDES DE ROSSI", :service_levels => [levels[EMEI], levels[CRECHE]]},
                                     {:name => "EMEI HELENA COUTINHO", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI IGNÊS COLLINO", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI JAPHET FONTES ", :service_levels => [levels[EMEI]]},
@@ -78,7 +76,6 @@ if Rails.env.production?
                                     {:name => "EMEI MARIA MADALENA L. B. FREIXEDA", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI NAIR BELLACOSA WARZEKA, PROFª", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI OMAR OGEDA MARTINS", :service_levels => [levels[EMEI]]},
-                                    {:name => "EMEI OSVALDO GONÇALVES DE CARVALHO", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI OSWALDO SALLES NEMER", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI PEDRO MARTINO", :service_levels => [levels[EMEI]]},
                                     {:name => "EMEI PROVIDÊNCIA DOS ANJOS CARREIRA", :service_levels => [levels[EMEI]]},
@@ -97,17 +94,17 @@ if Rails.env.production?
                                     {:name => "EMEF ANTONIO DE SAMPAIO, GENERAL", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF BENEDICTO WESCHENFELDER", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF BENEDITO ALVES TURIBIO", :service_levels => [levels[EMEF], levels[EJA]]},
-                                    {:name => "EMEF BITTENCOURT, MARECHAL", :service_levels => [levels[EMEF], levels[EJA]]},
+                                    {:name => "EMEF BITTENCOURT, MARECHAL", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF CECILIA CORREA CASTELANI, PROFa", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF DOMINGOS BLASCO, MAESTRO", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF ELIDIO MANTOVANI, MONSENHOR", :service_levels => [levels[EMEF], levels[EJA]]},
+                                    {:name => "EMEF ÉLIO APARECIDO DA SILVA", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF ELZA DE CARVALHO MELLO BATTISTON, PROFa", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF FRANCISCO CAVALCANTI PONTES DE MIRANDA", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF FRANCISCO MANUEL LUMBRALES DE SA CARNEIRO, DR.", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF GASPAR DA MADRE DE DEUS, FREI", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF HUGO RIBEIRO DE ALMEIDA, DR.", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF JOAO CAMPESTRINI, PROF.", :service_levels => [levels[EMEF], levels[EJA]]},
-                                    {:name => "EMEIEF JOAO EUCLYDES PEREIRA, PROF.", :service_levels => [levels[EMEF], levels[EMEI]]},
                                     {:name => "EMEF JOAO GUIMARAES ROSA", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF JOAO LARIZZATTI, PROF.", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF JOSE GROSSI DIAS, PADRE", :service_levels => [levels[EMEF]]},
@@ -138,26 +135,30 @@ if Rails.env.production?
 
       # # Criação das CEMEIs
       schools_cemei = School.create([{:name => "CEMEI ALBERTO SANTOS DUMONT", :service_levels => [levels[CRECHE], levels[EMEI]]},
+                                    {:name => "CEMEI ALICE MANHOLER PITERI", :service_levels => [levels[CRECHE], levels[EMEI]]},
                                     {:name => "CEMEI FORTUNATO ANTIÓRIO", :service_levels => [levels[CRECHE], levels[EMEI]]},
                                     {:name => "CEMEI JOÃO DE FARIAS", :service_levels => [levels[CRECHE], levels[EMEI]]},
                                     {:name => "CEMEI JOSÉ ERMÍRIO DE MORAES, SENADOR", :service_levels => [levels[CRECHE], levels[EMEI]]},
+                                    {:name => "CEMEI GERTRUDES DE ROSSI", :service_levels => [levels[EMEI], levels[CRECHE]]},
                                     {:name => "CRECHE LEONIL CRÊ BORTOLOSSO", :service_levels => [levels[CRECHE]]},
                                     {:name => "CEMEI LOURDES CÂNDIDA DE FARIA", :service_levels => [levels[CRECHE], levels[EMEI]]},
                                     {:name => "CEMEI MÁRIO QUINTANA", :service_levels => [levels[CRECHE], levels[EMEI]]},
+                                    {:name => "CEMEI OSVALDO GONÇALVES DE CARVALHO", :service_levels => [levels[CRECHE], levels[EMEI]]},
                                     {:name => "CEMEI RUBENS BANDEIRA", :service_levels => [levels[CRECHE], levels[EMEI]]},
-                                    {:name => "CEMEI VILMA FOLTRAN PORTELLA", :service_levels => [levels[CRECHE], levels[EMEI], levels[EJA]]},
+                                    {:name => "CEMEI VILMA FOLTRAN PORTELLA", :service_levels => [levels[CRECHE], levels[EMEI]]},
                                     {:name => "CEMEI ZAÍRA COLLINO ODÁLIA", :service_levels => [levels[CRECHE], levels[EMEI]]}])
 
       # # Criação das EMEIEFs
       schools_emeief = School.create([{:name => "EMEIEF COLINAS D'OESTE", :service_levels => [levels[EMEI], levels[EMEF], levels[EJA]]},
-                                    {:name => "EMEIEF ÉLIO APARECIDO DA SILVA", :service_levels => [levels[EMEI], levels[EMEF], levels[EJA]]},
                                     {:name => "EMEIEF ETIENE SALES CAMPELO, PROFª", :service_levels => [levels[EMEI], levels[EMEF], levels[EJA]]},
                                     {:name => "EMEIEF MESSIAS GONÇALVES DA SILVA", :service_levels => [levels[EMEI], levels[EMEF], levels[EJA]]},
                                     {:name => "EMEIEF VALTER DE OLIVEIRA FERREIRA, PROF.", :service_levels => [levels[EMEI], levels[EMEF], levels[EJA]]},
+                                    {:name => "EMEIEF JOAO EUCLYDES PEREIRA, PROF.", :service_levels => [levels[EMEF], levels[EMEI]]},
                                     {:name => "EMEIEF ZULEIKA GONÇALVES MENDES, PROFª", :service_levels => [levels[EMEI], levels[EMEF], levels[EJA]]}])
 
       # # Criação das CEMEIEFs
       schools_cemeief = School.create([{:name => "CEU ZONA NORTE (ZILDA ARNS, Drª)", :service_levels => [levels[CRECHE], levels[EMEI], levels[EMEF], levels[EJA]]},
+                                    {:name => "CEU JOSÉ SARAMAGO", :service_levels => [levels[CRECHE], levels[EMEI], levels[EMEF], levels[EJA]]},
                                     {:name => "CEMEIEF MARIA JOSÉ FERREIRA FERRAZ, PROFª.", :service_levels => [levels[CRECHE], levels[EMEI], levels[EMEF]]},
                                     {:name => "CEMEIEF MARIA TARCILLA FORNASARO MELLI", :service_levels => [levels[CRECHE], levels[EMEI], levels[EMEF]]},
                                     {:name => "CEMEIEF ZILDA ARNS, Drª", :service_levels => [levels[CRECHE], levels[EMEI], levels[EMEF]]},
@@ -172,9 +173,6 @@ if Rails.env.production?
                                                       {:name => "Associação Faça uma Criança Sorrir de Osasco e Região – Núcleo I".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação Faça uma Criança Sorrir de Osasco e Região – Núcleo II Alfacriso".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação das Mães do Jardim Veloso".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
-                                                      {:name => "Associação das Mães Unidas do Novo Osasco – AMUNO I".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
-                                                      {:name => "Associação das Mães Unidas do Novo Osasco – AMUNO II".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
-                                                      {:name => "Associação Beneficente Gotas de Amor".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação Quintal Mágico".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Centro Social Santo Antonio".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação Padre Domingos Barbé".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
@@ -187,12 +185,12 @@ if Rails.env.production?
                                                       {:name => "Associação das Mulheres pela Educação – Núcleo Recanto do Aprender".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação das Mulheres em Defesa à Criança Helena Maria".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação das Mulheres em Defesa à Criança – Tarcila do Amaral".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
-                                                      {:name => "Associação de Proteção à Maternidade e à Adolescência (ASPROMATINA) – Padre Domingos Tonini".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação de Proteção à Maternidade e à Adolescência (ASPROMATINA) – Padre Guerrino".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASCC – Associação Solidária Crescendo Cidadã I - Açucará".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASCC – Associação Solidária Crescendo Cidadã II – Bela Vista".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação de Educação Popular Pixote I".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Associação de Educação Popular Pixote II".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
+                                                      {:name => "Associação de Proteção à Maternidade e à Adolescência (ASPROMATINA) – Padre Domingos Tonini".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "Lar da Criança Emmanuel Núcleo Kardecista 21 de Abril".upcase, :service_levels => [levels[CRECHE_CONVENIADA]]}])
 
 
@@ -961,4 +959,4 @@ if Rails.env.production?
       #       {:name => "Leonor Pinto Thomaz", :service_levels => [levels[EMEF], levels[ENSINO_MEDIO]]}
       #       ]
       # )
-end
+#end
