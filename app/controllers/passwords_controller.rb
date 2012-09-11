@@ -14,7 +14,7 @@ class PasswordsController < ApplicationController
 
   def generate_all_letters
     if params[:id].nil?
-      @passwords = Password.all
+      @passwords = Password.all(:order => "schoold_id, segment_id")
     else
       @passwords = [Password.find(params[:id])]
     end
