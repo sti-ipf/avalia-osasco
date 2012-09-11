@@ -98,7 +98,7 @@
                                     {:name => "EMEF CECILIA CORREA CASTELANI, PROFa", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF DOMINGOS BLASCO, MAESTRO", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF ELIDIO MANTOVANI, MONSENHOR", :service_levels => [levels[EMEF], levels[EJA]]},
-                                    {:name => "EMEF ÉLIO APARECIDO DA SILVA", :service_levels => [levels[EMEF]]},
+                                    {:name => "EMEF ÉLIO APARECIDO DA SILVA", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF ELZA DE CARVALHO MELLO BATTISTON, PROFa", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF FRANCISCO CAVALCANTI PONTES DE MIRANDA", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF FRANCISCO MANUEL LUMBRALES DE SA CARNEIRO, DR.", :service_levels => [levels[EMEF]]},
