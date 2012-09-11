@@ -185,7 +185,6 @@
                                                       {:name => "ASSOCIAÇÃO DAS MULHERES PELA EDUCAÇÃO – NÚCLEO RECANTO DO APRENDER", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASSOCIAÇÃO DAS MULHERES EM DEFESA À CRIANÇA HELENA MARIA", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASSOCIAÇÃO DAS MULHERES EM DEFESA À CRIANÇA – TARCILA DO AMARAL", :service_levels => [levels[CRECHE_CONVENIADA]]},
-                                                      {:name => "ASSOCIAÇÃO DE PROTEÇÃO À MATERNIDADE E À ADOLESCÊNCIA (ASPROMATINA) – PADRE GUERRINO", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASCC – ASSOCIAÇÃO SOLIDÁRIA CRESCENDO CIDADÃ I - AÇUCARÁ", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASCC – ASSOCIAÇÃO SOLIDÁRIA CRESCENDO CIDADÃ II – BELA VISTA", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASSOCIAÇÃO DE EDUCAÇÃO POPULAR PIXOTE I", :service_levels => [levels[CRECHE_CONVENIADA]]},
