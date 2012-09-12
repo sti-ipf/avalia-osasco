@@ -95,7 +95,7 @@
                                     {:name => "EMEF BENEDICTO WESCHENFELDER", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF BENEDITO ALVES TURIBIO", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF BITTENCOURT, MARECHAL", :service_levels => [levels[EMEF]]},
-                                    {:name => "EMEF CECILIA CORREA CASTELANI, PROFa", :service_levels => [levels[EMEF]]},
+                                    {:name => "EMEF CECILIA CORREA CASTELANI, PROFa", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF DOMINGOS BLASCO, MAESTRO", :service_levels => [levels[EMEF]]},
                                     {:name => "EMEF ELIDIO MANTOVANI, MONSENHOR", :service_levels => [levels[EMEF], levels[EJA]]},
                                     {:name => "EMEF ÉLIO APARECIDO DA SILVA", :service_levels => [levels[EMEF], levels[EJA]]},
@@ -220,7 +220,7 @@
                                       {:name => 'Gestores', :service_level => levels[BURJATO]},
                                       {:name => 'Familiares', :service_level => levels[BURJATO]}])
 
-      segments_creches_conveniadas = Segment.create([{:name => 'Gestores', :service_level => levels[CRECHE_CONVENIADA]},
+      segments_creches_conveniadas = Segment.create([{:name => 'Gerentes', :service_level => levels[CRECHE_CONVENIADA]},
                                       {:name => 'Coordenadores pedagógicos', :service_level => levels[CRECHE_CONVENIADA]},
                                       {:name => 'Professores', :service_level => levels[CRECHE_CONVENIADA]},
                                       {:name => 'Funcionários', :service_level => levels[CRECHE_CONVENIADA]},
