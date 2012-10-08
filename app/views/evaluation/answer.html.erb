@@ -13,74 +13,7 @@
       <div class="panel dashboard_section"> 
       <h3>Responda cada uma das questões abaixo</h3>
       <div class="panel_contents">
-      <% form_tag revisar_path, :id => "answers", :multipart => true, :method => 'POST' do  %>
-        <table>
-          <% current_indicator = -1%>
-          <% @questions.each do |question| %>
-            <% if question.question.indicator.number != current_indicator %>
-              <% current_indicator = question.question.indicator.number%>
-              <tr>
-                <td class="indicador" colspan="9">Indicador <%= "#{@dimension.number}.#{question.question.indicator.number} - #{question.question.indicator.name}" %></td>
-              </tr>
-            <% end %>
-            <tr>
-              <td colspan="9"><%= "#{question.text}" %></td>
-            </tr>
-            <tr>
-              <td>0 <%= text_field_tag "do_not_know[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_know : "", :size => 2, :onkeyup => "calculate_number_of_people(#{question.id})" %></td>
-              <td>1 <%= text_field_tag "one[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].one : "", :size => 2, :onkeyup => "calculate_number_of_people(#{question.id})" %></td>
-              <td>2 <%= text_field_tag "two[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].two : "", :size => 2, :onkeyup => "calculate_number_of_people(#{question.id})" %></td>
-              <td>3 <%= text_field_tag "three[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].three : "", :size => 2, :onkeyup => "calculate_number_of_people(#{question.id})" %></td>
-              <td>4 <%= text_field_tag "four[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].four : "", :size => 2, :onkeyup => "calculate_number_of_people(#{question.id})" %></td>
-              <td>5 <%= text_field_tag "five[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].five : "", :size => 2, :onkeyup => "calculate_number_of_people(#{question.id})" %></td>
-              <td>ø <%= text_field_tag "do_not_answer[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_answer : "", :size => 2, :onkeyup => "calculate_number_of_people(#{question.id})" %>
-              </td>
-              <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 2, :onkeypress => "return false;", :onkeyup => "calculate_number_of_people(#{question.id})" %></td>
-            </tr>
-            <script type="text/javascript" charset="utf-8"> 
-              $(document).ready(function() {
-                var quantity_of_people = new LiveValidation('<%="quantity_of_people_#{question.id}" %>', {validMessage: "", failureMessage: "Número insuficiente de pessoas", tooLowMessage: "Número insuficiente de pessoas", validMessage: "Ok", notANumberMessage: "Deve ser um número"});
-                quantity_of_people.add( Validate.Numericality, { minimum: 1, tooLowMessage: "Número insuficiente de pessoas", validMessage: "", notANumberMessage: "Deve ser um número"});
-                quantity_of_people.add( Validate.Presence, {failureMessage: "Número insuficiente de pessoas", validMessage: "Ok", notANumberMessage: "Deve ser um número"});
-
-                if(!form_valifdator){
-                  form_valifdator = true;
-                  var automaticOnSubmit = quantity_of_people.form.onsubmit;
-                  quantity_of_people.form.onsubmit = function(){
-                    var valid = automaticOnSubmit();
-                    if(!valid){
-                      $(function(message) {
-                        jQuery.jGrowl("Existem erros no formulário, favor revisar o itens em vermelho", {easing: "linear", life: 8000, theme: "alert"});
-                      });
-                      return false;
-                    }
-                    return true;
-                  }
-                }
-
-        
-              });
-            </script> 
-
-          <% end %>
-          <tr>
-            <td colspan="10">
-              Práticas consolidadas <%= text_area_tag :consolidated_practices, !@practices.nil? ? !@practices.consolidated.nil? ? @practices.consolidated : "" : "", :cols => 80, :rows => 5%>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="10">
-              Práticas que precisam avançar <%= text_area_tag :to_be_improved_practices, !@practices.nil? ? !@practices.to_be_improved.nil? ? @practices.to_be_improved : "" : "", :cols => 80, :rows => 5%>
-            </td>
-          </tr>
-        </table>
-            <%= hidden_field_tag :school, @school.id %>
-            <%= hidden_field_tag :service_level, @service_level.id %>
-            <%= hidden_field_tag :segment, @segment.id %>
-            <%= hidden_field_tag :name, @name %>
-            <%= hidden_field_tag :dimension, @dimension.number %>
-            <%= submit_tag 'revisar' %>
-        <% end %>
+        <%= render 'questions_form' %>
       </div> 
     </div> 
   </div> 

@@ -189,6 +189,7 @@
                                                       {:name => "ASCC – ASSOCIAÇÃO SOLIDÁRIA CRESCENDO CIDADÃ II – BELA VISTA", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASSOCIAÇÃO DE EDUCAÇÃO POPULAR PIXOTE I", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASSOCIAÇÃO DE EDUCAÇÃO POPULAR PIXOTE II", :service_levels => [levels[CRECHE_CONVENIADA]]},
+                                                      {:name => "ASSOCIAÇÃO DAS MÃES UNIDAS DO NOVO OSASCO - AMUNO II", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "ASSOCIAÇÃO DE PROTEÇÃO À MATERNIDADE E À ADOLESCÊNCIA (ASPROMATINA) – PADRE DOMINGOS TONINI", :service_levels => [levels[CRECHE_CONVENIADA]]},
                                                       {:name => "LAR DA CRIANÇA EMMANUEL NÚCLEO KARDECISTA 21 DE ABRIL", :service_levels => [levels[CRECHE_CONVENIADA]]}])
 

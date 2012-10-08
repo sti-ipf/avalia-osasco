@@ -93,6 +93,9 @@ class EvaluationController < ApplicationController
     do_not_know = params[:do_not_know]
     do_not_answer = params[:do_not_answer]
     quantity_of_people = params[:quantity_of_people]
+    puts '-' * 100
+    puts params[:one]
+    puts '-' * 100
     one = params[:one]
     two = params[:two]
     three = params[:three]
@@ -249,11 +252,6 @@ private
   end
 
   def load_params
-    puts '-' * 100
-    puts params.inspect
-    puts params[:name]
-    puts !params[:name].blank?
-    puts '-' * 100
     @school = School.find(params[:school])
     @service_level = ServiceLevel.find(params[:service_level])
     @segment = Segment.find(params[:segment])
