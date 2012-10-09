@@ -8,76 +8,115 @@
           <td class="indicador" colspan="9">Indicador <%= "#{@dimension.number}.#{question.question.indicator.number} - #{question.question.indicator.name}" %></td>
         </tr>
       <% end %>
-      <th>
-        <td colspan="9"><%= "#{question.text}" %></td>
-      </th>
-      <tr>
-        <td> 0 </td>
-        <td> 1 </td>
-        <td> 2 </td>
-        <td> 3 </td>
-        <td> 4 </td>
-        <td> 5 </td>
-        <td> ø </td>
-      </tr>
-      <% 5.times do |i| %>
+      <table id="table_<%= "#{question.id}" %>">
+        <th>
+          <td colspan="9"><%= "#{question.text}" %></td>
+        </th>
         <tr>
-          <td> <%= text_field_tag "do_not_know_#{i}", nil, :class => "do_not_know_#{question.id}" %> </td>
-          <td> <%= text_field_tag "one_#{i}", nil, :class => 'one' %> </td>
-          <td> <%= text_field_tag "two_#{i}", nil, :class => 'two' %> </td>
-          <td> <%= text_field_tag "three_#{i}", nil, :class => 'three' %> </td>
-          <td> <%= text_field_tag "four_#{i}", nil, :class => 'four' %> </td>
-          <td> <%= text_field_tag "five_#{i}", nil, :class => 'five' %> </td>
-          <td> <%= text_field_tag "do_not_answer_#{i}", nil, :class => 'do_not_answer' %> </td>
+          <td> 0 </td>
+          <td> 1 </td>
+          <td> 2 </td>
+          <td> 3 </td>
+          <td> 4 </td>
+          <td> 5 </td>
+          <td> ø </td>
         </tr>
-        
-      <% end %>
-      <tr>
-        <td><%= text_field_tag "do_not_know[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_know : "", :size => 2, :disabled => true, :id => "do_not_know_result_#{question.id}" %></td>
-        <td><%= text_field_tag "one[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].one : "", :size => 2, :disabled => true  %></td>
-        <td><%= text_field_tag "two[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].two : "", :size => 2, :disabled => true  %></td>
-        <td><%= text_field_tag "three[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].three : "", :size => 2, :disabled => true  %></td>
-        <td><%= text_field_tag "four[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].four : "", :size => 2, :disabled => true  %></td>
-        <td><%= text_field_tag "five[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].five : "", :size => 2, :disabled => true  %></td>
-        <td><%= text_field_tag "do_not_answer[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_answer : "", :size => 2, :disabled => true  %></td>
-        <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 2, :disabled => true  %></td>
-      </tr>
-      <script type="text/javascript" charset="utf-8"> 
-        $(document).ready(function() {
-          var quantity_of_people = new LiveValidation('<%="quantity_of_people_#{question.id}" %>', {validMessage: "", failureMessage: "Número insuficiente de pessoas", tooLowMessage: "Número insuficiente de pessoas", validMessage: "Ok", notANumberMessage: "Deve ser um número"});
-          quantity_of_people.add( Validate.Numericality, { minimum: 1, tooLowMessage: "Número insuficiente de pessoas", validMessage: "", notANumberMessage: "Deve ser um número"});
-          quantity_of_people.add( Validate.Presence, {failureMessage: "Número insuficiente de pessoas", validMessage: "Ok", notANumberMessage: "Deve ser um número"});
+        <% 5.times do |i| %>
+          <tr>
+            <td class="do_not_know"> <%= text_field_tag "do_not_know_#{i}", nil, :class => "txtQuestao do_not_know_#{question.id}" %> </td>
+            <td class="one"> <%= text_field_tag "one_#{i}", nil, :class => 'txtQuestao one' %> </td>
+            <td class="two"> <%= text_field_tag "two_#{i}", nil, :class => 'txtQuestao two' %> </td>
+            <td class="three"> <%= text_field_tag "three_#{i}", nil, :class => 'txtQuestao three' %> </td>
+            <td class="four"> <%= text_field_tag "four_#{i}", nil, :class => 'txtQuestao four' %> </td>
+            <td class="five"> <%= text_field_tag "five_#{i}", nil, :class => 'txtQuestao five' %> </td>
+            <td class="do_not_answer"> <%= text_field_tag "do_not_answer_#{i}", nil, :class => 'txtQuestao do_not_answer' %> </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td><%= text_field_tag "do_not_know[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_know : "", :size => 2, :disabled => true, :id => "do_not_know_result_#{question.id}", :class => "total_do_not_know totalParcial" %></td>
+          <td><%= text_field_tag "one[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].one : "", :size => 2, :disabled => true, :class => "total_one totalParcial" %></td>
+          <td><%= text_field_tag "two[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].two : "", :size => 2, :disabled => true, :class => "total_two totalParcial"%></td>
+          <td><%= text_field_tag "three[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].three : "", :size => 2, :disabled => true, :class => "total_three totalParcial"%></td>
+          <td><%= text_field_tag "four[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].four : "", :size => 2, :disabled => true, :class => "total_four totalParcial" %></td>
+          <td><%= text_field_tag "five[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].five : "", :size => 2, :disabled => true, :class => "total_five totalParcial" %></td>
+          <td><%= text_field_tag "do_not_answer[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_answer : "", :size => 2, :disabled => true, :class => "total_do_not_answer totalParcial" %></td>
+          <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 2, :disabled => true, :class => "totalPessoas"  %></td>
+        </tr>
+        <script type="text/javascript" charset="utf-8"> 
+          $(document).ready(function() {
+            var quantity_of_people = new LiveValidation('<%="quantity_of_people_#{question.id}" %>', {validMessage: "", failureMessage: "Número insuficiente de pessoas", tooLowMessage: "Número insuficiente de pessoas", validMessage: "Ok", notANumberMessage: "Deve ser um número"});
+            quantity_of_people.add( Validate.Numericality, { minimum: 1, tooLowMessage: "Número insuficiente de pessoas", validMessage: "", notANumberMessage: "Deve ser um número"});
+            quantity_of_people.add( Validate.Presence, {failureMessage: "Número insuficiente de pessoas", validMessage: "Ok", notANumberMessage: "Deve ser um número"});
 
-          if(!form_valifdator){
-            form_valifdator = true;
-            var automaticOnSubmit = quantity_of_people.form.onsubmit;
-            quantity_of_people.form.onsubmit = function(){
-              var valid = automaticOnSubmit();
-              if(!valid){
-                $(function(message) {
-                  jQuery.jGrowl("Existem erros no formulário, favor revisar o itens em vermelho", {easing: "linear", life: 8000, theme: "alert"});
-                });
-                return false;
+            if(!form_valifdator){
+              form_valifdator = true;
+              var automaticOnSubmit = quantity_of_people.form.onsubmit;
+              quantity_of_people.form.onsubmit = function(){
+                var valid = automaticOnSubmit();
+                if(!valid){
+                  $(function(message) {
+                    jQuery.jGrowl("Existem erros no formulário, favor revisar o itens em vermelho", {easing: "linear", life: 8000, theme: "alert"});
+                  });
+                  return false;
+                }
+                return true;
               }
-              return true;
             }
-          }
 
-          $(".do_not_know_<%=question.id%>").change(function() {
-            var total = 0;
-            $(".do_not_know_<%=question.id%>").map(function() {
-              var value = $(this).val();
-              if (value != ""){
-                total += parseInt(value);  
-              }
+            $(".do_not_know_<%=question.id%>").change(function() {
+              var total = 0;
+              $(".do_not_know_<%=question.id%>").map(function() {
+                var value = $(this).val();
+                if (value != ""){
+                  total += parseInt(value);  
+                }
+              });
+              $("#do_not_know_result_<%=question.id%>").val(total);
             });
-            $("#do_not_know_result_<%=question.id%>").val(total);
           });
-  
-        });
-      </script> 
-
+        </script> 
+      </table>
     <% end %>
+
+    <script type="text/javascript" charset="utf-8"> 
+      $(document).ready(function() {
+          $(".txtQuestao").change(function(){
+            var classe = $(this).parent().attr("class");
+            var $table = $(this).parents("table:first");
+            var $itens = $table.find("td."+classe).find(".txtQuestao"); 
+
+            var valor = 0;
+            $itens.each(function(i){
+              var valorAtual = Number($(this).val());
+              if(isNaN(valorAtual)){ valorAtual = 0; }
+              valor = valorAtual + valor; 
+            });
+
+            $table.find(".total_"+classe).val(valor);
+            CalculaTotal($table);
+          });
+
+          $(".txtQuestao").keypress(verificaNumero);
+      });
+
+      function CalculaTotal(table){
+        var $itens = table.find(".totalParcial");
+        
+        var valor = 0;
+        $itens.each(function(i){
+          valor = Number($(this).val()) + valor; 
+        });
+        
+        table.find(".totalPessoas").val(valor);
+      }
+
+      function verificaNumero(e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+          return false;
+        }
+      }
+    </script>
+
     <tr>
       <td colspan="10">
         Práticas consolidadas <%= text_area_tag :consolidated_practices, !@practices.nil? ? !@practices.consolidated.nil? ? @practices.consolidated : "" : "", :cols => 80, :rows => 5%>

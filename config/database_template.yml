@@ -5,5 +5,3 @@ production:
   database: avaliacao
   pool: 5
   username: root
-  password: root
-  socket: /tmp/mysql.sock
