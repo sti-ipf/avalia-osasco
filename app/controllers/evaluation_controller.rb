@@ -93,9 +93,6 @@ class EvaluationController < ApplicationController
     do_not_know = params[:do_not_know]
     do_not_answer = params[:do_not_answer]
     quantity_of_people = params[:quantity_of_people]
-    puts '-' * 100
-    puts params[:one]
-    puts '-' * 100
     one = params[:one]
     two = params[:two]
     three = params[:three]

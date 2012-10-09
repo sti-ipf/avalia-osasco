@@ -32,16 +32,20 @@
             <td class="do_not_answer"> <%= text_field_tag "do_not_answer_#{i}", nil, :class => 'txtQuestao do_not_answer' %> </td>
           </tr>
         <% end %>
-        <tr>
-          <td><%= text_field_tag "do_not_know[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_know : "", :size => 2, :disabled => true, :id => "do_not_know_result_#{question.id}", :class => "total_do_not_know totalParcial" %></td>
-          <td><%= text_field_tag "one[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].one : "", :size => 2, :disabled => true, :class => "total_one totalParcial" %></td>
-          <td><%= text_field_tag "two[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].two : "", :size => 2, :disabled => true, :class => "total_two totalParcial"%></td>
-          <td><%= text_field_tag "three[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].three : "", :size => 2, :disabled => true, :class => "total_three totalParcial"%></td>
-          <td><%= text_field_tag "four[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].four : "", :size => 2, :disabled => true, :class => "total_four totalParcial" %></td>
-          <td><%= text_field_tag "five[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].five : "", :size => 2, :disabled => true, :class => "total_five totalParcial" %></td>
-          <td><%= text_field_tag "do_not_answer[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_answer : "", :size => 2, :disabled => true, :class => "total_do_not_answer totalParcial" %></td>
-          <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 2, :disabled => true, :class => "totalPessoas"  %></td>
+
+       <tr>
+          <td><%= text_field_tag "do_not_know[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_know : "", :size => 2, :class => "total_do_not_know totalParcial" %></td>
+          <td><%= text_field_tag "one[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].one : "", :size => 2, :class => "total_one totalParcial" %></td>
+          <td><%= text_field_tag "two[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].two : "", :size => 2,  :class => "total_two totalParcial" %></td>
+          <td><%= text_field_tag "three[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].three : "", :size => 2, :class => "total_three totalParcial" %></td>
+          <td><%= text_field_tag "four[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].four : "", :size => 2, :class => "total_four totalParcial"  %></td>
+          <td><%= text_field_tag "five[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].five : "", :size => 2, :class => "total_five totalParcial" %></td>
+          <td><%= text_field_tag "do_not_answer[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_answer : "", :size => 2, :class => "total_do_not_answer totalParcial" %>
+          </td>
+          <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 2, :onkeypress => "return false;", :class => "totalPessoas"  %></td>
         </tr>
+
+
         <script type="text/javascript" charset="utf-8"> 
           $(document).ready(function() {
             var quantity_of_people = new LiveValidation('<%="quantity_of_people_#{question.id}" %>', {validMessage: "", failureMessage: "Número insuficiente de pessoas", tooLowMessage: "Número insuficiente de pessoas", validMessage: "Ok", notANumberMessage: "Deve ser um número"});
