@@ -11,8 +11,11 @@
       <h3>Responda cada uma das questões abaixo</h3>
       <div class="panel_contents">
         <% form_tag validar_revisao_path, :id => "answers" do  %>
+
+        <%= hidden_field_tag "hdfGabarito" , @json_tables %>
         <table>
           <% current_indicator = -1%>
+          <% index = 0 %>
           <% @questions.each do |question| %>
             <% if question.question.indicator.number != current_indicator %>
               <% current_indicator = question.question.indicator.number%>
@@ -25,15 +28,12 @@
               <td colspan="8"><%= "#{question.text}" %></td>
             </tr>
             <tr>
-            <td>0 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].do_not_know.nil? ? @answers[question.id].do_not_know : "0" : "0" %></strong></td>
-              <td>1 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].one.nil? ? @answers[question.id].one : "0" : "0"%></strong></td>
-              <td>2 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].two.nil? ? @answers[question.id].two : "0" : "0"%></strong></td>
-              <td>3 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].three.nil? ? @answers[question.id].three : "0" : "0"%></strong></td>
-              <td>4 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].four.nil? ? @answers[question.id].four : "0" : "0"%></strong></td>
-              <td>5 - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].five.nil? ? @answers[question.id].five : "0" : "0"%></strong></td>
-              <td>ø - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].do_not_answer.nil? ? @answers[question.id].do_not_answer : "0" : "0"%></strong></td>
-                <td>Quantidade de pessoas - <strong><%= !@answers[question.id].nil? ? !@answers[question.id].quantity_of_people.nil? ? @answers[question.id].quantity_of_people : "0" : "0"%></strong></td>
+              <td colspan="8">
+                <div Style="width: 700px;" id=divTable_<%= index %>>
+                </div>
+              </td>
             </tr>
+          <% index += 1 %>
           <% end %>
           <tr>
             <td>Práticas consolidadas</td>
@@ -66,3 +66,44 @@
 </div> 
 <div id="footer"> 
 </div> 
+
+<script type="text/javascript" charset="utf-8"> 
+  $(document).ready(function() {
+    montaTabela($("#hdfGabarito").val());      
+  });
+
+  function montaTabela(json){
+    var $json = jQuery.parseJSON(json);
+    $json = $json.json;
+    var tabela;
+    var linha;
+    var coluna;
+
+    var _apresentacao;
+    for(var i=0; i< $json.length; i++){ //tabelas
+      _apresentacao = "";
+      linha = $json[i].tabelas;
+      _apresentacao = "<table>";
+      // Monta o Header
+      _apresentacao += "<tr><td><b>0</b></td><td><b>1</b></td><td><b>2</b></td><td><b>3</b></td><td><b>4</b></td><td><b>5</b></td><td><b>ø</b></b></td></tr>";
+
+      for(var j=0; j< linha.length; j++){ // linhas
+        var coluna = linha[j].linhas;
+        _apresentacao += "<tr>";
+        for(var k=0; k< coluna.length; k++){ // colunas
+          var celula = coluna[k].colunas;
+          _apresentacao += "<td>";
+          if(j == linha.length-1){ // Se for a ultima linha coloca o texto negrito <b>
+            _apresentacao += "<b>";
+          }
+          _apresentacao += celula;
+          _apresentacao += "</td>";
+        }
+        _apresentacao += "</tr>";
+      }
+      _apresentacao += "</table>";
+      // Renderiza a tabela montada na tela
+      $("#divTable_"+ i).html(_apresentacao);
+    } 
+  }
+</script>

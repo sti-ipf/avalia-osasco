@@ -100,6 +100,7 @@ class EvaluationController < ApplicationController
     five = params[:five]
     consolidated_practices = params[:consolidated_practices]
     to_be_improved_practices = params[:to_be_improved_practices]
+    @json_tables = params[:hdfGabarito]
 
     @dimension_status = DimensionStatus.find_by_dimension_id_and_school_id_and_segment_id(@dimension.id, @school.id, @segment.id)
     load_answers

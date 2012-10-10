@@ -1,6 +1,9 @@
 <% form_tag revisar_path, :id => "answers", :multipart => true, :method => 'POST' do  %>
   <table>
     <% current_indicator = -1%>
+
+    <%= hidden_field_tag "hdfGabarito" %>
+
     <% @questions.each do |question| %>
       <% if question.question.indicator.number != current_indicator %>
         <% current_indicator = question.question.indicator.number%>
@@ -8,7 +11,7 @@
           <td class="indicador" colspan="9">Indicador <%= "#{@dimension.number}.#{question.question.indicator.number} - #{question.question.indicator.name}" %></td>
         </tr>
       <% end %>
-      <table id="table_<%= "#{question.id}" %>">
+      <table class="table_question" id="table_<%= "#{question.id}" %>">
         <th>
           <td colspan="9"><%= "#{question.text}" %></td>
         </th>
@@ -22,8 +25,8 @@
           <td> ø </td>
         </tr>
         <% 5.times do |i| %>
-          <tr>
-            <td class="do_not_know"> <%= text_field_tag "do_not_know_#{i}", nil, :class => "txtQuestao do_not_know_#{question.id}" %> </td>
+          <tr class="gabarito">
+            <td class="do_not_know"> <%= text_field_tag "[#{question.id}]do_not_know_#{i}", nil, :class => "txtQuestao do_not_know_#{question.id}" %> </td>
             <td class="one"> <%= text_field_tag "one_#{i}", nil, :class => 'txtQuestao one' %> </td>
             <td class="two"> <%= text_field_tag "two_#{i}", nil, :class => 'txtQuestao two' %> </td>
             <td class="three"> <%= text_field_tag "three_#{i}", nil, :class => 'txtQuestao three' %> </td>
@@ -33,7 +36,7 @@
           </tr>
         <% end %>
 
-       <tr>
+       <tr class="gabarito">
           <td><%= text_field_tag "do_not_know[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_know : "", :size => 2, :class => "total_do_not_know totalParcial" %></td>
           <td><%= text_field_tag "one[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].one : "", :size => 2, :class => "total_one totalParcial" %></td>
           <td><%= text_field_tag "two[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].two : "", :size => 2,  :class => "total_two totalParcial" %></td>
@@ -44,7 +47,6 @@
           </td>
           <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 2, :onkeypress => "return false;", :class => "totalPessoas"  %></td>
         </tr>
-
 
         <script type="text/javascript" charset="utf-8"> 
           $(document).ready(function() {
@@ -88,37 +90,71 @@
             var classe = $(this).parent().attr("class");
             var $table = $(this).parents("table:first");
             var $itens = $table.find("td."+classe).find(".txtQuestao"); 
-
             var valor = 0;
             $itens.each(function(i){
               var valorAtual = Number($(this).val());
               if(isNaN(valorAtual)){ valorAtual = 0; }
               valor = valorAtual + valor; 
             });
-
             $table.find(".total_"+classe).val(valor);
             CalculaTotal($table);
           });
 
-          $(".txtQuestao").keypress(verificaNumero);
+          $(".txtQuestao").keypress(soNumeros);
+          
+          $(".totalParcial, .totalPessoas").keypress(desabilitaDigitacao);
+
+          desabilitaCampos(true);
       });
 
       function CalculaTotal(table){
-        var $itens = table.find(".totalParcial");
-        
-        var valor = 0;
+        var $itens = table.find(".totalParcial");        
+        var valorParcial = 0;
         $itens.each(function(i){
-          valor = Number($(this).val()) + valor; 
-        });
-        
-        table.find(".totalPessoas").val(valor);
+          valorParcial = Number($(this).val()) + valorParcial; 
+        });        
+        table.find(".totalPessoas").val(valorParcial);
       }
 
-      function verificaNumero(e) {
+      // Permite somente digitar numeros inteiros
+      function soNumeros(e) {
         if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
           return false;
         }
       }
+
+      function desabilitaDigitacao(){
+        return false;
+      }
+
+      function desabilitaCampos(ativa){
+        $(".totalParcial, .totalPessoas").attr("disabled", ativa);
+      }
+
+      function montaJSon(tables){
+        var tabela = "";
+        tables.each(function(tabela_id, i){
+          var linha = "";
+          $(this).find(".gabarito").each(function(linha_id, j){
+            var coluna = "";
+            $(this).find("input").each(function(coluna_id, k){
+              coluna += '{ "colunas":"' + Number($(this).val()) + '"},';              
+            })
+            coluna = coluna.substr(0, coluna.length -1);
+            linha += '{"linhas": [' + coluna + ']},';
+          })
+          linha = linha.substr(0, linha.length -1);
+          tabela += '{"tabelas":['+ linha +']},';      
+        });
+        tabela = '{"json":[' + tabela.substr(0, tabela.length -1) + ']}';
+        return tabela;
+      }
+
+      $("#answers").submit(function(){
+        $("#hdfGabarito").val(montaJSon($('.table_question')));
+        desabilitaCampos(false);
+      });
+
     </script>
 
     <tr>
