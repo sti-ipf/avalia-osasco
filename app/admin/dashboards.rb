@@ -4,6 +4,7 @@ ActiveAdmin::Dashboards.build do
   section "Estatísticas gerais" do
 
     total_schools = School.count
+    
     total_schools_started_answer = ComplexQuery.get_total_schools_started_answer[0]
     total_schools_pending_start = total_schools - total_schools_started_answer
     total_schools_pending_start_percentage = '%.2f' % ((total_schools_pending_start/total_schools.to_f)*100)
@@ -73,10 +74,14 @@ ActiveAdmin::Dashboards.build do
   section "Gerenciamento do sistema" do 
     ul do
       li do
-        link_to "Gerar senhas", generate_passwords_path, :remote => true
+        if Password.count > 0
+          link_to "Gerar senhas", generate_passwords_path, :remote => true, :confirm=>"Você tem certeza que deseja regerar as senhas?"
+        else 
+          link_to "Gerar senhas", generate_passwords_path, :remote => true
+        end
       end
-      li do
-        link_to "Importar instrumental", import_instrument_path, :id => "import_instrument"
+      li do        
+        link_to "Importar instrumental", import_instrument_path, :id => "import_instrument"        
       end
       li do
         link_to "Pré-gerar estatísticas das respostas", generate_answer_stats_path, :remote => true
