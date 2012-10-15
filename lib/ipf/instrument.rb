@@ -10,7 +10,7 @@ module Ipf
     QUESTION_TEXT = 5
 
     def self.import(file)
-      data = FasterCSV.read(file)
+      data = FasterCSV.read(file, IPF::Import::CSV_OPTIONS)
       data.each do |d|
         next if d[QUESTION_TEXT].include?('Texto')
         
