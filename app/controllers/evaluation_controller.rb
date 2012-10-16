@@ -20,28 +20,17 @@ class EvaluationController < ApplicationController
     if params[:school].nil?
       params[:school] = params[:school_id]
     end
-    @password = Password.first
-    # if !@password.nil?    
-    #   @school = @password.school
-    #   render "report"
-    # else
-    #   @schools = School.all.collect{ |school| [school.name, school.id] }
-    #   render "index", :alert => 'Senha inválida para a escola selecionada.'
-    # end      
-    # if params[:school].nil?
-    #   params[:school] = params[:school_id]
-    # end
-    # @password = Password.find_by_password_and_school_id(params[:password], params[:school])
-    # if !@password.nil?    
+    @password = Password.find_by_password_and_school_id(params[:password], params[:school])
+    if !@password.nil?    
       @segment = @password.segment
       @school = @password.school
       @service_level = @password.service_level
       generate_steps
       render "confirm"
-    # else
-    #   @schools = School.all.collect{ |school| [school.name, school.id] }
-    #   render "index", :alert => 'Senha inválida para a escola selecionada.'
-    # end      
+    else
+      @schools = School.all.collect{ |school| [school.name, school.id] }
+      render "index", :alert => 'Senha inválida para a escola selecionada.'
+    end      
   end
 
   def identify
