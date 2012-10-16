@@ -5,17 +5,18 @@
     <%= hidden_field_tag "hdfGabarito" %>
 
     <% @questions.each do |question| %>
-      <% if question.question.indicator.number != current_indicator %>
-        <% current_indicator = question.question.indicator.number%>
+      <%- if question.question.indicator.number != current_indicator %>
+        <%-current_indicator = question.question.indicator.number %>
         <tr>
-          <td class="indicador" colspan="9">Indicador <%= "#{@dimension.number}.#{question.question.indicator.number} - #{question.question.indicator.name}" %></td>
+          <%= "<td class='indicador' colspan='9'> <div class='indicador'>Indicador  #{@dimension.number}.#{question.question.indicator.number} - #{question.question.indicator.name} </div></td>".html_safe %>
         </tr>
-      <% end %>
+      <%-end %>
       <table class="table_question" id="table_<%= "#{question.id}" %>">
         <th>
           <td colspan="9"><%= "#{question.text}" %></td>
         </th>
-        <tr>
+        <tr class="grades">
+          <td> </td>
           <td> 0 </td>
           <td> 1 </td>
           <td> 2 </td>
@@ -26,6 +27,7 @@
         </tr>
         <% 5.times do |i| %>
           <tr class="gabarito">
+            <td class='gabarito_name'> <%= "Gabarito #{i+1}" %></td>
             <td class="do_not_know"> <%= text_field_tag "[#{question.id}]do_not_know_#{i}", nil, :class => "txtQuestao do_not_know_#{question.id}" %> </td>
             <td class="one"> <%= text_field_tag "one_#{i}", nil, :class => 'txtQuestao one' %> </td>
             <td class="two"> <%= text_field_tag "two_#{i}", nil, :class => 'txtQuestao two' %> </td>
@@ -37,6 +39,7 @@
         <% end %>
 
        <tr class="gabarito">
+          <td>Total</td>
           <td><%= text_field_tag "do_not_know[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_know : "", :size => 2, :class => "total_do_not_know totalParcial" %></td>
           <td><%= text_field_tag "one[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].one : "", :size => 2, :class => "total_one totalParcial" %></td>
           <td><%= text_field_tag "two[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].two : "", :size => 2,  :class => "total_two totalParcial" %></td>
@@ -45,7 +48,7 @@
           <td><%= text_field_tag "five[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].five : "", :size => 2, :class => "total_five totalParcial" %></td>
           <td><%= text_field_tag "do_not_answer[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_answer : "", :size => 2, :class => "total_do_not_answer totalParcial" %>
           </td>
-          <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 2, :onkeypress => "return false;", :class => "totalPessoas"  %></td>
+          <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 3, :onkeypress => "return false;", :class => "totalPessoas"  %></td>
         </tr>
 
         <script type="text/javascript" charset="utf-8"> 

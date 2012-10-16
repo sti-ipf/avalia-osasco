@@ -1,16 +1,52 @@
 #header {
     height: 120px;
     width: 100%;
+    position: relative;
     background-image: url('../images/marca.png');
     background-repeat:no-repeat;
     background-position: left top;
     text-align: center;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#header #site_title{
+  position: relative;
+  top: 40px;
 }
 
 .right {
  position: relative;
  float: right;
 }
+
+.table_question .totalParcial, .table_question .totalPessoas{
+  color: #000;
+  font-size: 19px;
+  font-weight: bold;
+  width: 30px;
+}
+
+.table_question th{
+  border-bottom: 1px solid #E8E8E8 !important;
+}
+
+.gabarito .gabarito_name{
+  width: 100px !important; 
+}
+
+.grades td{
+  padding-left: 24px;
+}
+
+.indicador{
+  color: #5E6469;
+  font-size: 1em;
+  font-weight: bold;
+  text-shadow: 0 1px 0 white;
+}
+
+input[type="text"].totalParcial , input[type="text"].totalPessoas{width: 30px !important;}
 
 
 input[type="submit"] {
