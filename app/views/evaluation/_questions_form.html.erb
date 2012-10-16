@@ -12,9 +12,8 @@
         </tr>
       <%-end %>
       <table class="table_question" id="table_<%= "#{question.id}" %>">
-        <th>
-          <td colspan="9"><%= "#{question.text}" %></td>
-        </th>
+        <td colspan="9"><%= "#{question.text}" %></td>
+        
         <tr class="grades">
           <td> </td>
           <td> 0 </td>
@@ -35,6 +34,12 @@
             <td class="four"> <%= text_field_tag "four_#{i}", nil, :class => 'txtQuestao four' %> </td>
             <td class="five"> <%= text_field_tag "five_#{i}", nil, :class => 'txtQuestao five' %> </td>
             <td class="do_not_answer"> <%= text_field_tag "do_not_answer_#{i}", nil, :class => 'txtQuestao do_not_answer' %> </td>
+            <% if i == 4 %>
+              <td>Quantidade de pessoas </td>
+            <% else %>
+              <td></td>
+            <% end %>
+            
           </tr>
         <% end %>
 
@@ -48,7 +53,7 @@
           <td><%= text_field_tag "five[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].five : "", :size => 2, :class => "total_five totalParcial" %></td>
           <td><%= text_field_tag "do_not_answer[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].do_not_answer : "", :size => 2, :class => "total_do_not_answer totalParcial" %>
           </td>
-          <td>Quantidade de pessoas <%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 3, :onkeypress => "return false;", :class => "totalPessoas"  %></td>
+          <td><%= text_field_tag "quantity_of_people[#{question.id}]", !@answers[question.id].nil? ? @answers[question.id].quantity_of_people : "", :size => 3, :onkeypress => "return false;", :class => "totalPessoas"  %></td>
         </tr>
 
         <script type="text/javascript" charset="utf-8"> 
