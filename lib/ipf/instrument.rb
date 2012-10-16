@@ -9,12 +9,15 @@ module Ipf
     SEGMENT = 4
     QUESTION_TEXT = 5
 
+    CSV_OPTIONS = {:col_sep => ";", :quote_char => "'"}
+
     def self.import(file)
-      data = FasterCSV.read(file, Ipf::Import::CSV_OPTIONS)
+      data = FasterCSV.read(file, CSV_OPTIONS)
       data.each do |d|
         next if d[QUESTION_TEXT].include?('Texto')
         
         service_level = ServiceLevel.first(:conditions => "name = '#{d[SERVICE_LEVEL]}'")
+        puts d.inspect
         puts "service_level nula" if service_level.nil?
         dimension = Dimension.first(:conditions => "number = #{d[DIMENSION]} AND service_level_id = #{service_level.id}")
         puts "dimensao nula" if dimension.nil?

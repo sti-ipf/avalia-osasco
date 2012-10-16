@@ -46,14 +46,15 @@ module Ipf
       data = FasterCSV.read(file, CSV_OPTIONS)
       data.each do |d|
         next if d[0] == 'Nome'
-        puts '-' * 100
-        puts d[0]
-        puts '|' * 100
-        puts d.inspect
-        puts '-' * 100
         level = ServiceLevel.find_by_name(d[4])
         dimension = Dimension.find_by_number_and_service_level_id(d[3], level.id)
-        Indicator.create(:name => d[0], :description => d[1],:number => d[2], :dimension_id => dimension.id)
+        
+        if d[2].include?(".")
+          indicator_number = d[2].split(".").last
+        else
+          indicator_number = d[2]
+        end
+        Indicator.create(:name => d[0], :description => d[1],:number => indicator_number, :dimension_id => dimension.id)
       end
     end
     
